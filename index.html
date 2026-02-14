@@ -19,6 +19,46 @@
     
     <title>RAPS Developer - Roblox Community Indonesia</title>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Firebase SDK v9 (Modular) -->
+    <script type="module">
+        // Import the functions you need from the SDKs
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getDatabase, ref, set, get, remove, child, onValue } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBrT9nXf9ncgnssTUIryv28i2GI9dUa0Cs",
+            authDomain: "raps-developer.firebaseapp.com",
+            databaseURL: "https://raps-developer-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "raps-developer",
+            storageBucket: "raps-developer.firebasestorage.app",
+            messagingSenderId: "346351911071",
+            appId: "1:346351911071:web:e840e783a32ae1825d62aa"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        // Export untuk digunakan di window object
+        window.firebaseApp = app;
+        window.firebaseDatabase = database;
+        window.firebaseRef = ref;
+        window.firebaseSet = set;
+        window.firebaseGet = get;
+        window.firebaseRemove = remove;
+        window.firebaseChild = child;
+        window.firebaseOnValue = onValue;
+        window.firebaseInitialized = true;
+
+        console.log('🔥 Firebase initialized successfully!');
+        document.getElementById('firebaseNotice')?.classList.add('hidden');
+
+        // Trigger initialization event
+        window.dispatchEvent(new Event('firebaseReady'));
+    </script>
+    
     <style>
         :root {
             --primary: #FF3366;
@@ -1272,6 +1312,28 @@
             margin-bottom: 1rem;
         }
 
+        /* Firebase Setup Notice */
+        .firebase-notice {
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 215, 0, 0.95);
+            color: #000;
+            padding: 1rem 2rem;
+            border-radius: 15px;
+            font-weight: 600;
+            z-index: 9999;
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
+            animation: slideDown 0.5s ease-out;
+            max-width: 90%;
+            text-align: center;
+        }
+
+        .firebase-notice.hidden {
+            display: none;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .menu-toggle {
@@ -1379,6 +1441,11 @@
 </head>
 <body>
     <div class="bg-animation"></div>
+
+    <!-- Firebase Setup Notice -->
+    <div id="firebaseNotice" class="firebase-notice">
+        ⚠️ Menginisialisasi Firebase...
+    </div>
 
     <!-- Navigation -->
     <nav>
@@ -1723,7 +1790,7 @@
     <footer>
         <div class="container">
             <p>&copy; 2026 RAPS Developer Community. All Rights Reserved.</p>
-            <p style="font-size: 0.9rem;">Made with ❤️ by RAPS Developer Team</p>
+            <p style="font-size: 0.9rem;">Made with ❤️ by RAPS Developer Team | Powered by Firebase 🔥</p>
         </div>
     </footer>
 
@@ -1775,27 +1842,49 @@
         let editingDonorId = null;
 
         // ============================================
-        // LOCALSTORAGE HELPER FUNCTIONS
+        // FIREBASE HELPER FUNCTIONS
         // ============================================
         
-        function getFromStorage(key) {
-            try {
-                const data = localStorage.getItem(key);
-                return data ? JSON.parse(data) : [];
-            } catch (error) {
-                console.error(`Error getting ${key}:`, error);
-                return [];
+        function getFromFirebase(path) {
+            if (!window.firebaseInitialized) {
+                console.warn('Firebase not initialized, using fallback empty data');
+                return Promise.resolve([]);
             }
+            
+            const dbRef = window.firebaseRef(window.firebaseDatabase, path);
+            return window.firebaseGet(dbRef)
+                .then(snapshot => {
+                    const data = snapshot.val();
+                    if (!data) return [];
+                    
+                    // Convert object to array
+                    return Object.keys(data).map(key => ({
+                        id: key,
+                        ...data[key]
+                    }));
+                })
+                .catch(error => {
+                    console.error(`Error getting ${path}:`, error);
+                    return [];
+                });
         }
 
-        function saveToStorage(key, data) {
-            try {
-                localStorage.setItem(key, JSON.stringify(data));
-                return true;
-            } catch (error) {
-                console.error(`Error saving ${key}:`, error);
-                throw error;
+        function saveToFirebase(path, id, data) {
+            if (!window.firebaseInitialized) {
+                throw new Error('Firebase not initialized');
             }
+            
+            const dbRef = window.firebaseRef(window.firebaseDatabase, `${path}/${id}`);
+            return window.firebaseSet(dbRef, data);
+        }
+
+        function deleteFromFirebase(path, id) {
+            if (!window.firebaseInitialized) {
+                throw new Error('Firebase not initialized');
+            }
+            
+            const dbRef = window.firebaseRef(window.firebaseDatabase, `${path}/${id}`);
+            return window.firebaseRemove(dbRef);
         }
 
         // ============================================
@@ -2062,9 +2151,9 @@
         // STAFF MANAGEMENT
         // ============================================
         
-        function loadStaffDataForEdit(staffId) {
+        async function loadStaffDataForEdit(staffId) {
             try {
-                const staffList = getFromStorage('raps-staff');
+                const staffList = await getFromFirebase('staff');
                 const staff = staffList.find(s => s.id == staffId);
                 
                 if (staff) {
@@ -2085,9 +2174,14 @@
             }
         }
 
-        function saveStaff() {
+        async function saveStaff() {
             if (!currentStaff) {
                 showError('staffError', 'Anda harus login sebagai staff');
+                return;
+            }
+
+            if (!window.firebaseInitialized) {
+                showError('staffError', '⚠️ Firebase belum siap, tunggu sebentar...');
                 return;
             }
 
@@ -2111,31 +2205,17 @@
             setButtonLoading('saveStaffBtn', true);
 
             try {
-                let staffList = getFromStorage('raps-staff');
+                const staffData = {
+                    name,
+                    role,
+                    description,
+                    photo: uploadedImages.staff,
+                    updatedAt: Date.now()
+                };
 
-                if (editingStaffId) {
-                    const index = staffList.findIndex(s => s.id == editingStaffId);
-                    if (index !== -1) {
-                        staffList[index] = {
-                            ...staffList[index],
-                            name,
-                            role,
-                            description,
-                            photo: uploadedImages.staff
-                        };
-                    }
-                } else {
-                    const newStaff = {
-                        id: Date.now(),
-                        name,
-                        role,
-                        description,
-                        photo: uploadedImages.staff
-                    };
-                    staffList.push(newStaff);
-                }
-
-                saveToStorage('raps-staff', staffList);
+                const id = editingStaffId || Date.now().toString();
+                
+                await saveToFirebase('staff', id, staffData);
                 
                 showSuccess('staffSuccess', editingStaffId ? '✅ Staff berhasil diupdate!' : '✅ Staff berhasil ditambahkan!');
                 
@@ -2152,15 +2232,13 @@
             }
         }
 
-        function deleteStaff(staffId) {
+        async function deleteStaff(staffId) {
             if (!confirm('Yakin ingin menghapus staff ini?')) {
                 return;
             }
 
             try {
-                let staffList = getFromStorage('raps-staff');
-                staffList = staffList.filter(s => s.id != staffId);
-                saveToStorage('raps-staff', staffList);
+                await deleteFromFirebase('staff', staffId);
                 loadStaff();
             } catch (error) {
                 console.error('Error deleting staff:', error);
@@ -2168,11 +2246,11 @@
             }
         }
 
-        function loadStaff() {
+        async function loadStaff() {
             const staffGrid = document.getElementById('staffGrid');
             
             try {
-                const staffList = getFromStorage('raps-staff');
+                const staffList = await getFromFirebase('staff');
                 
                 if (staffList.length === 0) {
                     staffGrid.innerHTML = `
@@ -2191,8 +2269,8 @@
                     
                     const editButtons = currentStaff ? `
                         <div class="staff-actions">
-                            <button class="staff-edit-btn" onclick="openManageStaffModal(${staff.id})">✏️ Edit</button>
-                            <button class="staff-delete-btn" onclick="deleteStaff(${staff.id})">🗑️ Hapus</button>
+                            <button class="staff-edit-btn" onclick="openManageStaffModal('${staff.id}')">✏️ Edit</button>
+                            <button class="staff-delete-btn" onclick="deleteStaff('${staff.id}')">🗑️ Hapus</button>
                         </div>
                     ` : '';
                     
@@ -2224,9 +2302,9 @@
         // DONOR MANAGEMENT
         // ============================================
         
-        function loadDonorDataForEdit(donorId) {
+        async function loadDonorDataForEdit(donorId) {
             try {
-                const donorsList = getFromStorage('raps-donors');
+                const donorsList = await getFromFirebase('donors');
                 const donor = donorsList.find(d => d.id == donorId);
                 
                 if (donor) {
@@ -2239,9 +2317,14 @@
             }
         }
 
-        function saveDonor() {
+        async function saveDonor() {
             if (!currentStaff) {
                 showError('donorError', 'Anda harus login sebagai staff');
+                return;
+            }
+
+            if (!window.firebaseInitialized) {
+                showError('donorError', '⚠️ Firebase belum siap, tunggu sebentar...');
                 return;
             }
 
@@ -2260,34 +2343,21 @@
             setButtonLoading('saveDonorBtn', true);
 
             try {
-                let donorsList = getFromStorage('raps-donors');
+                const donorData = {
+                    name,
+                    amount,
+                    message,
+                    date: new Date().toLocaleDateString('id-ID', { 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric' 
+                    }),
+                    updatedAt: Date.now()
+                };
 
-                if (editingDonorId) {
-                    const index = donorsList.findIndex(d => d.id == editingDonorId);
-                    if (index !== -1) {
-                        donorsList[index] = {
-                            ...donorsList[index],
-                            name,
-                            amount,
-                            message
-                        };
-                    }
-                } else {
-                    const donorItem = {
-                        id: Date.now(),
-                        name,
-                        amount,
-                        message,
-                        date: new Date().toLocaleDateString('id-ID', { 
-                            year: 'numeric', 
-                            month: 'long', 
-                            day: 'numeric' 
-                        })
-                    };
-                    donorsList.push(donorItem);
-                }
-
-                saveToStorage('raps-donors', donorsList);
+                const id = editingDonorId || Date.now().toString();
+                
+                await saveToFirebase('donors', id, donorData);
                 
                 showSuccess('donorSuccess', editingDonorId ? '✅ Donatur berhasil diupdate!' : '✅ Donatur berhasil ditambahkan!');
                 
@@ -2304,15 +2374,13 @@
             }
         }
 
-        function deleteDonor(donorId) {
+        async function deleteDonor(donorId) {
             if (!confirm('Yakin ingin menghapus donatur ini?')) {
                 return;
             }
 
             try {
-                let donorsList = getFromStorage('raps-donors');
-                donorsList = donorsList.filter(d => d.id != donorId);
-                saveToStorage('raps-donors', donorsList);
+                await deleteFromFirebase('donors', donorId);
                 loadDonors();
             } catch (error) {
                 console.error('Error deleting donor:', error);
@@ -2320,11 +2388,11 @@
             }
         }
 
-        function loadDonors() {
+        async function loadDonors() {
             const donorsLeaderboard = document.getElementById('donorsLeaderboard');
             
             try {
-                const donorsList = getFromStorage('raps-donors');
+                const donorsList = await getFromFirebase('donors');
                 
                 if (donorsList.length === 0) {
                     donorsLeaderboard.innerHTML = `
@@ -2341,8 +2409,8 @@
                     
                     const editButtons = currentStaff ? `
                         <div class="donor-actions">
-                            <button class="donor-edit-btn" onclick="openManageDonorsModal(${donor.id})">✏️ Edit</button>
-                            <button class="donor-delete-btn" onclick="deleteDonor(${donor.id})">🗑️ Hapus</button>
+                            <button class="donor-edit-btn" onclick="openManageDonorsModal('${donor.id}')">✏️ Edit</button>
+                            <button class="donor-delete-btn" onclick="deleteDonor('${donor.id}')">🗑️ Hapus</button>
                         </div>
                     ` : '';
                     
@@ -2384,9 +2452,14 @@
             }
         }
 
-        function addNews() {
+        async function addNews() {
             if (!currentStaff) {
                 showError('newsError', 'Anda harus login sebagai staff');
+                return;
+            }
+
+            if (!window.firebaseInitialized) {
+                showError('newsError', '⚠️ Firebase belum siap, tunggu sebentar...');
                 return;
             }
 
@@ -2406,10 +2479,7 @@
             setButtonLoading('submitContentBtn', true);
 
             try {
-                let newsList = getFromStorage('raps-news');
-
-                const newsItem = {
-                    id: Date.now(),
+                const newsData = {
                     title,
                     emoji,
                     content,
@@ -2419,14 +2489,22 @@
                         month: 'long', 
                         day: 'numeric' 
                     }),
-                    author: currentStaff.name
+                    author: currentStaff.name,
+                    createdAt: Date.now()
                 };
 
-                newsList.unshift(newsItem);
-                saveToStorage('raps-news', newsList);
+                const id = Date.now().toString();
+                
+                await saveToFirebase('news', id, newsData);
 
                 if (addToGallery && uploadedImages.news) {
-                    addToGalleryStorage(uploadedImages.news, title);
+                    const galleryData = {
+                        image: uploadedImages.news,
+                        caption: title,
+                        date: newsData.date,
+                        createdAt: Date.now()
+                    };
+                    await saveToFirebase('gallery', Date.now().toString(), galleryData);
                 }
 
                 showSuccess('newsSuccess', '✅ Update berhasil dipublikasikan!');
@@ -2445,9 +2523,14 @@
             }
         }
 
-        function addGame() {
+        async function addGame() {
             if (!currentStaff) {
                 showError('newsError', 'Anda harus login sebagai staff');
+                return;
+            }
+
+            if (!window.firebaseInitialized) {
+                showError('newsError', '⚠️ Firebase belum siap, tunggu sebentar...');
                 return;
             }
 
@@ -2468,10 +2551,7 @@
             setButtonLoading('submitContentBtn', true);
 
             try {
-                let gamesList = getFromStorage('raps-games');
-
-                const gameItem = {
-                    id: Date.now(),
+                const gameData = {
                     title,
                     description,
                     thumbnail: uploadedImages.game,
@@ -2483,11 +2563,13 @@
                         month: 'long', 
                         day: 'numeric' 
                     }),
-                    author: currentStaff.name
+                    author: currentStaff.name,
+                    createdAt: Date.now()
                 };
 
-                gamesList.unshift(gameItem);
-                saveToStorage('raps-games', gamesList);
+                const id = Date.now().toString();
+                
+                await saveToFirebase('games', id, gameData);
 
                 showSuccess('newsSuccess', '✅ Game berhasil ditambahkan!');
                 
@@ -2504,33 +2586,11 @@
             }
         }
 
-        function addToGalleryStorage(imageBase64, caption) {
-            try {
-                let galleryList = getFromStorage('raps-gallery');
-
-                const galleryItem = {
-                    id: Date.now(),
-                    image: imageBase64,
-                    caption: caption,
-                    date: new Date().toLocaleDateString('id-ID', { 
-                        year: 'numeric', 
-                        month: 'long', 
-                        day: 'numeric' 
-                    })
-                };
-
-                galleryList.unshift(galleryItem);
-                saveToStorage('raps-gallery', galleryList);
-            } catch (error) {
-                console.error('Error adding to gallery:', error);
-            }
-        }
-
-        function loadGames() {
+        async function loadGames() {
             const gamesGrid = document.getElementById('gamesGrid');
             
             try {
-                const gamesList = getFromStorage('raps-games');
+                const gamesList = await getFromFirebase('games');
                 
                 if (gamesList.length === 0) {
                     gamesGrid.innerHTML = `
@@ -2541,6 +2601,9 @@
                     `;
                     return;
                 }
+
+                // Sort by createdAt descending
+                gamesList.sort((a, b) => b.createdAt - a.createdAt);
 
                 gamesGrid.innerHTML = gamesList.map((game) => {
                     const thumbnailContent = game.thumbnail 
@@ -2583,11 +2646,11 @@
             }
         }
 
-        function loadNews() {
+        async function loadNews() {
             const newsGrid = document.getElementById('newsGrid');
             
             try {
-                const newsList = getFromStorage('raps-news');
+                const newsList = await getFromFirebase('news');
                 
                 if (newsList.length === 0) {
                     newsGrid.innerHTML = `
@@ -2598,6 +2661,9 @@
                     `;
                     return;
                 }
+
+                // Sort by createdAt descending
+                newsList.sort((a, b) => b.createdAt - a.createdAt);
 
                 newsGrid.innerHTML = newsList.map((news) => {
                     const imageContent = news.image 
@@ -2629,11 +2695,11 @@
             }
         }
 
-        function loadGallery() {
+        async function loadGallery() {
             const galleryGrid = document.getElementById('galleryGrid');
             
             try {
-                const galleryList = getFromStorage('raps-gallery');
+                const galleryList = await getFromFirebase('gallery');
                 
                 if (galleryList.length === 0) {
                     galleryGrid.innerHTML = `
@@ -2644,6 +2710,9 @@
                     `;
                     return;
                 }
+
+                // Sort by createdAt descending
+                galleryList.sort((a, b) => b.createdAt - a.createdAt);
 
                 galleryGrid.innerHTML = galleryList.map((item) => `
                     <div class="gallery-item has-image fade-in">
@@ -2743,9 +2812,9 @@
         // INITIALIZATION
         // ============================================
         
-        window.addEventListener('DOMContentLoaded', () => {
-            console.log('🚀 RAPS Developer Website v2.0 - Using LocalStorage');
-            console.log('✅ All features loaded successfully');
+        function initializeApp() {
+            console.log('🚀 RAPS Developer Website - Firebase Edition');
+            console.log('🔥 Firebase Status:', window.firebaseInitialized ? 'Connected' : 'Initializing...');
             
             checkLoginStatus();
             loadStaff();
@@ -2754,7 +2823,14 @@
             loadDonors();
             loadGallery();
             observeElements();
-        });
+        }
+
+        // Wait for Firebase to be ready
+        if (window.firebaseInitialized) {
+            initializeApp();
+        } else {
+            window.addEventListener('firebaseReady', initializeApp);
+        }
     </script>
 </body>
 </html>
