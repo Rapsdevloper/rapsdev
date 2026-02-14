@@ -1031,6 +1031,276 @@
             color: var(--gray);
         }
 
+        /* Gallery Interaction */
+        .gallery-interactions {
+            padding: 0.8rem 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .gallery-like-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: none;
+            border: none;
+            color: var(--gray);
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0.5rem;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .gallery-like-btn:hover {
+            background: rgba(255, 51, 102, 0.1);
+            color: var(--primary);
+        }
+
+        .gallery-like-btn.liked {
+            color: var(--primary);
+        }
+
+        .gallery-like-btn.liked .like-icon {
+            animation: likeAnimation 0.5s ease;
+        }
+
+        @keyframes likeAnimation {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+
+        .like-icon {
+            font-size: 1.3rem;
+            display: inline-block;
+        }
+
+        .like-count {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .gallery-comment-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: none;
+            border: none;
+            color: var(--gray);
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0.5rem;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .gallery-comment-btn:hover {
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--secondary);
+        }
+
+        .comment-icon {
+            font-size: 1.3rem;
+        }
+
+        .comment-count {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        /* Comment Section */
+        .gallery-comments {
+            padding: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .comment-item {
+            margin-bottom: 0.8rem;
+            padding: 0.8rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+        }
+
+        .comment-author {
+            font-weight: 600;
+            color: var(--light);
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .comment-text {
+            color: var(--gray);
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .comment-time {
+            font-size: 0.75rem;
+            color: var(--gray);
+            margin-top: 0.3rem;
+        }
+
+        .comment-form {
+            padding: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .comment-input-group {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .comment-name-input {
+            flex: 0 0 150px;
+            padding: 0.6rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            color: var(--light);
+            font-size: 0.9rem;
+        }
+
+        .comment-text-input {
+            flex: 1;
+            padding: 0.6rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            color: var(--light);
+            font-size: 0.9rem;
+            resize: none;
+        }
+
+        .comment-name-input:focus,
+        .comment-text-input:focus {
+            outline: none;
+            border-color: var(--secondary);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .comment-submit-btn {
+            background: linear-gradient(135deg, var(--secondary), #00a8cc);
+            color: var(--light);
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .comment-submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 212, 255, 0.3);
+        }
+
+        .comment-submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .show-all-comments {
+            text-align: center;
+            padding: 0.5rem;
+            color: var(--secondary);
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .show-all-comments:hover {
+            color: var(--light);
+        }
+
+        /* Comments Modal */
+        .comments-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s;
+        }
+
+        .comments-modal.active {
+            display: flex;
+        }
+
+        .comments-modal-content {
+            background: var(--dark);
+            border-radius: 30px;
+            padding: 2rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: var(--shadow);
+            animation: slideUp 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .comments-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .comments-modal-header h3 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.5rem;
+            color: var(--light);
+        }
+
+        .comments-modal-close {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: var(--light);
+            font-size: 1.5rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .comments-modal-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+
+        .comments-modal-list {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+        }
+
+        .empty-comments {
+            text-align: center;
+            padding: 2rem;
+            color: var(--gray);
+        }
+
+        .empty-comments p {
+            margin-top: 0.5rem;
+        }
+
         .empty-gallery {
             text-align: center;
             padding: 4rem 2rem;
@@ -1522,6 +1792,23 @@
                 width: 100%;
                 max-width: 300px;
             }
+
+            .gallery-interactions {
+                justify-content: center;
+            }
+
+            .comment-input-group {
+                flex-direction: column;
+            }
+
+            .comment-name-input {
+                flex: 1;
+            }
+
+            .comments-modal-content {
+                width: 95%;
+                padding: 1.5rem;
+            }
         }
 
         /* Scroll Animation */
@@ -1796,6 +2083,29 @@
         </div>
     </div>
 
+    <!-- Comments Modal -->
+    <div id="commentsModal" class="comments-modal">
+        <div class="comments-modal-content">
+            <div class="comments-modal-header">
+                <h3>💬 Komentar</h3>
+                <button class="comments-modal-close" onclick="closeCommentsModal()">×</button>
+            </div>
+            <div id="commentsModalList" class="comments-modal-list">
+                <div class="loading-container">
+                    <div class="loading"></div>
+                    <p>Memuat komentar...</p>
+                </div>
+            </div>
+            <div class="comment-form">
+                <div class="comment-input-group">
+                    <input type="text" id="modalCommentName" class="comment-name-input" placeholder="Nama kamu">
+                    <textarea id="modalCommentText" class="comment-text-input" placeholder="Tulis komentar..." rows="2"></textarea>
+                </div>
+                <button class="comment-submit-btn" onclick="submitModalComment()">Kirim</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Hero Section -->
     <section id="home" class="hero">
         <div class="hero-content">
@@ -2008,6 +2318,8 @@
         let editingStaffId = null;
         let editingDonorId = null;
         let editingGalleryId = null;
+        let currentGalleryIdForComments = null;
+        let userLikes = JSON.parse(localStorage.getItem('rapsDev_likes') || '{}');
 
         // ============================================
         // FIREBASE HELPER FUNCTIONS
@@ -2635,6 +2947,152 @@
         }
 
         // ============================================
+        // LIKE & COMMENT SYSTEM
+        // ============================================
+
+        async function toggleLike(galleryId) {
+            try {
+                const likesRef = await getFromFirebase(`likes/${galleryId}`);
+                const currentLikes = likesRef.length > 0 ? likesRef[0].count || 0 : 0;
+                
+                // Check if user already liked
+                const hasLiked = userLikes[galleryId] || false;
+                
+                if (hasLiked) {
+                    // Unlike
+                    const newCount = Math.max(0, currentLikes - 1);
+                    await saveToFirebase('likes', galleryId, { count: newCount, updatedAt: Date.now() });
+                    userLikes[galleryId] = false;
+                } else {
+                    // Like
+                    const newCount = currentLikes + 1;
+                    await saveToFirebase('likes', galleryId, { count: newCount, updatedAt: Date.now() });
+                    userLikes[galleryId] = true;
+                }
+                
+                // Save to localStorage
+                localStorage.setItem('rapsDev_likes', JSON.stringify(userLikes));
+                
+                // Reload gallery to update UI
+                loadGallery();
+            } catch (error) {
+                console.error('Error toggling like:', error);
+            }
+        }
+
+        async function getLikesCount(galleryId) {
+            try {
+                const likesData = await getFromFirebase(`likes/${galleryId}`);
+                return likesData.length > 0 ? likesData[0].count || 0 : 0;
+            } catch (error) {
+                return 0;
+            }
+        }
+
+        async function getCommentsCount(galleryId) {
+            try {
+                const comments = await getFromFirebase(`comments/${galleryId}`);
+                return comments.length;
+            } catch (error) {
+                return 0;
+            }
+        }
+
+        async function submitComment(galleryId, nameInputId, textInputId) {
+            const name = document.getElementById(nameInputId).value.trim();
+            const text = document.getElementById(textInputId).value.trim();
+            
+            if (!name || !text) {
+                alert('Mohon isi nama dan komentar');
+                return;
+            }
+            
+            try {
+                const commentData = {
+                    name,
+                    text,
+                    date: new Date().toLocaleDateString('id-ID', { 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    }),
+                    timestamp: Date.now()
+                };
+                
+                const commentId = Date.now().toString();
+                await saveToFirebase(`comments/${galleryId}`, commentId, commentData);
+                
+                // Clear inputs
+                document.getElementById(nameInputId).value = '';
+                document.getElementById(textInputId).value = '';
+                
+                // Reload gallery
+                loadGallery();
+            } catch (error) {
+                console.error('Error submitting comment:', error);
+                alert('Gagal mengirim komentar. Silakan coba lagi.');
+            }
+        }
+
+        function openCommentsModal(galleryId) {
+            currentGalleryIdForComments = galleryId;
+            document.getElementById('commentsModal').classList.add('active');
+            loadCommentsForModal(galleryId);
+        }
+
+        function closeCommentsModal() {
+            document.getElementById('commentsModal').classList.remove('active');
+            currentGalleryIdForComments = null;
+        }
+
+        async function loadCommentsForModal(galleryId) {
+            const listElement = document.getElementById('commentsModalList');
+            
+            try {
+                const comments = await getFromFirebase(`comments/${galleryId}`);
+                
+                if (comments.length === 0) {
+                    listElement.innerHTML = `
+                        <div class="empty-comments">
+                            <div style="font-size: 3rem;">💬</div>
+                            <p>Belum ada komentar. Jadilah yang pertama!</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Sort by timestamp descending
+                comments.sort((a, b) => b.timestamp - a.timestamp);
+                
+                listElement.innerHTML = comments.map(comment => `
+                    <div class="comment-item">
+                        <div class="comment-author">${comment.name}</div>
+                        <div class="comment-text">${comment.text}</div>
+                        <div class="comment-time">${comment.date}</div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading comments:', error);
+                listElement.innerHTML = `
+                    <div class="empty-comments">
+                        <p>Gagal memuat komentar</p>
+                    </div>
+                `;
+            }
+        }
+
+        function submitModalComment() {
+            if (currentGalleryIdForComments) {
+                submitComment(currentGalleryIdForComments, 'modalCommentName', 'modalCommentText')
+                    .then(() => {
+                        loadCommentsForModal(currentGalleryIdForComments);
+                    });
+            }
+        }
+
+        // ============================================
         // GALLERY MANAGEMENT
         // ============================================
         
@@ -3006,13 +3464,25 @@
                 // Sort by createdAt descending
                 galleryList.sort((a, b) => b.createdAt - a.createdAt);
 
-                galleryGrid.innerHTML = galleryList.map((item) => {
+                // Load likes and comments count for all items
+                const itemsWithCounts = await Promise.all(
+                    galleryList.map(async (item) => {
+                        const likesCount = await getLikesCount(item.id);
+                        const commentsCount = await getCommentsCount(item.id);
+                        return { ...item, likesCount, commentsCount };
+                    })
+                );
+
+                galleryGrid.innerHTML = itemsWithCounts.map((item) => {
                     const editButtons = currentStaff ? `
                         <div class="gallery-item-actions">
                             <button class="gallery-edit-btn" onclick="openManageGalleryModal('${item.id}')" title="Edit">✏️</button>
                             <button class="gallery-delete-btn" onclick="deleteGallery('${item.id}')" title="Hapus">🗑️</button>
                         </div>
                     ` : '';
+                    
+                    const hasLiked = userLikes[item.id] || false;
+                    const likeIcon = hasLiked ? '❤️' : '🤍';
                     
                     return `
                         <div class="gallery-item has-image fade-in ${currentStaff ? 'editable' : ''}">
@@ -3023,6 +3493,16 @@
                             <div class="gallery-caption">
                                 ${item.caption ? `<div class="gallery-caption-text">${item.caption}</div>` : ''}
                                 <div class="gallery-caption-meta">${item.date}${item.author ? ` • ${item.author}` : ''}</div>
+                            </div>
+                            <div class="gallery-interactions">
+                                <button class="gallery-like-btn ${hasLiked ? 'liked' : ''}" onclick="toggleLike('${item.id}')">
+                                    <span class="like-icon">${likeIcon}</span>
+                                    <span class="like-count">${item.likesCount || 0}</span>
+                                </button>
+                                <button class="gallery-comment-btn" onclick="openCommentsModal('${item.id}')">
+                                    <span class="comment-icon">💬</span>
+                                    <span class="comment-count">${item.commentsCount || 0}</span>
+                                </button>
                             </div>
                         </div>
                     `;
