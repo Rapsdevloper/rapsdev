@@ -1775,6 +1775,30 @@
         let editingDonorId = null;
 
         // ============================================
+        // LOCALSTORAGE HELPER FUNCTIONS
+        // ============================================
+        
+        function getFromStorage(key) {
+            try {
+                const data = localStorage.getItem(key);
+                return data ? JSON.parse(data) : [];
+            } catch (error) {
+                console.error(`Error getting ${key}:`, error);
+                return [];
+            }
+        }
+
+        function saveToStorage(key, data) {
+            try {
+                localStorage.setItem(key, JSON.stringify(data));
+                return true;
+            } catch (error) {
+                console.error(`Error saving ${key}:`, error);
+                throw error;
+            }
+        }
+
+        // ============================================
         // UTILITY FUNCTIONS
         // ============================================
         
@@ -1804,32 +1828,6 @@
                 } else {
                     button.textContent = button.dataset.originalText || button.textContent;
                 }
-            }
-        }
-
-        async function safeStorageGet(key, shared = true) {
-            try {
-                const result = await window.storage.get(key, shared);
-                if (!result || !result.value) {
-                    return [];
-                }
-                return JSON.parse(result.value);
-            } catch (error) {
-                console.error(`Error getting ${key}:`, error);
-                return [];
-            }
-        }
-
-        async function safeStorageSet(key, data, shared = true) {
-            try {
-                const result = await window.storage.set(key, JSON.stringify(data), shared);
-                if (!result) {
-                    throw new Error('Storage set returned null');
-                }
-                return true;
-            } catch (error) {
-                console.error(`Error setting ${key}:`, error);
-                throw error;
             }
         }
 
@@ -1921,7 +1919,7 @@
             updateUIForLoggedInStaff();
             closeLoginModal();
             
-            alert(`Selamat datang, ${staff.name}!`);
+            alert(`✅ Selamat datang, ${staff.name}!`);
         }
 
         function updateUIForLoggedInStaff() {
@@ -2064,9 +2062,9 @@
         // STAFF MANAGEMENT
         // ============================================
         
-        async function loadStaffDataForEdit(staffId) {
+        function loadStaffDataForEdit(staffId) {
             try {
-                const staffList = await safeStorageGet('raps-staff', true);
+                const staffList = getFromStorage('raps-staff');
                 const staff = staffList.find(s => s.id == staffId);
                 
                 if (staff) {
@@ -2087,7 +2085,7 @@
             }
         }
 
-        async function saveStaff() {
+        function saveStaff() {
             if (!currentStaff) {
                 showError('staffError', 'Anda harus login sebagai staff');
                 return;
@@ -2113,7 +2111,7 @@
             setButtonLoading('saveStaffBtn', true);
 
             try {
-                let staffList = await safeStorageGet('raps-staff', true);
+                let staffList = getFromStorage('raps-staff');
 
                 if (editingStaffId) {
                     const index = staffList.findIndex(s => s.id == editingStaffId);
@@ -2137,9 +2135,9 @@
                     staffList.push(newStaff);
                 }
 
-                await safeStorageSet('raps-staff', staffList, true);
+                saveToStorage('raps-staff', staffList);
                 
-                showSuccess('staffSuccess', editingStaffId ? 'Staff berhasil diupdate!' : 'Staff berhasil ditambahkan!');
+                showSuccess('staffSuccess', editingStaffId ? '✅ Staff berhasil diupdate!' : '✅ Staff berhasil ditambahkan!');
                 
                 setTimeout(() => {
                     closeManageStaffModal();
@@ -2148,33 +2146,33 @@
 
             } catch (error) {
                 console.error('Error saving staff:', error);
-                showError('staffError', `Terjadi kesalahan: ${error.message}`);
+                showError('staffError', `❌ Terjadi kesalahan: ${error.message}`);
             } finally {
                 setButtonLoading('saveStaffBtn', false);
             }
         }
 
-        async function deleteStaff(staffId) {
+        function deleteStaff(staffId) {
             if (!confirm('Yakin ingin menghapus staff ini?')) {
                 return;
             }
 
             try {
-                let staffList = await safeStorageGet('raps-staff', true);
+                let staffList = getFromStorage('raps-staff');
                 staffList = staffList.filter(s => s.id != staffId);
-                await safeStorageSet('raps-staff', staffList, true);
+                saveToStorage('raps-staff', staffList);
                 loadStaff();
             } catch (error) {
                 console.error('Error deleting staff:', error);
-                alert('Terjadi kesalahan saat menghapus staff');
+                alert('❌ Terjadi kesalahan saat menghapus staff');
             }
         }
 
-        async function loadStaff() {
+        function loadStaff() {
             const staffGrid = document.getElementById('staffGrid');
             
             try {
-                const staffList = await safeStorageGet('raps-staff', true);
+                const staffList = getFromStorage('raps-staff');
                 
                 if (staffList.length === 0) {
                     staffGrid.innerHTML = `
@@ -2226,9 +2224,9 @@
         // DONOR MANAGEMENT
         // ============================================
         
-        async function loadDonorDataForEdit(donorId) {
+        function loadDonorDataForEdit(donorId) {
             try {
-                const donorsList = await safeStorageGet('raps-donors', true);
+                const donorsList = getFromStorage('raps-donors');
                 const donor = donorsList.find(d => d.id == donorId);
                 
                 if (donor) {
@@ -2241,7 +2239,7 @@
             }
         }
 
-        async function saveDonor() {
+        function saveDonor() {
             if (!currentStaff) {
                 showError('donorError', 'Anda harus login sebagai staff');
                 return;
@@ -2262,7 +2260,7 @@
             setButtonLoading('saveDonorBtn', true);
 
             try {
-                let donorsList = await safeStorageGet('raps-donors', true);
+                let donorsList = getFromStorage('raps-donors');
 
                 if (editingDonorId) {
                     const index = donorsList.findIndex(d => d.id == editingDonorId);
@@ -2289,9 +2287,9 @@
                     donorsList.push(donorItem);
                 }
 
-                await safeStorageSet('raps-donors', donorsList, true);
+                saveToStorage('raps-donors', donorsList);
                 
-                showSuccess('donorSuccess', editingDonorId ? 'Donatur berhasil diupdate!' : 'Donatur berhasil ditambahkan!');
+                showSuccess('donorSuccess', editingDonorId ? '✅ Donatur berhasil diupdate!' : '✅ Donatur berhasil ditambahkan!');
                 
                 setTimeout(() => {
                     closeManageDonorsModal();
@@ -2300,33 +2298,33 @@
 
             } catch (error) {
                 console.error('Error saving donor:', error);
-                showError('donorError', 'Terjadi kesalahan saat menyimpan donatur');
+                showError('donorError', '❌ Terjadi kesalahan saat menyimpan donatur');
             } finally {
                 setButtonLoading('saveDonorBtn', false);
             }
         }
 
-        async function deleteDonor(donorId) {
+        function deleteDonor(donorId) {
             if (!confirm('Yakin ingin menghapus donatur ini?')) {
                 return;
             }
 
             try {
-                let donorsList = await safeStorageGet('raps-donors', true);
+                let donorsList = getFromStorage('raps-donors');
                 donorsList = donorsList.filter(d => d.id != donorId);
-                await safeStorageSet('raps-donors', donorsList, true);
+                saveToStorage('raps-donors', donorsList);
                 loadDonors();
             } catch (error) {
                 console.error('Error deleting donor:', error);
-                alert('Terjadi kesalahan saat menghapus donatur');
+                alert('❌ Terjadi kesalahan saat menghapus donatur');
             }
         }
 
-        async function loadDonors() {
+        function loadDonors() {
             const donorsLeaderboard = document.getElementById('donorsLeaderboard');
             
             try {
-                const donorsList = await safeStorageGet('raps-donors', true);
+                const donorsList = getFromStorage('raps-donors');
                 
                 if (donorsList.length === 0) {
                     donorsLeaderboard.innerHTML = `
@@ -2376,17 +2374,17 @@
         // CONTENT MANAGEMENT (NEWS & GAMES)
         // ============================================
         
-        async function submitContent() {
+        function submitContent() {
             const contentType = document.getElementById('contentType').value;
             
             if (contentType === 'update') {
-                await addNews();
+                addNews();
             } else {
-                await addGame();
+                addGame();
             }
         }
 
-        async function addNews() {
+        function addNews() {
             if (!currentStaff) {
                 showError('newsError', 'Anda harus login sebagai staff');
                 return;
@@ -2408,7 +2406,7 @@
             setButtonLoading('submitContentBtn', true);
 
             try {
-                let newsList = await safeStorageGet('raps-news', true);
+                let newsList = getFromStorage('raps-news');
 
                 const newsItem = {
                     id: Date.now(),
@@ -2425,13 +2423,13 @@
                 };
 
                 newsList.unshift(newsItem);
-                await safeStorageSet('raps-news', newsList, true);
+                saveToStorage('raps-news', newsList);
 
                 if (addToGallery && uploadedImages.news) {
-                    await addToGalleryStorage(uploadedImages.news, title);
+                    addToGalleryStorage(uploadedImages.news, title);
                 }
 
-                showSuccess('newsSuccess', 'Update berhasil dipublikasikan!');
+                showSuccess('newsSuccess', '✅ Update berhasil dipublikasikan!');
                 
                 setTimeout(() => {
                     closeAddNewsModal();
@@ -2441,13 +2439,13 @@
 
             } catch (error) {
                 console.error('Error adding news:', error);
-                showError('newsError', 'Terjadi kesalahan saat mempublikasikan update');
+                showError('newsError', '❌ Terjadi kesalahan saat mempublikasikan update');
             } finally {
                 setButtonLoading('submitContentBtn', false);
             }
         }
 
-        async function addGame() {
+        function addGame() {
             if (!currentStaff) {
                 showError('newsError', 'Anda harus login sebagai staff');
                 return;
@@ -2470,7 +2468,7 @@
             setButtonLoading('submitContentBtn', true);
 
             try {
-                let gamesList = await safeStorageGet('raps-games', true);
+                let gamesList = getFromStorage('raps-games');
 
                 const gameItem = {
                     id: Date.now(),
@@ -2489,9 +2487,9 @@
                 };
 
                 gamesList.unshift(gameItem);
-                await safeStorageSet('raps-games', gamesList, true);
+                saveToStorage('raps-games', gamesList);
 
-                showSuccess('newsSuccess', 'Game berhasil ditambahkan!');
+                showSuccess('newsSuccess', '✅ Game berhasil ditambahkan!');
                 
                 setTimeout(() => {
                     closeAddNewsModal();
@@ -2500,15 +2498,15 @@
 
             } catch (error) {
                 console.error('Error adding game:', error);
-                showError('newsError', 'Terjadi kesalahan saat menambahkan game');
+                showError('newsError', '❌ Terjadi kesalahan saat menambahkan game');
             } finally {
                 setButtonLoading('submitContentBtn', false);
             }
         }
 
-        async function addToGalleryStorage(imageBase64, caption) {
+        function addToGalleryStorage(imageBase64, caption) {
             try {
-                let galleryList = await safeStorageGet('raps-gallery', true);
+                let galleryList = getFromStorage('raps-gallery');
 
                 const galleryItem = {
                     id: Date.now(),
@@ -2522,17 +2520,17 @@
                 };
 
                 galleryList.unshift(galleryItem);
-                await safeStorageSet('raps-gallery', galleryList, true);
+                saveToStorage('raps-gallery', galleryList);
             } catch (error) {
                 console.error('Error adding to gallery:', error);
             }
         }
 
-        async function loadGames() {
+        function loadGames() {
             const gamesGrid = document.getElementById('gamesGrid');
             
             try {
-                const gamesList = await safeStorageGet('raps-games', true);
+                const gamesList = getFromStorage('raps-games');
                 
                 if (gamesList.length === 0) {
                     gamesGrid.innerHTML = `
@@ -2585,11 +2583,11 @@
             }
         }
 
-        async function loadNews() {
+        function loadNews() {
             const newsGrid = document.getElementById('newsGrid');
             
             try {
-                const newsList = await safeStorageGet('raps-news', true);
+                const newsList = getFromStorage('raps-news');
                 
                 if (newsList.length === 0) {
                     newsGrid.innerHTML = `
@@ -2631,11 +2629,11 @@
             }
         }
 
-        async function loadGallery() {
+        function loadGallery() {
             const galleryGrid = document.getElementById('galleryGrid');
             
             try {
-                const galleryList = await safeStorageGet('raps-gallery', true);
+                const galleryList = getFromStorage('raps-gallery');
                 
                 if (galleryList.length === 0) {
                     galleryGrid.innerHTML = `
@@ -2746,7 +2744,9 @@
         // ============================================
         
         window.addEventListener('DOMContentLoaded', () => {
-            console.log('🚀 RAPS Developer website initialized');
+            console.log('🚀 RAPS Developer Website v2.0 - Using LocalStorage');
+            console.log('✅ All features loaded successfully');
+            
             checkLoginStatus();
             loadStaff();
             loadGames();
