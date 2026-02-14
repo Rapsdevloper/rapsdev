@@ -662,6 +662,24 @@
             box-shadow: 0 10px 25px rgba(255, 215, 0, 0.4);
         }
 
+        .manage-gallery-btn {
+            display: none;
+            background: linear-gradient(135deg, #ff9a56, #ff6a88);
+            color: var(--light);
+            padding: 0.8rem 2rem;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .manage-gallery-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255, 154, 86, 0.4);
+        }
+
         .add-news-btn {
             display: none;
             background: linear-gradient(135deg, var(--primary), #ff5588);
@@ -1136,6 +1154,54 @@
         .gallery-item:nth-child(4) { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
         .gallery-item:nth-child(5) { background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); }
         .gallery-item:nth-child(6) { background: linear-gradient(135deg, #ff9a56 0%, #ff6a88 100%); }
+
+        .gallery-item-actions {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            display: none;
+            gap: 0.5rem;
+            z-index: 10;
+        }
+
+        .gallery-item.editable .gallery-item-actions {
+            display: flex;
+        }
+
+        .gallery-edit-btn,
+        .gallery-delete-btn {
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: 50%;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .gallery-edit-btn {
+            background: rgba(0, 212, 255, 0.9);
+            color: white;
+        }
+
+        .gallery-edit-btn:hover {
+            background: rgba(0, 212, 255, 1);
+            transform: scale(1.1);
+        }
+
+        .gallery-delete-btn {
+            background: rgba(255, 68, 68, 0.9);
+            color: white;
+        }
+
+        .gallery-delete-btn:hover {
+            background: rgba(255, 68, 68, 1);
+            transform: scale(1.1);
+        }
 
         /* Top Donors Section */
         .donors-leaderboard {
@@ -1645,6 +1711,33 @@
         </div>
     </div>
 
+    <!-- Manage Gallery Modal -->
+    <div id="manageGalleryModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeManageGalleryModal()">×</button>
+            <h2 id="galleryModalTitle">📸 Upload Foto ke Galeri</h2>
+            <p>Bagikan momen seru dari game atau komunitas kamu!</p>
+            
+            <div class="form-group">
+                <label for="galleryPhoto">Upload Foto (JPG/PNG) *</label>
+                <input type="file" id="galleryPhoto" accept="image/jpeg,image/png" onchange="previewImage(event, 'gallery')">
+                <div id="galleryImagePreview" class="image-preview">
+                    <img id="galleryPreviewImg" src="" alt="Preview">
+                </div>
+                <button id="removeGalleryImageBtn" class="remove-image-btn" style="display: none;" onclick="removeImage('gallery')">🗑️ Hapus Foto</button>
+            </div>
+
+            <div class="form-group">
+                <label for="galleryCaption">Caption/Status</label>
+                <textarea id="galleryCaption" placeholder="Tulis caption atau status untuk foto ini... ✨"></textarea>
+            </div>
+
+            <div id="galleryError" class="form-error"></div>
+            <div id="gallerySuccess" class="form-success"></div>
+            <button id="saveGalleryBtn" class="btn btn-primary" style="width: 100%;" onclick="saveGallery()">📤 Upload ke Galeri</button>
+        </div>
+    </div>
+
     <!-- Hero Section -->
     <section id="home" class="hero">
         <div class="hero-content">
@@ -1750,8 +1843,13 @@
     <!-- Gallery Section -->
     <section id="gallery">
         <div class="container">
-            <h2 class="section-title fade-in">Galeri</h2>
-            <p class="section-subtitle fade-in">Momen-momen terbaik dari game kami!</p>
+            <div class="staff-header">
+                <div>
+                    <h2 class="section-title fade-in">Galeri</h2>
+                    <p class="section-subtitle fade-in">Momen-momen terbaik dari game kami!</p>
+                </div>
+                <button id="manageGalleryBtn" class="manage-gallery-btn" onclick="openManageGalleryModal()">📸 Kelola Galeri</button>
+            </div>
             <div id="galleryGrid" class="gallery-grid">
                 <div class="loading-container">
                     <div class="loading"></div>
@@ -1836,10 +1934,12 @@
         let uploadedImages = {
             news: null,
             game: null,
-            staff: null
+            staff: null,
+            gallery: null
         };
         let editingStaffId = null;
         let editingDonorId = null;
+        let editingGalleryId = null;
 
         // ============================================
         // FIREBASE HELPER FUNCTIONS
@@ -2021,9 +2121,11 @@
             document.getElementById('addNewsBtn').style.display = 'block';
             document.getElementById('manageStaffBtn').style.display = 'block';
             document.getElementById('manageDonorsBtn').style.display = 'block';
+            document.getElementById('manageGalleryBtn').style.display = 'block';
             
             loadStaff();
             loadDonors();
+            loadGallery();
         }
 
         function staffLogout() {
@@ -2145,6 +2247,32 @@
         function closeManageDonorsModal() {
             document.getElementById('manageDonorsModal').classList.remove('active');
             editingDonorId = null;
+        }
+
+        function openManageGalleryModal(galleryId = null) {
+            if (!currentStaff) {
+                alert('Anda harus login sebagai staff terlebih dahulu');
+                return;
+            }
+            
+            editingGalleryId = galleryId;
+            document.getElementById('manageGalleryModal').classList.add('active');
+            showError('galleryError', '');
+            showSuccess('gallerySuccess', '');
+            
+            if (galleryId) {
+                document.getElementById('galleryModalTitle').textContent = '✏️ Edit Foto Galeri';
+                loadGalleryDataForEdit(galleryId);
+            } else {
+                document.getElementById('galleryModalTitle').textContent = '📸 Upload Foto ke Galeri';
+                document.getElementById('galleryCaption').value = '';
+                removeImage('gallery');
+            }
+        }
+
+        function closeManageGalleryModal() {
+            document.getElementById('manageGalleryModal').classList.remove('active');
+            editingGalleryId = null;
         }
 
         // ============================================
@@ -2439,6 +2567,108 @@
         }
 
         // ============================================
+        // GALLERY MANAGEMENT
+        // ============================================
+        
+        async function loadGalleryDataForEdit(galleryId) {
+            try {
+                const galleryList = await getFromFirebase('gallery');
+                const gallery = galleryList.find(g => g.id == galleryId);
+                
+                if (gallery) {
+                    document.getElementById('galleryCaption').value = gallery.caption || '';
+                    
+                    if (gallery.image) {
+                        uploadedImages.gallery = gallery.image;
+                        document.getElementById('galleryPreviewImg').src = gallery.image;
+                        document.getElementById('galleryImagePreview').classList.add('active');
+                        document.getElementById('removeGalleryImageBtn').style.display = 'inline-block';
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading gallery data:', error);
+                showError('galleryError', 'Gagal memuat data galeri');
+            }
+        }
+
+        async function saveGallery() {
+            if (!currentStaff) {
+                showError('galleryError', 'Anda harus login sebagai staff');
+                return;
+            }
+
+            if (!window.firebaseInitialized) {
+                showError('galleryError', '⚠️ Firebase belum siap, tunggu sebentar...');
+                return;
+            }
+
+            const caption = document.getElementById('galleryCaption').value.trim();
+
+            showError('galleryError', '');
+            showSuccess('gallerySuccess', '');
+
+            // Validasi: foto wajib untuk upload baru
+            if (!editingGalleryId && !uploadedImages.gallery) {
+                showError('galleryError', 'Mohon upload foto terlebih dahulu');
+                return;
+            }
+
+            // Validasi: caption wajib
+            if (!caption) {
+                showError('galleryError', 'Mohon isi caption/status untuk foto');
+                return;
+            }
+
+            setButtonLoading('saveGalleryBtn', true);
+
+            try {
+                const galleryData = {
+                    image: uploadedImages.gallery,
+                    caption,
+                    date: new Date().toLocaleDateString('id-ID', { 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric' 
+                    }),
+                    author: currentStaff.name,
+                    createdAt: editingGalleryId ? (await getFromFirebase('gallery')).find(g => g.id == editingGalleryId).createdAt : Date.now(),
+                    updatedAt: Date.now()
+                };
+
+                const id = editingGalleryId || Date.now().toString();
+                
+                await saveToFirebase('gallery', id, galleryData);
+                
+                showSuccess('gallerySuccess', editingGalleryId ? '✅ Foto berhasil diupdate!' : '✅ Foto berhasil diupload ke galeri!');
+                
+                setTimeout(() => {
+                    closeManageGalleryModal();
+                    loadGallery();
+                }, 1500);
+
+            } catch (error) {
+                console.error('Error saving gallery:', error);
+                showError('galleryError', '❌ Terjadi kesalahan saat menyimpan foto');
+            } finally {
+                setButtonLoading('saveGalleryBtn', false);
+            }
+        }
+
+        async function deleteGallery(galleryId) {
+            if (!confirm('Yakin ingin menghapus foto ini dari galeri?')) {
+                return;
+            }
+
+            try {
+                await deleteFromFirebase('gallery', galleryId);
+                loadGallery();
+            } catch (error) {
+                console.error('Error deleting gallery:', error);
+                alert('❌ Terjadi kesalahan saat menghapus foto');
+            }
+        }
+
+        // ============================================
         // CONTENT MANAGEMENT (NEWS & GAMES)
         // ============================================
         
@@ -2714,15 +2944,25 @@
                 // Sort by createdAt descending
                 galleryList.sort((a, b) => b.createdAt - a.createdAt);
 
-                galleryGrid.innerHTML = galleryList.map((item) => `
-                    <div class="gallery-item has-image fade-in">
-                        <img src="${item.image}" alt="${item.caption}">
-                        <div class="gallery-caption">
-                            <strong>${item.caption}</strong><br>
-                            <small>${item.date}</small>
+                galleryGrid.innerHTML = galleryList.map((item) => {
+                    const editButtons = currentStaff ? `
+                        <div class="gallery-item-actions">
+                            <button class="gallery-edit-btn" onclick="openManageGalleryModal('${item.id}')" title="Edit">✏️</button>
+                            <button class="gallery-delete-btn" onclick="deleteGallery('${item.id}')" title="Hapus">🗑️</button>
                         </div>
-                    </div>
-                `).join('');
+                    ` : '';
+                    
+                    return `
+                        <div class="gallery-item has-image fade-in ${currentStaff ? 'editable' : ''}">
+                            ${editButtons}
+                            <img src="${item.image}" alt="${item.caption}">
+                            <div class="gallery-caption">
+                                <strong>${item.caption}</strong><br>
+                                <small>${item.date}${item.author ? ` • by ${item.author}` : ''}</small>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
 
                 observeElements();
 
