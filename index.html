@@ -311,7 +311,8 @@
         }
 
         .form-group input,
-        .form-group textarea {
+        .form-group textarea,
+        .form-group select {
             width: 100%;
             padding: 1rem;
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -324,7 +325,8 @@
         }
 
         .form-group input:focus,
-        .form-group textarea:focus {
+        .form-group textarea:focus,
+        .form-group select:focus {
             outline: none;
             border-color: var(--primary);
             background: rgba(255, 255, 255, 0.08);
@@ -337,6 +339,10 @@
 
         .form-group input[type="file"] {
             padding: 0.8rem;
+        }
+
+        .form-group select {
+            cursor: pointer;
         }
 
         .image-preview {
@@ -400,13 +406,31 @@
         .form-error {
             color: #ff4444;
             font-size: 0.9rem;
-            margin-top: 0.5rem;
+            margin-top: 1rem;
+            padding: 0.8rem;
+            background: rgba(255, 68, 68, 0.1);
+            border-radius: 10px;
+            border-left: 3px solid #ff4444;
+            display: none;
+        }
+
+        .form-error.show {
+            display: block;
         }
 
         .form-success {
             color: #44ff44;
             font-size: 0.9rem;
-            margin-top: 0.5rem;
+            margin-top: 1rem;
+            padding: 0.8rem;
+            background: rgba(68, 255, 68, 0.1);
+            border-radius: 10px;
+            border-left: 3px solid #44ff44;
+            display: none;
+        }
+
+        .form-success.show {
+            display: block;
         }
 
         /* Hero Section */
@@ -486,6 +510,12 @@
         .btn-primary:hover {
             transform: translateY(-3px);
             box-shadow: 0 15px 40px rgba(255, 51, 102, 0.6);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
         }
 
         .btn-secondary {
@@ -1399,7 +1429,7 @@
             
             <div class="form-group">
                 <label for="contentType">Tipe Konten</label>
-                <select id="contentType" onchange="toggleContentType()" style="width: 100%; padding: 1rem; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.05); border-radius: 15px; color: var(--light); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1rem;">
+                <select id="contentType" onchange="toggleContentType()">
                     <option value="update">📢 Update/Pengumuman</option>
                     <option value="game">🎮 Game Baru</option>
                 </select>
@@ -1417,11 +1447,11 @@
                 </div>
                 <div class="form-group">
                     <label for="newsImage">Upload Foto (JPG/PNG, opsional)</label>
-                    <input type="file" id="newsImage" accept="image/jpeg,image/png" onchange="previewImage(event)">
-                    <div id="imagePreview" class="image-preview">
-                        <img id="previewImg" src="" alt="Preview">
+                    <input type="file" id="newsImage" accept="image/jpeg,image/png" onchange="previewImage(event, 'news')">
+                    <div id="newsImagePreview" class="image-preview">
+                        <img id="newsPreviewImg" src="" alt="Preview">
                     </div>
-                    <button id="removeImageBtn" class="remove-image-btn" style="display: none;" onclick="removeImage()">🗑️ Hapus Foto</button>
+                    <button id="removeNewsImageBtn" class="remove-image-btn" style="display: none;" onclick="removeImage('news')">🗑️ Hapus Foto</button>
                     <div class="checkbox-group" id="galleryCheckboxGroup" style="display: none;">
                         <input type="checkbox" id="addToGallery" checked>
                         <label for="addToGallery">📸 Tampilkan foto ini di galeri juga</label>
@@ -1445,11 +1475,11 @@
                 </div>
                 <div class="form-group">
                     <label for="gameThumbnail">Thumbnail Game (JPG/PNG)</label>
-                    <input type="file" id="gameThumbnail" accept="image/jpeg,image/png" onchange="previewGameThumbnail(event)">
-                    <div id="gameThumbnailPreview" class="image-preview">
-                        <img id="gameThumbnailImg" src="" alt="Preview">
+                    <input type="file" id="gameThumbnail" accept="image/jpeg,image/png" onchange="previewImage(event, 'game')">
+                    <div id="gameImagePreview" class="image-preview">
+                        <img id="gamePreviewImg" src="" alt="Preview">
                     </div>
-                    <button id="removeGameThumbnailBtn" class="remove-image-btn" style="display: none;" onclick="removeGameThumbnail()">🗑️ Hapus Thumbnail</button>
+                    <button id="removeGameImageBtn" class="remove-image-btn" style="display: none;" onclick="removeImage('game')">🗑️ Hapus Thumbnail</button>
                 </div>
                 <div class="form-group">
                     <label for="gameLink">Link Game (Roblox URL)</label>
@@ -1461,7 +1491,7 @@
                 </div>
                 <div class="form-group">
                     <label for="gameStatus">Status Game</label>
-                    <select id="gameStatus" style="width: 100%; padding: 1rem; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.05); border-radius: 15px; color: var(--light); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1rem;">
+                    <select id="gameStatus">
                         <option value="🟢 LIVE">🟢 LIVE</option>
                         <option value="🟡 BETA">🟡 BETA</option>
                         <option value="🔴 MAINTENANCE">🔴 MAINTENANCE</option>
@@ -1472,7 +1502,7 @@
 
             <div id="newsError" class="form-error"></div>
             <div id="newsSuccess" class="form-success"></div>
-            <button class="btn btn-primary" style="width: 100%;" onclick="submitContent()">Publikasikan</button>
+            <button id="submitContentBtn" class="btn btn-primary" style="width: 100%;" onclick="submitContent()">Publikasikan</button>
         </div>
     </div>
 
@@ -1490,7 +1520,7 @@
 
             <div class="form-group">
                 <label for="staffRole">Role</label>
-                <select id="staffRole" style="width: 100%; padding: 1rem; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.05); border-radius: 15px; color: var(--light); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1rem;">
+                <select id="staffRole">
                     <option value="owner">👑 Owner</option>
                     <option value="developer">💻 Developer</option>
                     <option value="headadmin">⭐ Head Admin</option>
@@ -1507,16 +1537,16 @@
 
             <div class="form-group">
                 <label for="staffPhoto">Foto Profil (JPG/PNG, opsional)</label>
-                <input type="file" id="staffPhoto" accept="image/jpeg,image/png" onchange="previewStaffPhoto(event)">
-                <div id="staffPhotoPreview" class="image-preview">
-                    <img id="staffPhotoImg" src="" alt="Preview">
+                <input type="file" id="staffPhoto" accept="image/jpeg,image/png" onchange="previewImage(event, 'staff')">
+                <div id="staffImagePreview" class="image-preview">
+                    <img id="staffPreviewImg" src="" alt="Preview">
                 </div>
-                <button id="removeStaffPhotoBtn" class="remove-image-btn" style="display: none;" onclick="removeStaffPhoto()">🗑️ Hapus Foto</button>
+                <button id="removeStaffImageBtn" class="remove-image-btn" style="display: none;" onclick="removeImage('staff')">🗑️ Hapus Foto</button>
             </div>
 
             <div id="staffError" class="form-error"></div>
             <div id="staffSuccess" class="form-success"></div>
-            <button class="btn btn-primary" style="width: 100%;" onclick="saveStaff()">Simpan Staff</button>
+            <button id="saveStaffBtn" class="btn btn-primary" style="width: 100%;" onclick="saveStaff()">Simpan Staff</button>
         </div>
     </div>
 
@@ -1544,7 +1574,7 @@
 
             <div id="donorError" class="form-error"></div>
             <div id="donorSuccess" class="form-success"></div>
-            <button class="btn btn-primary" style="width: 100%;" onclick="saveDonor()">Simpan Donatur</button>
+            <button id="saveDonorBtn" class="btn btn-primary" style="width: 100%;" onclick="saveDonor()">Simpan Donatur</button>
         </div>
     </div>
 
@@ -1590,7 +1620,10 @@
                 <button id="manageStaffBtn" class="manage-staff-btn" onclick="openManageStaffModal()">👥 Kelola Staff</button>
             </div>
             <div id="staffGrid" class="staff-grid">
-                <!-- Staff will be loaded here -->
+                <div class="loading-container">
+                    <div class="loading"></div>
+                    <p>Memuat data staff...</p>
+                </div>
             </div>
         </div>
     </section>
@@ -1601,7 +1634,10 @@
             <h2 class="section-title fade-in">Daftar Game</h2>
             <p class="section-subtitle fade-in">Jelajahi game-game kami yang seru!</p>
             <div id="gamesGrid" class="games-grid">
-                <!-- Games will be loaded here -->
+                <div class="loading-container">
+                    <div class="loading"></div>
+                    <p>Memuat daftar game...</p>
+                </div>
             </div>
         </div>
     </section>
@@ -1617,7 +1653,10 @@
                 <button id="addNewsBtn" class="add-news-btn" onclick="openAddNewsModal()">➕ Tambah Update</button>
             </div>
             <div id="newsGrid" class="news-grid">
-                <!-- News will be loaded here -->
+                <div class="loading-container">
+                    <div class="loading"></div>
+                    <p>Memuat update terbaru...</p>
+                </div>
             </div>
         </div>
     </section>
@@ -1633,7 +1672,10 @@
                 <button id="manageDonorsBtn" class="manage-donors-btn" onclick="openManageDonorsModal()">💰 Kelola Donasi</button>
             </div>
             <div id="donorsLeaderboard" class="donors-leaderboard fade-in">
-                <!-- Donors will be loaded here -->
+                <div class="loading-container">
+                    <div class="loading"></div>
+                    <p>Memuat daftar donatur...</p>
+                </div>
             </div>
         </div>
     </section>
@@ -1644,7 +1686,10 @@
             <h2 class="section-title fade-in">Galeri</h2>
             <p class="section-subtitle fade-in">Momen-momen terbaik dari game kami!</p>
             <div id="galleryGrid" class="gallery-grid">
-                <!-- Gallery will be loaded here -->
+                <div class="loading-container">
+                    <div class="loading"></div>
+                    <p>Memuat galeri...</p>
+                </div>
             </div>
         </div>
     </section>
@@ -1683,34 +1728,21 @@
     </footer>
 
     <script>
-        // Staff ID Database
+        // ============================================
+        // CONFIGURATION & CONSTANTS
+        // ============================================
+        
         const STAFF_DATABASE = {
-            // Owners
             '7389596840': { role: 'owner', name: 'Owner 1' },
             '9119879621': { role: 'owner', name: 'Owner 2' },
-            // Developer
             '9117761747': { role: 'developer', name: 'Developer' },
-            // Head Admin
             '8935152746': { role: 'headadmin', name: 'Head Admin' },
-            // Admins
             '8963001003': { role: 'admin', name: 'Admin 1' },
             '2900556168': { role: 'admin', name: 'Admin 2' },
             '9458094251': { role: 'admin', name: 'Admin 3' },
             '9297382144': { role: 'admin', name: 'Admin 4' }
         };
 
-        // Current logged in staff
-        let currentStaff = null;
-
-        // Store uploaded image as base64
-        let uploadedImageBase64 = null;
-        let uploadedGameThumbnail = null;
-        let uploadedStaffPhoto = null;
-        let editingStaffId = null;
-        let editingDonorId = null;
-        let isManagingStaff = false;
-
-        // Role icons mapping
         const ROLE_ICONS = {
             owner: '👑',
             developer: '💻',
@@ -1720,7 +1752,6 @@
             creator: '🎥'
         };
 
-        // Role labels mapping
         const ROLE_LABELS = {
             owner: 'OWNER',
             developer: 'DEVELOPER',
@@ -1730,46 +1761,236 @@
             creator: 'CONTENT CREATOR'
         };
 
-        // Preview staff photo
-        function previewStaffPhoto(event) {
+        // ============================================
+        // STATE MANAGEMENT
+        // ============================================
+        
+        let currentStaff = null;
+        let uploadedImages = {
+            news: null,
+            game: null,
+            staff: null
+        };
+        let editingStaffId = null;
+        let editingDonorId = null;
+
+        // ============================================
+        // UTILITY FUNCTIONS
+        // ============================================
+        
+        function showError(elementId, message) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.textContent = message;
+                element.classList.toggle('show', !!message);
+            }
+        }
+
+        function showSuccess(elementId, message) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.textContent = message;
+                element.classList.toggle('show', !!message);
+            }
+        }
+
+        function setButtonLoading(buttonId, loading) {
+            const button = document.getElementById(buttonId);
+            if (button) {
+                button.disabled = loading;
+                if (loading) {
+                    button.dataset.originalText = button.textContent;
+                    button.innerHTML = '<span class="loading"></span> Memproses...';
+                } else {
+                    button.textContent = button.dataset.originalText || button.textContent;
+                }
+            }
+        }
+
+        async function safeStorageGet(key, shared = true) {
+            try {
+                const result = await window.storage.get(key, shared);
+                if (!result || !result.value) {
+                    return [];
+                }
+                return JSON.parse(result.value);
+            } catch (error) {
+                console.error(`Error getting ${key}:`, error);
+                return [];
+            }
+        }
+
+        async function safeStorageSet(key, data, shared = true) {
+            try {
+                const result = await window.storage.set(key, JSON.stringify(data), shared);
+                if (!result) {
+                    throw new Error('Storage set returned null');
+                }
+                return true;
+            } catch (error) {
+                console.error(`Error setting ${key}:`, error);
+                throw error;
+            }
+        }
+
+        // ============================================
+        // IMAGE HANDLING
+        // ============================================
+        
+        function previewImage(event, type) {
             const file = event.target.files[0];
-            const errorDiv = document.getElementById('staffError');
+            const errorId = type === 'news' || type === 'game' ? 'newsError' : 'staffError';
             
             if (!file) return;
 
             if (!file.type.match('image/jpeg') && !file.type.match('image/png')) {
-                errorDiv.textContent = 'Format file harus JPG atau PNG';
+                showError(errorId, 'Format file harus JPG atau PNG');
                 event.target.value = '';
                 return;
             }
 
             if (file.size > 2 * 1024 * 1024) {
-                errorDiv.textContent = 'Ukuran file maksimal 2MB';
+                showError(errorId, 'Ukuran file maksimal 2MB');
                 event.target.value = '';
                 return;
             }
 
-            errorDiv.textContent = '';
+            showError(errorId, '');
 
             const reader = new FileReader();
             reader.onload = function(e) {
-                uploadedStaffPhoto = e.target.result;
-                document.getElementById('staffPhotoImg').src = e.target.result;
-                document.getElementById('staffPhotoPreview').classList.add('active');
-                document.getElementById('removeStaffPhotoBtn').style.display = 'inline-block';
+                uploadedImages[type] = e.target.result;
+                document.getElementById(`${type}PreviewImg`).src = e.target.result;
+                document.getElementById(`${type}ImagePreview`).classList.add('active');
+                document.getElementById(`remove${type.charAt(0).toUpperCase() + type.slice(1)}ImageBtn`).style.display = 'inline-block';
+                
+                if (type === 'news') {
+                    document.getElementById('galleryCheckboxGroup').style.display = 'flex';
+                }
             };
             reader.readAsDataURL(file);
         }
 
-        // Remove staff photo
-        function removeStaffPhoto() {
-            uploadedStaffPhoto = null;
-            document.getElementById('staffPhoto').value = '';
-            document.getElementById('staffPhotoPreview').classList.remove('active');
-            document.getElementById('removeStaffPhotoBtn').style.display = 'none';
+        function removeImage(type) {
+            uploadedImages[type] = null;
+            
+            const inputId = type === 'news' ? 'newsImage' : type === 'game' ? 'gameThumbnail' : 'staffPhoto';
+            document.getElementById(inputId).value = '';
+            document.getElementById(`${type}ImagePreview`).classList.remove('active');
+            document.getElementById(`remove${type.charAt(0).toUpperCase() + type.slice(1)}ImageBtn`).style.display = 'none';
+            
+            if (type === 'news') {
+                document.getElementById('galleryCheckboxGroup').style.display = 'none';
+            }
         }
 
-        // Toggle content type (Update or Game)
+        // ============================================
+        // AUTHENTICATION
+        // ============================================
+        
+        function checkLoginStatus() {
+            const savedStaff = localStorage.getItem('rapsStaffLogin');
+            if (savedStaff) {
+                try {
+                    currentStaff = JSON.parse(savedStaff);
+                    updateUIForLoggedInStaff();
+                } catch (e) {
+                    localStorage.removeItem('rapsStaffLogin');
+                }
+            }
+        }
+
+        function staffLogin() {
+            const robloxId = document.getElementById('robloxId').value.trim();
+            
+            if (!robloxId) {
+                showError('loginError', 'Mohon masukkan ID Roblox Anda');
+                return;
+            }
+
+            const staff = STAFF_DATABASE[robloxId];
+            
+            if (!staff) {
+                showError('loginError', 'ID Roblox tidak terdaftar sebagai staff');
+                return;
+            }
+
+            currentStaff = { id: robloxId, ...staff };
+            localStorage.setItem('rapsStaffLogin', JSON.stringify(currentStaff));
+            
+            updateUIForLoggedInStaff();
+            closeLoginModal();
+            
+            alert(`Selamat datang, ${staff.name}!`);
+        }
+
+        function updateUIForLoggedInStaff() {
+            const authSection = document.getElementById('staffAuthSection');
+            authSection.innerHTML = `
+                <span style="margin-right: 1rem; color: var(--gray);">👋 ${currentStaff.name}</span>
+                <button class="staff-logout-btn" onclick="staffLogout()">Logout</button>
+            `;
+            
+            document.getElementById('addNewsBtn').style.display = 'block';
+            document.getElementById('manageStaffBtn').style.display = 'block';
+            document.getElementById('manageDonorsBtn').style.display = 'block';
+            
+            loadStaff();
+            loadDonors();
+        }
+
+        function staffLogout() {
+            if (confirm('Yakin ingin logout?')) {
+                localStorage.removeItem('rapsStaffLogin');
+                currentStaff = null;
+                location.reload();
+            }
+        }
+
+        // ============================================
+        // MODAL MANAGEMENT
+        // ============================================
+        
+        function openLoginModal() {
+            document.getElementById('loginModal').classList.add('active');
+            showError('loginError', '');
+            document.getElementById('robloxId').value = '';
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.remove('active');
+        }
+
+        function openAddNewsModal() {
+            if (!currentStaff) {
+                alert('Anda harus login sebagai staff terlebih dahulu');
+                return;
+            }
+            
+            document.getElementById('addNewsModal').classList.add('active');
+            showError('newsError', '');
+            showSuccess('newsSuccess', '');
+            
+            // Reset fields
+            document.getElementById('contentType').value = 'update';
+            document.getElementById('newsTitle').value = '';
+            document.getElementById('newsEmoji').value = '';
+            document.getElementById('newsContent').value = '';
+            document.getElementById('gameTitle').value = '';
+            document.getElementById('gameDescription').value = '';
+            document.getElementById('gameLink').value = '';
+            document.getElementById('gamePlayers').value = '';
+            document.getElementById('gameStatus').value = '🟢 LIVE';
+            
+            removeImage('news');
+            removeImage('game');
+            toggleContentType();
+        }
+
+        function closeAddNewsModal() {
+            document.getElementById('addNewsModal').classList.remove('active');
+        }
+
         function toggleContentType() {
             const contentType = document.getElementById('contentType').value;
             const updateFields = document.getElementById('updateFields');
@@ -1784,202 +2005,6 @@
             }
         }
 
-        // Preview game thumbnail
-        function previewGameThumbnail(event) {
-            const file = event.target.files[0];
-            const errorDiv = document.getElementById('newsError');
-            
-            if (!file) return;
-
-            if (!file.type.match('image/jpeg') && !file.type.match('image/png')) {
-                errorDiv.textContent = 'Format file harus JPG atau PNG';
-                event.target.value = '';
-                return;
-            }
-
-            if (file.size > 2 * 1024 * 1024) {
-                errorDiv.textContent = 'Ukuran file maksimal 2MB';
-                event.target.value = '';
-                return;
-            }
-
-            errorDiv.textContent = '';
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                uploadedGameThumbnail = e.target.result;
-                document.getElementById('gameThumbnailImg').src = e.target.result;
-                document.getElementById('gameThumbnailPreview').classList.add('active');
-                document.getElementById('removeGameThumbnailBtn').style.display = 'inline-block';
-            };
-            reader.readAsDataURL(file);
-        }
-
-        // Remove game thumbnail
-        function removeGameThumbnail() {
-            uploadedGameThumbnail = null;
-            document.getElementById('gameThumbnail').value = '';
-            document.getElementById('gameThumbnailPreview').classList.remove('active');
-            document.getElementById('removeGameThumbnailBtn').style.display = 'none';
-        }
-
-        // Preview uploaded image
-        function previewImage(event) {
-            const file = event.target.files[0];
-            const errorDiv = document.getElementById('newsError');
-            
-            if (!file) return;
-
-            // Check file type
-            if (!file.type.match('image/jpeg') && !file.type.match('image/png')) {
-                errorDiv.textContent = 'Format file harus JPG atau PNG';
-                event.target.value = '';
-                return;
-            }
-
-            // Check file size (max 2MB)
-            if (file.size > 2 * 1024 * 1024) {
-                errorDiv.textContent = 'Ukuran file maksimal 2MB';
-                event.target.value = '';
-                return;
-            }
-
-            errorDiv.textContent = '';
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                uploadedImageBase64 = e.target.result;
-                document.getElementById('previewImg').src = e.target.result;
-                document.getElementById('imagePreview').classList.add('active');
-                document.getElementById('removeImageBtn').style.display = 'inline-block';
-                document.getElementById('galleryCheckboxGroup').style.display = 'flex';
-            };
-            reader.readAsDataURL(file);
-        }
-
-        // Remove uploaded image
-        function removeImage() {
-            uploadedImageBase64 = null;
-            document.getElementById('newsImage').value = '';
-            document.getElementById('imagePreview').classList.remove('active');
-            document.getElementById('removeImageBtn').style.display = 'none';
-            document.getElementById('galleryCheckboxGroup').style.display = 'none';
-        }
-
-        // Check if staff is already logged in
-        function checkLoginStatus() {
-            const savedStaff = localStorage.getItem('rapsStaffLogin');
-            if (savedStaff) {
-                try {
-                    currentStaff = JSON.parse(savedStaff);
-                    updateUIForLoggedInStaff();
-                } catch (e) {
-                    localStorage.removeItem('rapsStaffLogin');
-                }
-            }
-        }
-
-        // Staff Login
-        function staffLogin() {
-            const robloxId = document.getElementById('robloxId').value.trim();
-            const errorDiv = document.getElementById('loginError');
-            
-            if (!robloxId) {
-                errorDiv.textContent = 'Mohon masukkan ID Roblox Anda';
-                return;
-            }
-
-            const staff = STAFF_DATABASE[robloxId];
-            
-            if (!staff) {
-                errorDiv.textContent = 'ID Roblox tidak terdaftar sebagai staff';
-                return;
-            }
-
-            // Save to localStorage
-            currentStaff = { id: robloxId, ...staff };
-            localStorage.setItem('rapsStaffLogin', JSON.stringify(currentStaff));
-            
-            // Update UI
-            updateUIForLoggedInStaff();
-            closeLoginModal();
-            
-            // Show success message
-            alert(`Selamat datang, ${staff.name}!`);
-        }
-
-        // Update UI for logged in staff
-        function updateUIForLoggedInStaff() {
-            const authSection = document.getElementById('staffAuthSection');
-            authSection.innerHTML = `
-                <span style="margin-right: 1rem; color: var(--gray);">👋 ${currentStaff.name}</span>
-                <button class="staff-logout-btn" onclick="staffLogout()">Logout</button>
-            `;
-            
-            // Show add news button
-            document.getElementById('addNewsBtn').style.display = 'block';
-            
-            // Show manage staff button
-            document.getElementById('manageStaffBtn').style.display = 'block';
-            
-            // Show manage donors button
-            document.getElementById('manageDonorsBtn').style.display = 'block';
-        }
-
-        // Staff Logout
-        function staffLogout() {
-            if (confirm('Yakin ingin logout?')) {
-                localStorage.removeItem('rapsStaffLogin');
-                currentStaff = null;
-                location.reload();
-            }
-        }
-
-        // Modal Functions
-        function openLoginModal() {
-            document.getElementById('loginModal').classList.add('active');
-            document.getElementById('loginError').textContent = '';
-            document.getElementById('robloxId').value = '';
-        }
-
-        function closeLoginModal() {
-            document.getElementById('loginModal').classList.remove('active');
-        }
-
-        function openAddNewsModal() {
-            if (!currentStaff) {
-                alert('Anda harus login sebagai staff terlebih dahulu');
-                return;
-            }
-            document.getElementById('addNewsModal').classList.add('active');
-            document.getElementById('newsError').textContent = '';
-            document.getElementById('newsSuccess').textContent = '';
-            
-            // Reset update fields
-            document.getElementById('contentType').value = 'update';
-            document.getElementById('newsTitle').value = '';
-            document.getElementById('newsEmoji').value = '';
-            document.getElementById('newsContent').value = '';
-            
-            // Reset game fields
-            document.getElementById('gameTitle').value = '';
-            document.getElementById('gameDescription').value = '';
-            document.getElementById('gameLink').value = '';
-            document.getElementById('gamePlayers').value = '';
-            document.getElementById('gameStatus').value = '🟢 LIVE';
-            
-            // Reset image upload
-            removeImage();
-            removeGameThumbnail();
-            
-            // Show update fields by default
-            toggleContentType();
-        }
-
-        function closeAddNewsModal() {
-            document.getElementById('addNewsModal').classList.remove('active');
-        }
-
         function openManageStaffModal(staffId = null) {
             if (!currentStaff) {
                 alert('Anda harus login sebagai staff terlebih dahulu');
@@ -1988,20 +2013,18 @@
             
             editingStaffId = staffId;
             document.getElementById('manageStaffModal').classList.add('active');
-            document.getElementById('staffError').textContent = '';
-            document.getElementById('staffSuccess').textContent = '';
+            showError('staffError', '');
+            showSuccess('staffSuccess', '');
             
             if (staffId) {
-                // Edit mode
                 document.getElementById('staffModalTitle').textContent = 'Edit Staff';
                 loadStaffDataForEdit(staffId);
             } else {
-                // Add mode
                 document.getElementById('staffModalTitle').textContent = 'Tambah Staff Baru';
                 document.getElementById('staffName').value = '';
                 document.getElementById('staffRole').value = 'admin';
                 document.getElementById('staffDescription').value = '';
-                removeStaffPhoto();
+                removeImage('staff');
             }
         }
 
@@ -2010,129 +2033,6 @@
             editingStaffId = null;
         }
 
-        async function loadStaffDataForEdit(staffId) {
-            try {
-                const result = await window.storage.get('raps-staff', true);
-                if (result && result.value) {
-                    const staffList = JSON.parse(result.value);
-                    const staff = staffList.find(s => s.id == staffId);
-                    
-                    if (staff) {
-                        document.getElementById('staffName').value = staff.name;
-                        document.getElementById('staffRole').value = staff.role;
-                        document.getElementById('staffDescription').value = staff.description;
-                        
-                        if (staff.photo) {
-                            uploadedStaffPhoto = staff.photo;
-                            document.getElementById('staffPhotoImg').src = staff.photo;
-                            document.getElementById('staffPhotoPreview').classList.add('active');
-                            document.getElementById('removeStaffPhotoBtn').style.display = 'inline-block';
-                        }
-                    }
-                }
-            } catch (error) {
-                console.error('Error loading staff data:', error);
-            }
-        }
-
-        // Save Staff (Add or Edit)
-        async function saveStaff() {
-            if (!currentStaff) {
-                alert('Anda harus login sebagai staff');
-                return;
-            }
-
-            const name = document.getElementById('staffName').value.trim();
-            const role = document.getElementById('staffRole').value;
-            const description = document.getElementById('staffDescription').value.trim();
-            const errorDiv = document.getElementById('staffError');
-            const successDiv = document.getElementById('staffSuccess');
-
-            errorDiv.textContent = '';
-            successDiv.textContent = '';
-
-            if (!name || !description) {
-                errorDiv.textContent = 'Mohon isi nama dan deskripsi staff';
-                return;
-            }
-
-            try {
-                let staffList = [];
-                try {
-                    const result = await window.storage.get('raps-staff', true);
-                    if (result && result.value) {
-                        staffList = JSON.parse(result.value);
-                    }
-                } catch (e) {
-                    // No existing staff
-                }
-
-                if (editingStaffId) {
-                    // Edit existing staff
-                    const index = staffList.findIndex(s => s.id == editingStaffId);
-                    if (index !== -1) {
-                        staffList[index] = {
-                            ...staffList[index],
-                            name,
-                            role,
-                            description,
-                            photo: uploadedStaffPhoto
-                        };
-                    }
-                    successDiv.textContent = 'Staff berhasil diupdate!';
-                } else {
-                    // Add new staff
-                    const staffItem = {
-                        id: Date.now(),
-                        name,
-                        role,
-                        description,
-                        photo: uploadedStaffPhoto
-                    };
-                    staffList.push(staffItem);
-                    successDiv.textContent = 'Staff berhasil ditambahkan!';
-                }
-
-                await window.storage.set('raps-staff', JSON.stringify(staffList), true);
-                
-                setTimeout(() => {
-                    closeManageStaffModal();
-                    loadStaff();
-                }, 1500);
-
-            } catch (error) {
-                console.error('Error saving staff:', error);
-                errorDiv.textContent = 'Terjadi kesalahan saat menyimpan staff';
-            }
-        }
-
-        // Delete Staff
-        async function deleteStaff(staffId) {
-            if (!confirm('Yakin ingin menghapus staff ini?')) {
-                return;
-            }
-
-            try {
-                const result = await window.storage.get('raps-staff', true);
-                if (result && result.value) {
-                    let staffList = JSON.parse(result.value);
-                    staffList = staffList.filter(s => s.id != staffId);
-                    await window.storage.set('raps-staff', JSON.stringify(staffList), true);
-                    loadStaff();
-                }
-            } catch (error) {
-                console.error('Error deleting staff:', error);
-                alert('Terjadi kesalahan saat menghapus staff');
-            }
-        }
-
-        // Toggle staff management mode
-        function toggleStaffManagement() {
-            isManagingStaff = !isManagingStaff;
-            loadStaff();
-        }
-
-        // Donor Management Functions
         function openManageDonorsModal(donorId = null) {
             if (!currentStaff) {
                 alert('Anda harus login sebagai staff terlebih dahulu');
@@ -2141,15 +2041,13 @@
             
             editingDonorId = donorId;
             document.getElementById('manageDonorsModal').classList.add('active');
-            document.getElementById('donorError').textContent = '';
-            document.getElementById('donorSuccess').textContent = '';
+            showError('donorError', '');
+            showSuccess('donorSuccess', '');
             
             if (donorId) {
-                // Edit mode
                 document.getElementById('donorModalTitle').textContent = 'Edit Donatur';
                 loadDonorDataForEdit(donorId);
             } else {
-                // Add mode
                 document.getElementById('donorModalTitle').textContent = 'Tambah Donatur Baru';
                 document.getElementById('donorName').value = '';
                 document.getElementById('donorAmount').value = '';
@@ -2162,58 +2060,211 @@
             editingDonorId = null;
         }
 
+        // ============================================
+        // STAFF MANAGEMENT
+        // ============================================
+        
+        async function loadStaffDataForEdit(staffId) {
+            try {
+                const staffList = await safeStorageGet('raps-staff', true);
+                const staff = staffList.find(s => s.id == staffId);
+                
+                if (staff) {
+                    document.getElementById('staffName').value = staff.name;
+                    document.getElementById('staffRole').value = staff.role;
+                    document.getElementById('staffDescription').value = staff.description;
+                    
+                    if (staff.photo) {
+                        uploadedImages.staff = staff.photo;
+                        document.getElementById('staffPreviewImg').src = staff.photo;
+                        document.getElementById('staffImagePreview').classList.add('active');
+                        document.getElementById('removeStaffImageBtn').style.display = 'inline-block';
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading staff data:', error);
+                showError('staffError', 'Gagal memuat data staff');
+            }
+        }
+
+        async function saveStaff() {
+            if (!currentStaff) {
+                showError('staffError', 'Anda harus login sebagai staff');
+                return;
+            }
+
+            const name = document.getElementById('staffName').value.trim();
+            const role = document.getElementById('staffRole').value;
+            const description = document.getElementById('staffDescription').value.trim();
+
+            showError('staffError', '');
+            showSuccess('staffSuccess', '');
+
+            if (!name) {
+                showError('staffError', 'Nama staff tidak boleh kosong');
+                return;
+            }
+
+            if (!description) {
+                showError('staffError', 'Deskripsi tidak boleh kosong');
+                return;
+            }
+
+            setButtonLoading('saveStaffBtn', true);
+
+            try {
+                let staffList = await safeStorageGet('raps-staff', true);
+
+                if (editingStaffId) {
+                    const index = staffList.findIndex(s => s.id == editingStaffId);
+                    if (index !== -1) {
+                        staffList[index] = {
+                            ...staffList[index],
+                            name,
+                            role,
+                            description,
+                            photo: uploadedImages.staff
+                        };
+                    }
+                } else {
+                    const newStaff = {
+                        id: Date.now(),
+                        name,
+                        role,
+                        description,
+                        photo: uploadedImages.staff
+                    };
+                    staffList.push(newStaff);
+                }
+
+                await safeStorageSet('raps-staff', staffList, true);
+                
+                showSuccess('staffSuccess', editingStaffId ? 'Staff berhasil diupdate!' : 'Staff berhasil ditambahkan!');
+                
+                setTimeout(() => {
+                    closeManageStaffModal();
+                    loadStaff();
+                }, 1500);
+
+            } catch (error) {
+                console.error('Error saving staff:', error);
+                showError('staffError', `Terjadi kesalahan: ${error.message}`);
+            } finally {
+                setButtonLoading('saveStaffBtn', false);
+            }
+        }
+
+        async function deleteStaff(staffId) {
+            if (!confirm('Yakin ingin menghapus staff ini?')) {
+                return;
+            }
+
+            try {
+                let staffList = await safeStorageGet('raps-staff', true);
+                staffList = staffList.filter(s => s.id != staffId);
+                await safeStorageSet('raps-staff', staffList, true);
+                loadStaff();
+            } catch (error) {
+                console.error('Error deleting staff:', error);
+                alert('Terjadi kesalahan saat menghapus staff');
+            }
+        }
+
+        async function loadStaff() {
+            const staffGrid = document.getElementById('staffGrid');
+            
+            try {
+                const staffList = await safeStorageGet('raps-staff', true);
+                
+                if (staffList.length === 0) {
+                    staffGrid.innerHTML = `
+                        <div class="empty-games fade-in" style="grid-column: 1 / -1;">
+                            <h3>👥 Tim Staff Belum Ditambahkan</h3>
+                            <p>Staff yang login dapat menambahkan anggota tim melalui tombol "Kelola Staff"</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                staffGrid.innerHTML = staffList.map((staff) => {
+                    const avatarContent = staff.photo 
+                        ? `<img src="${staff.photo}" alt="${staff.name}">`
+                        : ROLE_ICONS[staff.role];
+                    
+                    const editButtons = currentStaff ? `
+                        <div class="staff-actions">
+                            <button class="staff-edit-btn" onclick="openManageStaffModal(${staff.id})">✏️ Edit</button>
+                            <button class="staff-delete-btn" onclick="deleteStaff(${staff.id})">🗑️ Hapus</button>
+                        </div>
+                    ` : '';
+                    
+                    return `
+                        <div class="staff-card ${staff.role} fade-in ${currentStaff ? 'editable' : ''}">
+                            <div class="staff-avatar">${avatarContent}</div>
+                            <h3 class="staff-name">${staff.name}</h3>
+                            <span class="staff-role">${ROLE_LABELS[staff.role]}</span>
+                            <p class="staff-desc">${staff.description}</p>
+                            ${editButtons}
+                        </div>
+                    `;
+                }).join('');
+
+                observeElements();
+
+            } catch (error) {
+                console.error('Error loading staff:', error);
+                staffGrid.innerHTML = `
+                    <div class="empty-games fade-in" style="grid-column: 1 / -1;">
+                        <h3>⚠️ Terjadi Kesalahan</h3>
+                        <p>Gagal memuat daftar staff. Silakan refresh halaman.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // ============================================
+        // DONOR MANAGEMENT
+        // ============================================
+        
         async function loadDonorDataForEdit(donorId) {
             try {
-                const result = await window.storage.get('raps-donors', true);
-                if (result && result.value) {
-                    const donorsList = JSON.parse(result.value);
-                    const donor = donorsList.find(d => d.id == donorId);
-                    
-                    if (donor) {
-                        document.getElementById('donorName').value = donor.name;
-                        document.getElementById('donorAmount').value = donor.amount;
-                        document.getElementById('donorMessage').value = donor.message || '';
-                    }
+                const donorsList = await safeStorageGet('raps-donors', true);
+                const donor = donorsList.find(d => d.id == donorId);
+                
+                if (donor) {
+                    document.getElementById('donorName').value = donor.name;
+                    document.getElementById('donorAmount').value = donor.amount;
+                    document.getElementById('donorMessage').value = donor.message || '';
                 }
             } catch (error) {
                 console.error('Error loading donor data:', error);
             }
         }
 
-        // Save Donor (Add or Edit)
         async function saveDonor() {
             if (!currentStaff) {
-                alert('Anda harus login sebagai staff');
+                showError('donorError', 'Anda harus login sebagai staff');
                 return;
             }
 
             const name = document.getElementById('donorName').value.trim();
             const amount = document.getElementById('donorAmount').value.trim();
             const message = document.getElementById('donorMessage').value.trim();
-            const errorDiv = document.getElementById('donorError');
-            const successDiv = document.getElementById('donorSuccess');
 
-            errorDiv.textContent = '';
-            successDiv.textContent = '';
+            showError('donorError', '');
+            showSuccess('donorSuccess', '');
 
             if (!name || !amount) {
-                errorDiv.textContent = 'Mohon isi nama donatur dan jumlah donasi';
+                showError('donorError', 'Mohon isi nama donatur dan jumlah donasi');
                 return;
             }
 
+            setButtonLoading('saveDonorBtn', true);
+
             try {
-                let donorsList = [];
-                try {
-                    const result = await window.storage.get('raps-donors', true);
-                    if (result && result.value) {
-                        donorsList = JSON.parse(result.value);
-                    }
-                } catch (e) {
-                    // No existing donors
-                }
+                let donorsList = await safeStorageGet('raps-donors', true);
 
                 if (editingDonorId) {
-                    // Edit existing donor
                     const index = donorsList.findIndex(d => d.id == editingDonorId);
                     if (index !== -1) {
                         donorsList[index] = {
@@ -2223,9 +2274,7 @@
                             message
                         };
                     }
-                    successDiv.textContent = 'Donatur berhasil diupdate!';
                 } else {
-                    // Add new donor
                     const donorItem = {
                         id: Date.now(),
                         name,
@@ -2238,10 +2287,11 @@
                         })
                     };
                     donorsList.push(donorItem);
-                    successDiv.textContent = 'Donatur berhasil ditambahkan!';
                 }
 
-                await window.storage.set('raps-donors', JSON.stringify(donorsList), true);
+                await safeStorageSet('raps-donors', donorsList, true);
+                
+                showSuccess('donorSuccess', editingDonorId ? 'Donatur berhasil diupdate!' : 'Donatur berhasil ditambahkan!');
                 
                 setTimeout(() => {
                     closeManageDonorsModal();
@@ -2250,240 +2300,33 @@
 
             } catch (error) {
                 console.error('Error saving donor:', error);
-                errorDiv.textContent = 'Terjadi kesalahan saat menyimpan donatur';
+                showError('donorError', 'Terjadi kesalahan saat menyimpan donatur');
+            } finally {
+                setButtonLoading('saveDonorBtn', false);
             }
         }
 
-        // Delete Donor
         async function deleteDonor(donorId) {
             if (!confirm('Yakin ingin menghapus donatur ini?')) {
                 return;
             }
 
             try {
-                const result = await window.storage.get('raps-donors', true);
-                if (result && result.value) {
-                    let donorsList = JSON.parse(result.value);
-                    donorsList = donorsList.filter(d => d.id != donorId);
-                    await window.storage.set('raps-donors', JSON.stringify(donorsList), true);
-                    loadDonors();
-                }
+                let donorsList = await safeStorageGet('raps-donors', true);
+                donorsList = donorsList.filter(d => d.id != donorId);
+                await safeStorageSet('raps-donors', donorsList, true);
+                loadDonors();
             } catch (error) {
                 console.error('Error deleting donor:', error);
                 alert('Terjadi kesalahan saat menghapus donatur');
             }
         }
 
-        function closeAddNewsModal() {
-            document.getElementById('addNewsModal').classList.remove('active');
-        }
-
-        // Submit Content (Update or Game)
-        async function submitContent() {
-            const contentType = document.getElementById('contentType').value;
-            
-            if (contentType === 'update') {
-                await addNews();
-            } else {
-                await addGame();
-            }
-        }
-
-        // Add News Function
-        async function addNews() {
-            if (!currentStaff) {
-                alert('Anda harus login sebagai staff');
-                return;
-            }
-
-            const title = document.getElementById('newsTitle').value.trim();
-            const emoji = document.getElementById('newsEmoji').value.trim() || '📢';
-            const content = document.getElementById('newsContent').value.trim();
-            const addToGallery = document.getElementById('addToGallery').checked;
-            const errorDiv = document.getElementById('newsError');
-            const successDiv = document.getElementById('newsSuccess');
-
-            errorDiv.textContent = '';
-            successDiv.textContent = '';
-
-            if (!title || !content) {
-                errorDiv.textContent = 'Mohon isi judul dan konten update';
-                return;
-            }
-
-            try {
-                // Get existing news
-                let newsList = [];
-                try {
-                    const result = await window.storage.get('raps-news', true);
-                    if (result && result.value) {
-                        newsList = JSON.parse(result.value);
-                    }
-                } catch (e) {
-                    // No existing news
-                }
-
-                // Add new news
-                const newsItem = {
-                    id: Date.now(),
-                    title,
-                    emoji,
-                    content,
-                    image: uploadedImageBase64, // Include base64 image
-                    date: new Date().toLocaleDateString('id-ID', { 
-                        year: 'numeric', 
-                        month: 'long', 
-                        day: 'numeric' 
-                    }),
-                    author: currentStaff.name
-                };
-
-                newsList.unshift(newsItem); // Add to beginning
-
-                // Save to storage
-                await window.storage.set('raps-news', JSON.stringify(newsList), true);
-
-                // If checkbox is checked and there's an image, add to gallery
-                if (addToGallery && uploadedImageBase64) {
-                    await addToGalleryStorage(uploadedImageBase64, title);
-                }
-
-                successDiv.textContent = 'Update berhasil dipublikasikan!';
-                
-                // Reload news and gallery
-                setTimeout(() => {
-                    closeAddNewsModal();
-                    loadNews();
-                    loadGallery();
-                }, 1500);
-
-            } catch (error) {
-                console.error('Error adding news:', error);
-                errorDiv.textContent = 'Terjadi kesalahan saat mempublikasikan update';
-            }
-        }
-
-        // Add image to gallery storage
-        async function addToGalleryStorage(imageBase64, caption) {
-            try {
-                let galleryList = [];
-                try {
-                    const result = await window.storage.get('raps-gallery', true);
-                    if (result && result.value) {
-                        galleryList = JSON.parse(result.value);
-                    }
-                } catch (e) {
-                    // No existing gallery
-                }
-
-                const galleryItem = {
-                    id: Date.now(),
-                    image: imageBase64,
-                    caption: caption,
-                    date: new Date().toLocaleDateString('id-ID', { 
-                        year: 'numeric', 
-                        month: 'long', 
-                        day: 'numeric' 
-                    })
-                };
-
-                galleryList.unshift(galleryItem);
-
-                await window.storage.set('raps-gallery', JSON.stringify(galleryList), true);
-            } catch (error) {
-                console.error('Error adding to gallery:', error);
-            }
-        }
-
-        // Add Game Function
-        async function addGame() {
-            if (!currentStaff) {
-                alert('Anda harus login sebagai staff');
-                return;
-            }
-
-            const title = document.getElementById('gameTitle').value.trim();
-            const description = document.getElementById('gameDescription').value.trim();
-            const link = document.getElementById('gameLink').value.trim();
-            const players = document.getElementById('gamePlayers').value.trim();
-            const status = document.getElementById('gameStatus').value;
-            const errorDiv = document.getElementById('newsError');
-            const successDiv = document.getElementById('newsSuccess');
-
-            errorDiv.textContent = '';
-            successDiv.textContent = '';
-
-            if (!title || !description || !link) {
-                errorDiv.textContent = 'Mohon isi nama game, deskripsi, dan link game';
-                return;
-            }
-
-            try {
-                // Get existing games
-                let gamesList = [];
-                try {
-                    const result = await window.storage.get('raps-games', true);
-                    if (result && result.value) {
-                        gamesList = JSON.parse(result.value);
-                    }
-                } catch (e) {
-                    // No existing games
-                }
-
-                // Add new game
-                const gameItem = {
-                    id: Date.now(),
-                    title,
-                    description,
-                    thumbnail: uploadedGameThumbnail,
-                    link,
-                    players: players || 'N/A',
-                    status,
-                    date: new Date().toLocaleDateString('id-ID', { 
-                        year: 'numeric', 
-                        month: 'long', 
-                        day: 'numeric' 
-                    }),
-                    author: currentStaff.name
-                };
-
-                gamesList.unshift(gameItem);
-
-                // Save to storage
-                await window.storage.set('raps-games', JSON.stringify(gamesList), true);
-
-                successDiv.textContent = 'Game berhasil ditambahkan!';
-                
-                // Reload games
-                setTimeout(() => {
-                    closeAddNewsModal();
-                    loadGames();
-                }, 1500);
-
-            } catch (error) {
-                console.error('Error adding game:', error);
-                errorDiv.textContent = 'Terjadi kesalahan saat menambahkan game';
-            }
-        }
-
-        // Load Donors
         async function loadDonors() {
             const donorsLeaderboard = document.getElementById('donorsLeaderboard');
             
             try {
-                const result = await window.storage.get('raps-donors', true);
-                
-                if (!result || !result.value) {
-                    donorsLeaderboard.innerHTML = `
-                        <div style="text-align: center; padding: 3rem; color: var(--gray);">
-                            <h3 style="font-family: 'Fredoka', sans-serif; font-size: 1.3rem; margin-bottom: 0.5rem; color: var(--light);">💰 Belum Ada Donatur</h3>
-                            <p>Staff dapat menambahkan daftar donatur melalui tombol "Kelola Donasi"</p>
-                        </div>
-                    `;
-                    return;
-                }
-
-                const donorsList = JSON.parse(result.value);
+                const donorsList = await safeStorageGet('raps-donors', true);
                 
                 if (donorsList.length === 0) {
                     donorsLeaderboard.innerHTML = `
@@ -2529,92 +2372,167 @@
             }
         }
 
-        // Load Staff
-        async function loadStaff() {
-            const staffGrid = document.getElementById('staffGrid');
+        // ============================================
+        // CONTENT MANAGEMENT (NEWS & GAMES)
+        // ============================================
+        
+        async function submitContent() {
+            const contentType = document.getElementById('contentType').value;
             
-            try {
-                const result = await window.storage.get('raps-staff', true);
-                
-                if (!result || !result.value) {
-                    staffGrid.innerHTML = `
-                        <div class="empty-games fade-in" style="grid-column: 1 / -1;">
-                            <h3>👥 Tim Staff Belum Ditambahkan</h3>
-                            <p>Staff yang login dapat menambahkan anggota tim melalui tombol "Kelola Staff"</p>
-                        </div>
-                    `;
-                    return;
-                }
-
-                const staffList = JSON.parse(result.value);
-                
-                if (staffList.length === 0) {
-                    staffGrid.innerHTML = `
-                        <div class="empty-games fade-in" style="grid-column: 1 / -1;">
-                            <h3>👥 Tim Staff Belum Ditambahkan</h3>
-                            <p>Staff yang login dapat menambahkan anggota tim melalui tombol "Kelola Staff"</p>
-                        </div>
-                    `;
-                    return;
-                }
-
-                staffGrid.innerHTML = staffList.map((staff, index) => {
-                    const avatarContent = staff.photo 
-                        ? `<img src="${staff.photo}" alt="${staff.name}">`
-                        : ROLE_ICONS[staff.role];
-                    
-                    const editButtons = currentStaff ? `
-                        <div class="staff-actions">
-                            <button class="staff-edit-btn" onclick="openManageStaffModal(${staff.id})">✏️ Edit</button>
-                            <button class="staff-delete-btn" onclick="deleteStaff(${staff.id})">🗑️ Hapus</button>
-                        </div>
-                    ` : '';
-                    
-                    return `
-                        <div class="staff-card ${staff.role} fade-in ${currentStaff ? 'editable' : ''}">
-                            <div class="staff-avatar">${avatarContent}</div>
-                            <h3 class="staff-name">${staff.name}</h3>
-                            <span class="staff-role">${ROLE_LABELS[staff.role]}</span>
-                            <p class="staff-desc">${staff.description}</p>
-                            ${editButtons}
-                        </div>
-                    `;
-                }).join('');
-
-                // Re-observe for animations
-                document.querySelectorAll('.fade-in').forEach(el => {
-                    observer.observe(el);
-                });
-
-            } catch (error) {
-                console.error('Error loading staff:', error);
-                staffGrid.innerHTML = `
-                    <div class="empty-games fade-in" style="grid-column: 1 / -1;">
-                        <h3>👥 Tim Staff Belum Ditambahkan</h3>
-                        <p>Staff yang login dapat menambahkan anggota tim melalui tombol "Kelola Staff"</p>
-                    </div>
-                `;
+            if (contentType === 'update') {
+                await addNews();
+            } else {
+                await addGame();
             }
         }
 
-        // Load Games
+        async function addNews() {
+            if (!currentStaff) {
+                showError('newsError', 'Anda harus login sebagai staff');
+                return;
+            }
+
+            const title = document.getElementById('newsTitle').value.trim();
+            const emoji = document.getElementById('newsEmoji').value.trim() || '📢';
+            const content = document.getElementById('newsContent').value.trim();
+            const addToGallery = document.getElementById('addToGallery').checked;
+
+            showError('newsError', '');
+            showSuccess('newsSuccess', '');
+
+            if (!title || !content) {
+                showError('newsError', 'Mohon isi judul dan konten update');
+                return;
+            }
+
+            setButtonLoading('submitContentBtn', true);
+
+            try {
+                let newsList = await safeStorageGet('raps-news', true);
+
+                const newsItem = {
+                    id: Date.now(),
+                    title,
+                    emoji,
+                    content,
+                    image: uploadedImages.news,
+                    date: new Date().toLocaleDateString('id-ID', { 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric' 
+                    }),
+                    author: currentStaff.name
+                };
+
+                newsList.unshift(newsItem);
+                await safeStorageSet('raps-news', newsList, true);
+
+                if (addToGallery && uploadedImages.news) {
+                    await addToGalleryStorage(uploadedImages.news, title);
+                }
+
+                showSuccess('newsSuccess', 'Update berhasil dipublikasikan!');
+                
+                setTimeout(() => {
+                    closeAddNewsModal();
+                    loadNews();
+                    loadGallery();
+                }, 1500);
+
+            } catch (error) {
+                console.error('Error adding news:', error);
+                showError('newsError', 'Terjadi kesalahan saat mempublikasikan update');
+            } finally {
+                setButtonLoading('submitContentBtn', false);
+            }
+        }
+
+        async function addGame() {
+            if (!currentStaff) {
+                showError('newsError', 'Anda harus login sebagai staff');
+                return;
+            }
+
+            const title = document.getElementById('gameTitle').value.trim();
+            const description = document.getElementById('gameDescription').value.trim();
+            const link = document.getElementById('gameLink').value.trim();
+            const players = document.getElementById('gamePlayers').value.trim();
+            const status = document.getElementById('gameStatus').value;
+
+            showError('newsError', '');
+            showSuccess('newsSuccess', '');
+
+            if (!title || !description || !link) {
+                showError('newsError', 'Mohon isi nama game, deskripsi, dan link game');
+                return;
+            }
+
+            setButtonLoading('submitContentBtn', true);
+
+            try {
+                let gamesList = await safeStorageGet('raps-games', true);
+
+                const gameItem = {
+                    id: Date.now(),
+                    title,
+                    description,
+                    thumbnail: uploadedImages.game,
+                    link,
+                    players: players || 'N/A',
+                    status,
+                    date: new Date().toLocaleDateString('id-ID', { 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric' 
+                    }),
+                    author: currentStaff.name
+                };
+
+                gamesList.unshift(gameItem);
+                await safeStorageSet('raps-games', gamesList, true);
+
+                showSuccess('newsSuccess', 'Game berhasil ditambahkan!');
+                
+                setTimeout(() => {
+                    closeAddNewsModal();
+                    loadGames();
+                }, 1500);
+
+            } catch (error) {
+                console.error('Error adding game:', error);
+                showError('newsError', 'Terjadi kesalahan saat menambahkan game');
+            } finally {
+                setButtonLoading('submitContentBtn', false);
+            }
+        }
+
+        async function addToGalleryStorage(imageBase64, caption) {
+            try {
+                let galleryList = await safeStorageGet('raps-gallery', true);
+
+                const galleryItem = {
+                    id: Date.now(),
+                    image: imageBase64,
+                    caption: caption,
+                    date: new Date().toLocaleDateString('id-ID', { 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric' 
+                    })
+                };
+
+                galleryList.unshift(galleryItem);
+                await safeStorageSet('raps-gallery', galleryList, true);
+            } catch (error) {
+                console.error('Error adding to gallery:', error);
+            }
+        }
+
         async function loadGames() {
             const gamesGrid = document.getElementById('gamesGrid');
             
             try {
-                const result = await window.storage.get('raps-games', true);
-                
-                if (!result || !result.value) {
-                    gamesGrid.innerHTML = `
-                        <div class="empty-games fade-in">
-                            <h3>🎮 Daftar Game Segera Hadir</h3>
-                            <p>Staff kami sedang mempersiapkan game-game menarik untuk Anda</p>
-                        </div>
-                    `;
-                    return;
-                }
-
-                const gamesList = JSON.parse(result.value);
+                const gamesList = await safeStorageGet('raps-games', true);
                 
                 if (gamesList.length === 0) {
                     gamesGrid.innerHTML = `
@@ -2626,7 +2544,7 @@
                     return;
                 }
 
-                gamesGrid.innerHTML = gamesList.map((game, index) => {
+                gamesGrid.innerHTML = gamesList.map((game) => {
                     const thumbnailContent = game.thumbnail 
                         ? `<img src="${game.thumbnail}" alt="${game.title}">`
                         : '';
@@ -2654,10 +2572,7 @@
                     `;
                 }).join('');
 
-                // Re-observe for animations
-                document.querySelectorAll('.fade-in').forEach(el => {
-                    observer.observe(el);
-                });
+                observeElements();
 
             } catch (error) {
                 console.error('Error loading games:', error);
@@ -2670,24 +2585,11 @@
             }
         }
 
-        // Load News
         async function loadNews() {
             const newsGrid = document.getElementById('newsGrid');
             
             try {
-                const result = await window.storage.get('raps-news', true);
-                
-                if (!result || !result.value) {
-                    newsGrid.innerHTML = `
-                        <div class="empty-news fade-in">
-                            <h3>📢 Update Terbaru Segera Hadir</h3>
-                            <p>Nantikan pengumuman dan berita terkini dari tim kami</p>
-                        </div>
-                    `;
-                    return;
-                }
-
-                const newsList = JSON.parse(result.value);
+                const newsList = await safeStorageGet('raps-news', true);
                 
                 if (newsList.length === 0) {
                     newsGrid.innerHTML = `
@@ -2699,8 +2601,7 @@
                     return;
                 }
 
-                newsGrid.innerHTML = newsList.map((news, index) => {
-                    // If news has image, display it; otherwise show emoji on gradient
+                newsGrid.innerHTML = newsList.map((news) => {
                     const imageContent = news.image 
                         ? `<img src="${news.image}" alt="${news.title}">`
                         : news.emoji;
@@ -2717,10 +2618,7 @@
                     `;
                 }).join('');
 
-                // Re-observe for animations
-                document.querySelectorAll('.fade-in').forEach(el => {
-                    observer.observe(el);
-                });
+                observeElements();
 
             } catch (error) {
                 console.error('Error loading news:', error);
@@ -2733,24 +2631,11 @@
             }
         }
 
-        // Load Gallery
         async function loadGallery() {
             const galleryGrid = document.getElementById('galleryGrid');
             
             try {
-                const result = await window.storage.get('raps-gallery', true);
-                
-                if (!result || !result.value) {
-                    galleryGrid.innerHTML = `
-                        <div class="empty-gallery fade-in">
-                            <h3>📸 Galeri Foto Segera Hadir</h3>
-                            <p>Momen-momen terbaik dari komunitas kami akan ditampilkan di sini</p>
-                        </div>
-                    `;
-                    return;
-                }
-
-                const galleryList = JSON.parse(result.value);
+                const galleryList = await safeStorageGet('raps-gallery', true);
                 
                 if (galleryList.length === 0) {
                     galleryGrid.innerHTML = `
@@ -2762,7 +2647,7 @@
                     return;
                 }
 
-                galleryGrid.innerHTML = galleryList.map((item, index) => `
+                galleryGrid.innerHTML = galleryList.map((item) => `
                     <div class="gallery-item has-image fade-in">
                         <img src="${item.image}" alt="${item.caption}">
                         <div class="gallery-caption">
@@ -2772,10 +2657,7 @@
                     </div>
                 `).join('');
 
-                // Re-observe for animations
-                document.querySelectorAll('.fade-in').forEach(el => {
-                    observer.observe(el);
-                });
+                observeElements();
 
             } catch (error) {
                 console.error('Error loading gallery:', error);
@@ -2788,7 +2670,10 @@
             }
         }
 
-        // Mobile Menu Toggle
+        // ============================================
+        // UI INTERACTIONS
+        // ============================================
+        
         function toggleMenu() {
             const menu = document.getElementById('navMenu');
             menu.classList.toggle('active');
@@ -2804,7 +2689,6 @@
                         behavior: 'smooth',
                         block: 'start'
                     });
-                    // Close mobile menu if open
                     document.getElementById('navMenu').classList.remove('active');
                 }
             });
@@ -2824,9 +2708,11 @@
             });
         }, observerOptions);
 
-        document.querySelectorAll('.fade-in').forEach(el => {
-            observer.observe(el);
-        });
+        function observeElements() {
+            document.querySelectorAll('.fade-in').forEach(el => {
+                observer.observe(el);
+            });
+        }
 
         // Active Nav Link on Scroll
         window.addEventListener('scroll', () => {
@@ -2835,7 +2721,6 @@
             
             sections.forEach(section => {
                 const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
                 if (scrollY >= (sectionTop - 100)) {
                     current = section.getAttribute('id');
                 }
@@ -2849,21 +2734,26 @@
             });
         });
 
-        // Initialize on page load
+        // Close modals when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal')) {
+                e.target.classList.remove('active');
+            }
+        });
+
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+        
         window.addEventListener('DOMContentLoaded', () => {
+            console.log('🚀 RAPS Developer website initialized');
             checkLoginStatus();
             loadStaff();
             loadGames();
             loadNews();
             loadDonors();
             loadGallery();
-        });
-
-        // Close modals when clicking outside
-        window.addEventListener('click', (e) => {
-            if (e.target.classList.contains('modal')) {
-                e.target.classList.remove('active');
-            }
+            observeElements();
         });
     </script>
 </body>
