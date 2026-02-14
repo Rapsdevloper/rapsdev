@@ -1,0 +1,2870 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="RAPS Developer - Komunitas Roblox Indonesia terkemuka dengan game berkualitas tinggi dan komunitas yang solid. Bergabunglah dengan ribuan pemain aktif!">
+    <meta name="keywords" content="RAPS Developer, Roblox Indonesia, Roblox Community, Mount Dontol, Roblox Games, Gaming Indonesia">
+    <meta name="author" content="RAPS Developer Team">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="RAPS Developer - Roblox Community Indonesia">
+    <meta property="og:description" content="Komunitas Roblox terkemuka di Indonesia dengan game berkualitas tinggi dan tim profesional">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="RAPS Developer - Roblox Community Indonesia">
+    <meta property="twitter:description" content="Komunitas Roblox terkemuka di Indonesia dengan game berkualitas tinggi dan tim profesional">
+    
+    <title>RAPS Developer - Roblox Community Indonesia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF3366;
+            --secondary: #00D4FF;
+            --accent: #FFD700;
+            --dark: #1a1a2e;
+            --darker: #0f0f1e;
+            --light: #ffffff;
+            --gray: #a8a8b8;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--darker);
+            color: var(--light);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--darker);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #ff5588, #00f2fe);
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(245, 87, 108, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(0, 212, 255, 0.1) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -50px) rotate(120deg); }
+            66% { transform: translate(-20px, 20px) rotate(240deg); }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(26, 26, 46, 0.8);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            padding: 1.2rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            animation: slideDown 0.5s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(0); }
+        }
+
+        nav .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            letter-spacing: -0.5px;
+            transition: transform 0.3s;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .staff-login-btn {
+            background: linear-gradient(135deg, var(--primary), #ff5588);
+            color: var(--light);
+            padding: 0.6rem 1.5rem;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .staff-login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255, 51, 102, 0.4);
+        }
+
+        .staff-logout-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--light);
+            padding: 0.6rem 1.5rem;
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .staff-logout-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: var(--light);
+            border-radius: 3px;
+            transition: all 0.3s;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: var(--dark);
+            border-radius: 30px;
+            padding: 3rem;
+            max-width: 600px;
+            width: 90%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: var(--shadow);
+            animation: slideUp 0.3s;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: var(--light);
+            font-size: 1.5rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+
+        .modal h2 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .modal p {
+            color: var(--gray);
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--light);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            color: var(--light);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-group input[type="file"] {
+            padding: 0.8rem;
+        }
+
+        .image-preview {
+            margin-top: 1rem;
+            border-radius: 15px;
+            overflow: hidden;
+            max-height: 200px;
+            display: none;
+        }
+
+        .image-preview img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .image-preview.active {
+            display: block;
+        }
+
+        .remove-image-btn {
+            background: rgba(255, 68, 68, 0.9);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .remove-image-btn:hover {
+            background: rgba(255, 68, 68, 1);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--primary);
+        }
+
+        .checkbox-group label {
+            margin: 0;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .form-error {
+            color: #ff4444;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .form-success {
+            color: #44ff44;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 8rem 2rem 4rem;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 4.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+            animation: fadeInUp 1s ease-out 0.2s backwards;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: var(--gray);
+            margin-bottom: 2.5rem;
+            animation: fadeInUp 1s ease-out 0.4s backwards;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease-out 0.6s backwards;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), #ff5588);
+            color: var(--light);
+            box-shadow: 0 10px 30px rgba(255, 51, 102, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255, 51, 102, 0.6);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--light);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+
+        /* Section Styles */
+        section {
+            padding: 6rem 2rem;
+            position: relative;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--gray);
+            font-size: 1.2rem;
+            margin-bottom: 4rem;
+        }
+
+        /* About Section */
+        .about-content {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: var(--shadow);
+        }
+
+        .about-content p {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Staff Section */
+        .staff-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .manage-staff-btn {
+            display: none;
+            background: linear-gradient(135deg, var(--secondary), #00a8cc);
+            color: var(--light);
+            padding: 0.8rem 2rem;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .manage-staff-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 212, 255, 0.4);
+        }
+
+        .manage-donors-btn {
+            display: none;
+            background: linear-gradient(135deg, var(--accent), #ffa500);
+            color: var(--darker);
+            padding: 0.8rem 2rem;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .manage-donors-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255, 215, 0, 0.4);
+        }
+
+        .add-news-btn {
+            display: none;
+            background: linear-gradient(135deg, var(--primary), #ff5588);
+            color: var(--light);
+            padding: 0.8rem 2rem;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .add-news-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255, 51, 102, 0.4);
+        }
+
+        .staff-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .staff-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .staff-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient-1);
+            transform: scaleX(0);
+            transition: transform 0.4s;
+        }
+
+        .staff-card.owner::before { background: var(--gradient-1); }
+        .staff-card.developer::before { background: var(--gradient-3); }
+        .staff-card.headadmin::before { background: var(--gradient-2); }
+        .staff-card.admin::before { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+        .staff-card.moderator::before { background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); }
+        .staff-card.creator::before { background: linear-gradient(135deg, #ff9a56 0%, #ff6a88 100%); }
+
+        .staff-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        .staff-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .staff-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: var(--gradient-1);
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--light);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .staff-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .staff-card.developer .staff-avatar { background: var(--gradient-3); }
+        .staff-card.headadmin .staff-avatar { background: var(--gradient-2); }
+        .staff-card.admin .staff-avatar { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+        .staff-card.moderator .staff-avatar { background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); }
+        .staff-card.creator .staff-avatar { background: linear-gradient(135deg, #ff9a56 0%, #ff6a88 100%); }
+
+        .staff-name {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--light);
+        }
+
+        .staff-role {
+            display: inline-block;
+            padding: 0.4rem 1.2rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .staff-card.owner .staff-role { color: #a78bfa; }
+        .staff-card.developer .staff-role { color: #00D4FF; }
+        .staff-card.headadmin .staff-role { color: #f5576c; }
+        .staff-card.admin .staff-role { color: #fee140; }
+        .staff-card.moderator .staff-role { color: #30cfd0; }
+        .staff-card.creator .staff-role { color: #ff9a56; }
+
+        .staff-desc {
+            color: var(--gray);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .staff-actions {
+            display: none;
+            margin-top: 1rem;
+            gap: 0.5rem;
+        }
+
+        .staff-card.editable .staff-actions {
+            display: flex;
+        }
+
+        .staff-edit-btn,
+        .staff-delete-btn {
+            flex: 1;
+            padding: 0.6rem 1rem;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .staff-edit-btn {
+            background: rgba(0, 212, 255, 0.2);
+            color: var(--secondary);
+            border: 1px solid var(--secondary);
+        }
+
+        .staff-edit-btn:hover {
+            background: rgba(0, 212, 255, 0.3);
+        }
+
+        .staff-delete-btn {
+            background: rgba(255, 68, 68, 0.2);
+            color: #ff4444;
+            border: 1px solid #ff4444;
+        }
+
+        .staff-delete-btn:hover {
+            background: rgba(255, 68, 68, 0.3);
+        }
+
+        /* Updates/News Section */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .news-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+        }
+
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .news-image {
+            width: 100%;
+            height: 200px;
+            background: var(--gradient-1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .news-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .news-card:nth-child(2) .news-image { background: var(--gradient-2); }
+        .news-card:nth-child(3) .news-image { background: var(--gradient-3); }
+        .news-card:nth-child(4) .news-image { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+        .news-card:nth-child(5) .news-image { background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); }
+
+        .news-content {
+            padding: 2rem;
+        }
+
+        .news-date {
+            color: var(--primary);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .news-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--light);
+        }
+
+        .news-desc {
+            color: var(--gray);
+            line-height: 1.6;
+        }
+
+        .empty-news {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--gray);
+        }
+
+        .empty-news h3 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--light);
+        }
+
+        .empty-news p {
+            color: var(--gray);
+        }
+
+        /* Gallery Section */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .gallery-item {
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            aspect-ratio: 16/9;
+            background: var(--gradient-1);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .gallery-item::after {
+            content: '🎮';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 4rem;
+            opacity: 0.3;
+        }
+
+        .gallery-item.has-image::after {
+            display: none;
+        }
+
+        .gallery-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: white;
+            padding: 1.5rem 1rem 1rem;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .gallery-item:hover .gallery-caption {
+            opacity: 1;
+        }
+
+        .empty-gallery {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--gray);
+            grid-column: 1 / -1;
+        }
+
+        .empty-gallery h3 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--light);
+        }
+
+        .empty-gallery p {
+            color: var(--gray);
+        }
+
+        /* Game List Section */
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .game-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s;
+            position: relative;
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow);
+            border-color: var(--primary);
+        }
+
+        .game-thumbnail {
+            width: 100%;
+            height: 200px;
+            background: var(--gradient-1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .game-thumbnail::after {
+            content: '🎮';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 4rem;
+            opacity: 0.3;
+        }
+
+        .game-thumbnail.has-image::after {
+            display: none;
+        }
+
+        .game-card:nth-child(2) .game-thumbnail { background: var(--gradient-2); }
+        .game-card:nth-child(3) .game-thumbnail { background: var(--gradient-3); }
+        .game-card:nth-child(4) .game-thumbnail { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+
+        .game-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--primary);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            box-shadow: 0 5px 15px rgba(255, 51, 102, 0.4);
+        }
+
+        .game-info {
+            padding: 2rem;
+        }
+
+        .game-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.6rem;
+            margin-bottom: 0.8rem;
+            color: var(--light);
+        }
+
+        .game-description {
+            color: var(--gray);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .game-meta {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .game-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .game-meta-item span:first-child {
+            font-size: 1.2rem;
+        }
+
+        .game-link {
+            display: block;
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary), #ff5588);
+            color: var(--light);
+            padding: 0.8rem 1.5rem;
+            border-radius: 15px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .game-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255, 51, 102, 0.4);
+        }
+
+        .empty-games {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--gray);
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .empty-games h3 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--light);
+        }
+
+        .empty-games p {
+            color: var(--gray);
+        }
+
+        .gallery-item:nth-child(2) { background: var(--gradient-2); }
+        .gallery-item:nth-child(3) { background: var(--gradient-3); }
+        .gallery-item:nth-child(4) { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+        .gallery-item:nth-child(5) { background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); }
+        .gallery-item:nth-child(6) { background: linear-gradient(135deg, #ff9a56 0%, #ff6a88 100%); }
+
+        /* Top Donors Section */
+        .donors-leaderboard {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .donor-item {
+            display: flex;
+            align-items: center;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            margin-bottom: 1rem;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .donor-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateX(10px);
+        }
+
+        .rank {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-right: 2rem;
+            min-width: 50px;
+            text-align: center;
+        }
+
+        .donor-item:nth-child(1) .rank { 
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .donor-item:nth-child(2) .rank { 
+            background: linear-gradient(135deg, #C0C0C0, #808080);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .donor-item:nth-child(3) .rank { 
+            background: linear-gradient(135deg, #CD7F32, #8B4513);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .donor-info {
+            flex: 1;
+        }
+
+        .donor-name {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .donor-message {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .donation-amount {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .donor-actions {
+            display: none;
+            margin-top: 0.8rem;
+            gap: 0.5rem;
+        }
+
+        .donor-item.editable .donor-actions {
+            display: flex;
+        }
+
+        .donor-edit-btn,
+        .donor-delete-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .donor-edit-btn {
+            background: rgba(255, 215, 0, 0.2);
+            color: var(--accent);
+            border: 1px solid var(--accent);
+        }
+
+        .donor-edit-btn:hover {
+            background: rgba(255, 215, 0, 0.3);
+        }
+
+        .donor-delete-btn {
+            background: rgba(255, 68, 68, 0.2);
+            color: #ff4444;
+            border: 1px solid #ff4444;
+        }
+
+        .donor-delete-btn:hover {
+            background: rgba(255, 68, 68, 0.3);
+        }
+
+        /* Contact Section */
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .social-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: var(--light);
+            min-width: 200px;
+        }
+
+        .social-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .social-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .social-name {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .social-handle {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 3rem 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        footer p {
+            color: var(--gray);
+            margin-bottom: 1rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: flex;
+            }
+
+            nav ul {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(26, 26, 46, 0.95);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 1rem;
+                display: none;
+            }
+
+            nav ul.active {
+                display: flex;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .staff-grid,
+            .news-grid,
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .donor-item {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+
+            .rank {
+                margin-right: 0;
+                margin-bottom: 0.5rem;
+            }
+
+            .modal-content {
+                padding: 2rem;
+            }
+
+            .staff-header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        /* Scroll Animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Loading spinner */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--light);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-container {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .loading-container .loading {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <a href="#home" class="logo">RAPS Developer</a>
+            <div class="menu-toggle" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul id="navMenu">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">Tentang</a></li>
+                <li><a href="#staff">Staff Team</a></li>
+                <li><a href="#games">Daftar Game</a></li>
+                <li><a href="#updates">Update</a></li>
+                <li><a href="#donors">Top Donasi</a></li>
+                <li><a href="#gallery">Galeri</a></li>
+                <li><a href="#contact">Kontak</a></li>
+                <li id="staffAuthSection">
+                    <button class="staff-login-btn" onclick="openLoginModal()">🔐 Staff Login</button>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeLoginModal()">×</button>
+            <h2>Staff Login</h2>
+            <p>Masukkan ID Roblox Anda untuk login</p>
+            <div class="form-group">
+                <label for="robloxId">Roblox ID</label>
+                <input type="text" id="robloxId" placeholder="Contoh: 7389596840">
+            </div>
+            <div id="loginError" class="form-error"></div>
+            <button class="btn btn-primary" style="width: 100%;" onclick="staffLogin()">Login</button>
+        </div>
+    </div>
+
+    <!-- Add News Modal -->
+    <div id="addNewsModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeAddNewsModal()">×</button>
+            <h2>Tambah Konten Baru</h2>
+            <p>Buat update atau tambah game baru untuk komunitas</p>
+            
+            <div class="form-group">
+                <label for="contentType">Tipe Konten</label>
+                <select id="contentType" onchange="toggleContentType()" style="width: 100%; padding: 1rem; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.05); border-radius: 15px; color: var(--light); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1rem;">
+                    <option value="update">📢 Update/Pengumuman</option>
+                    <option value="game">🎮 Game Baru</option>
+                </select>
+            </div>
+
+            <!-- Update Fields -->
+            <div id="updateFields">
+                <div class="form-group">
+                    <label for="newsTitle">Judul Update</label>
+                    <input type="text" id="newsTitle" placeholder="Contoh: Event Valentine Dimulai!">
+                </div>
+                <div class="form-group">
+                    <label for="newsEmoji">Emoji (opsional)</label>
+                    <input type="text" id="newsEmoji" placeholder="Contoh: 🎊" maxlength="2">
+                </div>
+                <div class="form-group">
+                    <label for="newsImage">Upload Foto (JPG/PNG, opsional)</label>
+                    <input type="file" id="newsImage" accept="image/jpeg,image/png" onchange="previewImage(event)">
+                    <div id="imagePreview" class="image-preview">
+                        <img id="previewImg" src="" alt="Preview">
+                    </div>
+                    <button id="removeImageBtn" class="remove-image-btn" style="display: none;" onclick="removeImage()">🗑️ Hapus Foto</button>
+                    <div class="checkbox-group" id="galleryCheckboxGroup" style="display: none;">
+                        <input type="checkbox" id="addToGallery" checked>
+                        <label for="addToGallery">📸 Tampilkan foto ini di galeri juga</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="newsContent">Konten Update</label>
+                    <textarea id="newsContent" placeholder="Tulis detail update di sini..."></textarea>
+                </div>
+            </div>
+
+            <!-- Game Fields -->
+            <div id="gameFields" style="display: none;">
+                <div class="form-group">
+                    <label for="gameTitle">Nama Game</label>
+                    <input type="text" id="gameTitle" placeholder="Contoh: Mount Dontol Adventure">
+                </div>
+                <div class="form-group">
+                    <label for="gameDescription">Deskripsi Game</label>
+                    <textarea id="gameDescription" placeholder="Jelaskan tentang game ini..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="gameThumbnail">Thumbnail Game (JPG/PNG)</label>
+                    <input type="file" id="gameThumbnail" accept="image/jpeg,image/png" onchange="previewGameThumbnail(event)">
+                    <div id="gameThumbnailPreview" class="image-preview">
+                        <img id="gameThumbnailImg" src="" alt="Preview">
+                    </div>
+                    <button id="removeGameThumbnailBtn" class="remove-image-btn" style="display: none;" onclick="removeGameThumbnail()">🗑️ Hapus Thumbnail</button>
+                </div>
+                <div class="form-group">
+                    <label for="gameLink">Link Game (Roblox URL)</label>
+                    <input type="url" id="gameLink" placeholder="https://www.roblox.com/games/...">
+                </div>
+                <div class="form-group">
+                    <label for="gamePlayers">Jumlah Pemain</label>
+                    <input type="text" id="gamePlayers" placeholder="Contoh: 1.2K">
+                </div>
+                <div class="form-group">
+                    <label for="gameStatus">Status Game</label>
+                    <select id="gameStatus" style="width: 100%; padding: 1rem; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.05); border-radius: 15px; color: var(--light); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1rem;">
+                        <option value="🟢 LIVE">🟢 LIVE</option>
+                        <option value="🟡 BETA">🟡 BETA</option>
+                        <option value="🔴 MAINTENANCE">🔴 MAINTENANCE</option>
+                        <option value="⭐ NEW">⭐ NEW</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="newsError" class="form-error"></div>
+            <div id="newsSuccess" class="form-success"></div>
+            <button class="btn btn-primary" style="width: 100%;" onclick="submitContent()">Publikasikan</button>
+        </div>
+    </div>
+
+    <!-- Manage Staff Modal -->
+    <div id="manageStaffModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeManageStaffModal()">×</button>
+            <h2 id="staffModalTitle">Tambah Staff Baru</h2>
+            <p>Kelola anggota tim staff</p>
+            
+            <div class="form-group">
+                <label for="staffName">Nama Staff</label>
+                <input type="text" id="staffName" placeholder="Contoh: John Doe">
+            </div>
+
+            <div class="form-group">
+                <label for="staffRole">Role</label>
+                <select id="staffRole" style="width: 100%; padding: 1rem; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.05); border-radius: 15px; color: var(--light); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1rem;">
+                    <option value="owner">👑 Owner</option>
+                    <option value="developer">💻 Developer</option>
+                    <option value="headadmin">⭐ Head Admin</option>
+                    <option value="admin">🛡️ Admin</option>
+                    <option value="moderator">🔰 Moderator</option>
+                    <option value="creator">🎥 Content Creator</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="staffDescription">Deskripsi</label>
+                <textarea id="staffDescription" placeholder="Jelaskan tugas dan tanggung jawab staff ini..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="staffPhoto">Foto Profil (JPG/PNG, opsional)</label>
+                <input type="file" id="staffPhoto" accept="image/jpeg,image/png" onchange="previewStaffPhoto(event)">
+                <div id="staffPhotoPreview" class="image-preview">
+                    <img id="staffPhotoImg" src="" alt="Preview">
+                </div>
+                <button id="removeStaffPhotoBtn" class="remove-image-btn" style="display: none;" onclick="removeStaffPhoto()">🗑️ Hapus Foto</button>
+            </div>
+
+            <div id="staffError" class="form-error"></div>
+            <div id="staffSuccess" class="form-success"></div>
+            <button class="btn btn-primary" style="width: 100%;" onclick="saveStaff()">Simpan Staff</button>
+        </div>
+    </div>
+
+    <!-- Manage Donors Modal -->
+    <div id="manageDonorsModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeManageDonorsModal()">×</button>
+            <h2 id="donorModalTitle">Tambah Donatur Baru</h2>
+            <p>Kelola daftar top donatur</p>
+            
+            <div class="form-group">
+                <label for="donorName">Nama Donatur</label>
+                <input type="text" id="donorName" placeholder="Contoh: GenerousDonor123">
+            </div>
+
+            <div class="form-group">
+                <label for="donorAmount">Jumlah Donasi</label>
+                <input type="text" id="donorAmount" placeholder="Contoh: 500K Robux">
+            </div>
+
+            <div class="form-group">
+                <label for="donorMessage">Pesan Donatur (opsional)</label>
+                <input type="text" id="donorMessage" placeholder="Contoh: Semangat terus develop game-nya!">
+            </div>
+
+            <div id="donorError" class="form-error"></div>
+            <div id="donorSuccess" class="form-success"></div>
+            <button class="btn btn-primary" style="width: 100%;" onclick="saveDonor()">Simpan Donatur</button>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Selamat Datang di RAPS Developer!</h1>
+            <p>Komunitas Roblox Indonesia yang menyediakan pengalaman gaming terbaik. Bergabunglah dengan ribuan pemain lainnya dan nikmati game-game berkualitas!</p>
+            <div class="btn-group">
+                <a href="https://www.roblox.com/id/games/106744323733395/Mount-Dontol" target="_blank" class="btn btn-primary">🎮 Join Game Sekarang</a>
+                <a href="#about" class="btn btn-secondary">📖 Pelajari Lebih Lanjut</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="container">
+            <h2 class="section-title fade-in">Tentang Kami</h2>
+            <p class="section-subtitle fade-in">Komunitas gaming profesional dan ramah</p>
+            <div class="about-content fade-in">
+                <p>
+                    <strong>RAPS Developer</strong> adalah komunitas Roblox terkemuka di Indonesia yang berfokus pada pengembangan game berkualitas tinggi dan pembangunan komunitas yang solid. Kami berkomitmen untuk menciptakan lingkungan bermain yang aman, menyenangkan, dan penuh tantangan.
+                </p>
+                <p>
+                    Dengan tim developer berpengalaman dan staff yang dedikasi, kami terus berinovasi menghadirkan game mode menarik, event rutin, dan sistem yang fair untuk semua pemain. Bergabunglah dengan ribuan member aktif kami dan rasakan pengalaman gaming yang berbeda.
+                </p>
+                <p>
+                    🎯 <strong>Visi Kami:</strong> Menjadi komunitas Roblox terbaik di Indonesia yang mengutamakan kualitas, kreativitas, dan sportivitas.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Staff Team Section -->
+    <section id="staff">
+        <div class="container">
+            <div class="staff-header">
+                <div>
+                    <h2 class="section-title fade-in">Staff Team</h2>
+                    <p class="section-subtitle fade-in">Tim kami yang luar biasa!</p>
+                </div>
+                <button id="manageStaffBtn" class="manage-staff-btn" onclick="openManageStaffModal()">👥 Kelola Staff</button>
+            </div>
+            <div id="staffGrid" class="staff-grid">
+                <!-- Staff will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Games Section -->
+    <section id="games">
+        <div class="container">
+            <h2 class="section-title fade-in">Daftar Game</h2>
+            <p class="section-subtitle fade-in">Jelajahi game-game kami yang seru!</p>
+            <div id="gamesGrid" class="games-grid">
+                <!-- Games will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Updates Section -->
+    <section id="updates">
+        <div class="container">
+            <div class="staff-header">
+                <div>
+                    <h2 class="section-title fade-in">Update Terbaru</h2>
+                    <p class="section-subtitle fade-in">Jangan lewatkan update terkini dari game kami!</p>
+                </div>
+                <button id="addNewsBtn" class="add-news-btn" onclick="openAddNewsModal()">➕ Tambah Update</button>
+            </div>
+            <div id="newsGrid" class="news-grid">
+                <!-- News will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Top Donors Section -->
+    <section id="donors">
+        <div class="container">
+            <div class="staff-header">
+                <div>
+                    <h2 class="section-title fade-in">Top Donasi</h2>
+                    <p class="section-subtitle fade-in">Terima kasih kepada para donatur yang mendukung kami!</p>
+                </div>
+                <button id="manageDonorsBtn" class="manage-donors-btn" onclick="openManageDonorsModal()">💰 Kelola Donasi</button>
+            </div>
+            <div id="donorsLeaderboard" class="donors-leaderboard fade-in">
+                <!-- Donors will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery">
+        <div class="container">
+            <h2 class="section-title fade-in">Galeri</h2>
+            <p class="section-subtitle fade-in">Momen-momen terbaik dari game kami!</p>
+            <div id="galleryGrid" class="gallery-grid">
+                <!-- Gallery will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="container">
+            <h2 class="section-title fade-in">Hubungi Kami</h2>
+            <p class="section-subtitle fade-in">Join komunitas kami di berbagai platform!</p>
+            <div class="social-links">
+                <a href="https://www.roblox.com/id/communities/858405520/Raps-Developers#!/about" target="_blank" class="social-card fade-in">
+                    <span class="social-icon">🎮</span>
+                    <div class="social-name">Roblox Community</div>
+                    <div class="social-handle">RAPS Developers</div>
+                </a>
+                <a href="https://discord.gg/6ESQs43DvN" target="_blank" class="social-card fade-in">
+                    <span class="social-icon">💬</span>
+                    <div class="social-name">Discord</div>
+                    <div class="social-handle">discord.gg/6ESQs43DvN</div>
+                </a>
+                <a href="https://www.tiktok.com/@raps_dev" target="_blank" class="social-card fade-in">
+                    <span class="social-icon">📱</span>
+                    <div class="social-name">TikTok</div>
+                    <div class="social-handle">@raps_dev</div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 RAPS Developer Community. All Rights Reserved.</p>
+            <p style="font-size: 0.9rem;">Made with ❤️ by RAPS Developer Team</p>
+        </div>
+    </footer>
+
+    <script>
+        // Staff ID Database
+        const STAFF_DATABASE = {
+            // Owners
+            '7389596840': { role: 'owner', name: 'Owner 1' },
+            '9119879621': { role: 'owner', name: 'Owner 2' },
+            // Developer
+            '9117761747': { role: 'developer', name: 'Developer' },
+            // Head Admin
+            '8935152746': { role: 'headadmin', name: 'Head Admin' },
+            // Admins
+            '8963001003': { role: 'admin', name: 'Admin 1' },
+            '2900556168': { role: 'admin', name: 'Admin 2' },
+            '9458094251': { role: 'admin', name: 'Admin 3' },
+            '9297382144': { role: 'admin', name: 'Admin 4' }
+        };
+
+        // Current logged in staff
+        let currentStaff = null;
+
+        // Store uploaded image as base64
+        let uploadedImageBase64 = null;
+        let uploadedGameThumbnail = null;
+        let uploadedStaffPhoto = null;
+        let editingStaffId = null;
+        let editingDonorId = null;
+        let isManagingStaff = false;
+
+        // Role icons mapping
+        const ROLE_ICONS = {
+            owner: '👑',
+            developer: '💻',
+            headadmin: '⭐',
+            admin: '🛡️',
+            moderator: '🔰',
+            creator: '🎥'
+        };
+
+        // Role labels mapping
+        const ROLE_LABELS = {
+            owner: 'OWNER',
+            developer: 'DEVELOPER',
+            headadmin: 'HEAD ADMIN',
+            admin: 'ADMIN',
+            moderator: 'MODERATOR',
+            creator: 'CONTENT CREATOR'
+        };
+
+        // Preview staff photo
+        function previewStaffPhoto(event) {
+            const file = event.target.files[0];
+            const errorDiv = document.getElementById('staffError');
+            
+            if (!file) return;
+
+            if (!file.type.match('image/jpeg') && !file.type.match('image/png')) {
+                errorDiv.textContent = 'Format file harus JPG atau PNG';
+                event.target.value = '';
+                return;
+            }
+
+            if (file.size > 2 * 1024 * 1024) {
+                errorDiv.textContent = 'Ukuran file maksimal 2MB';
+                event.target.value = '';
+                return;
+            }
+
+            errorDiv.textContent = '';
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                uploadedStaffPhoto = e.target.result;
+                document.getElementById('staffPhotoImg').src = e.target.result;
+                document.getElementById('staffPhotoPreview').classList.add('active');
+                document.getElementById('removeStaffPhotoBtn').style.display = 'inline-block';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Remove staff photo
+        function removeStaffPhoto() {
+            uploadedStaffPhoto = null;
+            document.getElementById('staffPhoto').value = '';
+            document.getElementById('staffPhotoPreview').classList.remove('active');
+            document.getElementById('removeStaffPhotoBtn').style.display = 'none';
+        }
+
+        // Toggle content type (Update or Game)
+        function toggleContentType() {
+            const contentType = document.getElementById('contentType').value;
+            const updateFields = document.getElementById('updateFields');
+            const gameFields = document.getElementById('gameFields');
+            
+            if (contentType === 'update') {
+                updateFields.style.display = 'block';
+                gameFields.style.display = 'none';
+            } else {
+                updateFields.style.display = 'none';
+                gameFields.style.display = 'block';
+            }
+        }
+
+        // Preview game thumbnail
+        function previewGameThumbnail(event) {
+            const file = event.target.files[0];
+            const errorDiv = document.getElementById('newsError');
+            
+            if (!file) return;
+
+            if (!file.type.match('image/jpeg') && !file.type.match('image/png')) {
+                errorDiv.textContent = 'Format file harus JPG atau PNG';
+                event.target.value = '';
+                return;
+            }
+
+            if (file.size > 2 * 1024 * 1024) {
+                errorDiv.textContent = 'Ukuran file maksimal 2MB';
+                event.target.value = '';
+                return;
+            }
+
+            errorDiv.textContent = '';
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                uploadedGameThumbnail = e.target.result;
+                document.getElementById('gameThumbnailImg').src = e.target.result;
+                document.getElementById('gameThumbnailPreview').classList.add('active');
+                document.getElementById('removeGameThumbnailBtn').style.display = 'inline-block';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Remove game thumbnail
+        function removeGameThumbnail() {
+            uploadedGameThumbnail = null;
+            document.getElementById('gameThumbnail').value = '';
+            document.getElementById('gameThumbnailPreview').classList.remove('active');
+            document.getElementById('removeGameThumbnailBtn').style.display = 'none';
+        }
+
+        // Preview uploaded image
+        function previewImage(event) {
+            const file = event.target.files[0];
+            const errorDiv = document.getElementById('newsError');
+            
+            if (!file) return;
+
+            // Check file type
+            if (!file.type.match('image/jpeg') && !file.type.match('image/png')) {
+                errorDiv.textContent = 'Format file harus JPG atau PNG';
+                event.target.value = '';
+                return;
+            }
+
+            // Check file size (max 2MB)
+            if (file.size > 2 * 1024 * 1024) {
+                errorDiv.textContent = 'Ukuran file maksimal 2MB';
+                event.target.value = '';
+                return;
+            }
+
+            errorDiv.textContent = '';
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                uploadedImageBase64 = e.target.result;
+                document.getElementById('previewImg').src = e.target.result;
+                document.getElementById('imagePreview').classList.add('active');
+                document.getElementById('removeImageBtn').style.display = 'inline-block';
+                document.getElementById('galleryCheckboxGroup').style.display = 'flex';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Remove uploaded image
+        function removeImage() {
+            uploadedImageBase64 = null;
+            document.getElementById('newsImage').value = '';
+            document.getElementById('imagePreview').classList.remove('active');
+            document.getElementById('removeImageBtn').style.display = 'none';
+            document.getElementById('galleryCheckboxGroup').style.display = 'none';
+        }
+
+        // Check if staff is already logged in
+        function checkLoginStatus() {
+            const savedStaff = localStorage.getItem('rapsStaffLogin');
+            if (savedStaff) {
+                try {
+                    currentStaff = JSON.parse(savedStaff);
+                    updateUIForLoggedInStaff();
+                } catch (e) {
+                    localStorage.removeItem('rapsStaffLogin');
+                }
+            }
+        }
+
+        // Staff Login
+        function staffLogin() {
+            const robloxId = document.getElementById('robloxId').value.trim();
+            const errorDiv = document.getElementById('loginError');
+            
+            if (!robloxId) {
+                errorDiv.textContent = 'Mohon masukkan ID Roblox Anda';
+                return;
+            }
+
+            const staff = STAFF_DATABASE[robloxId];
+            
+            if (!staff) {
+                errorDiv.textContent = 'ID Roblox tidak terdaftar sebagai staff';
+                return;
+            }
+
+            // Save to localStorage
+            currentStaff = { id: robloxId, ...staff };
+            localStorage.setItem('rapsStaffLogin', JSON.stringify(currentStaff));
+            
+            // Update UI
+            updateUIForLoggedInStaff();
+            closeLoginModal();
+            
+            // Show success message
+            alert(`Selamat datang, ${staff.name}!`);
+        }
+
+        // Update UI for logged in staff
+        function updateUIForLoggedInStaff() {
+            const authSection = document.getElementById('staffAuthSection');
+            authSection.innerHTML = `
+                <span style="margin-right: 1rem; color: var(--gray);">👋 ${currentStaff.name}</span>
+                <button class="staff-logout-btn" onclick="staffLogout()">Logout</button>
+            `;
+            
+            // Show add news button
+            document.getElementById('addNewsBtn').style.display = 'block';
+            
+            // Show manage staff button
+            document.getElementById('manageStaffBtn').style.display = 'block';
+            
+            // Show manage donors button
+            document.getElementById('manageDonorsBtn').style.display = 'block';
+        }
+
+        // Staff Logout
+        function staffLogout() {
+            if (confirm('Yakin ingin logout?')) {
+                localStorage.removeItem('rapsStaffLogin');
+                currentStaff = null;
+                location.reload();
+            }
+        }
+
+        // Modal Functions
+        function openLoginModal() {
+            document.getElementById('loginModal').classList.add('active');
+            document.getElementById('loginError').textContent = '';
+            document.getElementById('robloxId').value = '';
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.remove('active');
+        }
+
+        function openAddNewsModal() {
+            if (!currentStaff) {
+                alert('Anda harus login sebagai staff terlebih dahulu');
+                return;
+            }
+            document.getElementById('addNewsModal').classList.add('active');
+            document.getElementById('newsError').textContent = '';
+            document.getElementById('newsSuccess').textContent = '';
+            
+            // Reset update fields
+            document.getElementById('contentType').value = 'update';
+            document.getElementById('newsTitle').value = '';
+            document.getElementById('newsEmoji').value = '';
+            document.getElementById('newsContent').value = '';
+            
+            // Reset game fields
+            document.getElementById('gameTitle').value = '';
+            document.getElementById('gameDescription').value = '';
+            document.getElementById('gameLink').value = '';
+            document.getElementById('gamePlayers').value = '';
+            document.getElementById('gameStatus').value = '🟢 LIVE';
+            
+            // Reset image upload
+            removeImage();
+            removeGameThumbnail();
+            
+            // Show update fields by default
+            toggleContentType();
+        }
+
+        function closeAddNewsModal() {
+            document.getElementById('addNewsModal').classList.remove('active');
+        }
+
+        function openManageStaffModal(staffId = null) {
+            if (!currentStaff) {
+                alert('Anda harus login sebagai staff terlebih dahulu');
+                return;
+            }
+            
+            editingStaffId = staffId;
+            document.getElementById('manageStaffModal').classList.add('active');
+            document.getElementById('staffError').textContent = '';
+            document.getElementById('staffSuccess').textContent = '';
+            
+            if (staffId) {
+                // Edit mode
+                document.getElementById('staffModalTitle').textContent = 'Edit Staff';
+                loadStaffDataForEdit(staffId);
+            } else {
+                // Add mode
+                document.getElementById('staffModalTitle').textContent = 'Tambah Staff Baru';
+                document.getElementById('staffName').value = '';
+                document.getElementById('staffRole').value = 'admin';
+                document.getElementById('staffDescription').value = '';
+                removeStaffPhoto();
+            }
+        }
+
+        function closeManageStaffModal() {
+            document.getElementById('manageStaffModal').classList.remove('active');
+            editingStaffId = null;
+        }
+
+        async function loadStaffDataForEdit(staffId) {
+            try {
+                const result = await window.storage.get('raps-staff', true);
+                if (result && result.value) {
+                    const staffList = JSON.parse(result.value);
+                    const staff = staffList.find(s => s.id == staffId);
+                    
+                    if (staff) {
+                        document.getElementById('staffName').value = staff.name;
+                        document.getElementById('staffRole').value = staff.role;
+                        document.getElementById('staffDescription').value = staff.description;
+                        
+                        if (staff.photo) {
+                            uploadedStaffPhoto = staff.photo;
+                            document.getElementById('staffPhotoImg').src = staff.photo;
+                            document.getElementById('staffPhotoPreview').classList.add('active');
+                            document.getElementById('removeStaffPhotoBtn').style.display = 'inline-block';
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading staff data:', error);
+            }
+        }
+
+        // Save Staff (Add or Edit)
+        async function saveStaff() {
+            if (!currentStaff) {
+                alert('Anda harus login sebagai staff');
+                return;
+            }
+
+            const name = document.getElementById('staffName').value.trim();
+            const role = document.getElementById('staffRole').value;
+            const description = document.getElementById('staffDescription').value.trim();
+            const errorDiv = document.getElementById('staffError');
+            const successDiv = document.getElementById('staffSuccess');
+
+            errorDiv.textContent = '';
+            successDiv.textContent = '';
+
+            if (!name || !description) {
+                errorDiv.textContent = 'Mohon isi nama dan deskripsi staff';
+                return;
+            }
+
+            try {
+                let staffList = [];
+                try {
+                    const result = await window.storage.get('raps-staff', true);
+                    if (result && result.value) {
+                        staffList = JSON.parse(result.value);
+                    }
+                } catch (e) {
+                    // No existing staff
+                }
+
+                if (editingStaffId) {
+                    // Edit existing staff
+                    const index = staffList.findIndex(s => s.id == editingStaffId);
+                    if (index !== -1) {
+                        staffList[index] = {
+                            ...staffList[index],
+                            name,
+                            role,
+                            description,
+                            photo: uploadedStaffPhoto
+                        };
+                    }
+                    successDiv.textContent = 'Staff berhasil diupdate!';
+                } else {
+                    // Add new staff
+                    const staffItem = {
+                        id: Date.now(),
+                        name,
+                        role,
+                        description,
+                        photo: uploadedStaffPhoto
+                    };
+                    staffList.push(staffItem);
+                    successDiv.textContent = 'Staff berhasil ditambahkan!';
+                }
+
+                await window.storage.set('raps-staff', JSON.stringify(staffList), true);
+                
+                setTimeout(() => {
+                    closeManageStaffModal();
+                    loadStaff();
+                }, 1500);
+
+            } catch (error) {
+                console.error('Error saving staff:', error);
+                errorDiv.textContent = 'Terjadi kesalahan saat menyimpan staff';
+            }
+        }
+
+        // Delete Staff
+        async function deleteStaff(staffId) {
+            if (!confirm('Yakin ingin menghapus staff ini?')) {
+                return;
+            }
+
+            try {
+                const result = await window.storage.get('raps-staff', true);
+                if (result && result.value) {
+                    let staffList = JSON.parse(result.value);
+                    staffList = staffList.filter(s => s.id != staffId);
+                    await window.storage.set('raps-staff', JSON.stringify(staffList), true);
+                    loadStaff();
+                }
+            } catch (error) {
+                console.error('Error deleting staff:', error);
+                alert('Terjadi kesalahan saat menghapus staff');
+            }
+        }
+
+        // Toggle staff management mode
+        function toggleStaffManagement() {
+            isManagingStaff = !isManagingStaff;
+            loadStaff();
+        }
+
+        // Donor Management Functions
+        function openManageDonorsModal(donorId = null) {
+            if (!currentStaff) {
+                alert('Anda harus login sebagai staff terlebih dahulu');
+                return;
+            }
+            
+            editingDonorId = donorId;
+            document.getElementById('manageDonorsModal').classList.add('active');
+            document.getElementById('donorError').textContent = '';
+            document.getElementById('donorSuccess').textContent = '';
+            
+            if (donorId) {
+                // Edit mode
+                document.getElementById('donorModalTitle').textContent = 'Edit Donatur';
+                loadDonorDataForEdit(donorId);
+            } else {
+                // Add mode
+                document.getElementById('donorModalTitle').textContent = 'Tambah Donatur Baru';
+                document.getElementById('donorName').value = '';
+                document.getElementById('donorAmount').value = '';
+                document.getElementById('donorMessage').value = '';
+            }
+        }
+
+        function closeManageDonorsModal() {
+            document.getElementById('manageDonorsModal').classList.remove('active');
+            editingDonorId = null;
+        }
+
+        async function loadDonorDataForEdit(donorId) {
+            try {
+                const result = await window.storage.get('raps-donors', true);
+                if (result && result.value) {
+                    const donorsList = JSON.parse(result.value);
+                    const donor = donorsList.find(d => d.id == donorId);
+                    
+                    if (donor) {
+                        document.getElementById('donorName').value = donor.name;
+                        document.getElementById('donorAmount').value = donor.amount;
+                        document.getElementById('donorMessage').value = donor.message || '';
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading donor data:', error);
+            }
+        }
+
+        // Save Donor (Add or Edit)
+        async function saveDonor() {
+            if (!currentStaff) {
+                alert('Anda harus login sebagai staff');
+                return;
+            }
+
+            const name = document.getElementById('donorName').value.trim();
+            const amount = document.getElementById('donorAmount').value.trim();
+            const message = document.getElementById('donorMessage').value.trim();
+            const errorDiv = document.getElementById('donorError');
+            const successDiv = document.getElementById('donorSuccess');
+
+            errorDiv.textContent = '';
+            successDiv.textContent = '';
+
+            if (!name || !amount) {
+                errorDiv.textContent = 'Mohon isi nama donatur dan jumlah donasi';
+                return;
+            }
+
+            try {
+                let donorsList = [];
+                try {
+                    const result = await window.storage.get('raps-donors', true);
+                    if (result && result.value) {
+                        donorsList = JSON.parse(result.value);
+                    }
+                } catch (e) {
+                    // No existing donors
+                }
+
+                if (editingDonorId) {
+                    // Edit existing donor
+                    const index = donorsList.findIndex(d => d.id == editingDonorId);
+                    if (index !== -1) {
+                        donorsList[index] = {
+                            ...donorsList[index],
+                            name,
+                            amount,
+                            message
+                        };
+                    }
+                    successDiv.textContent = 'Donatur berhasil diupdate!';
+                } else {
+                    // Add new donor
+                    const donorItem = {
+                        id: Date.now(),
+                        name,
+                        amount,
+                        message,
+                        date: new Date().toLocaleDateString('id-ID', { 
+                            year: 'numeric', 
+                            month: 'long', 
+                            day: 'numeric' 
+                        })
+                    };
+                    donorsList.push(donorItem);
+                    successDiv.textContent = 'Donatur berhasil ditambahkan!';
+                }
+
+                await window.storage.set('raps-donors', JSON.stringify(donorsList), true);
+                
+                setTimeout(() => {
+                    closeManageDonorsModal();
+                    loadDonors();
+                }, 1500);
+
+            } catch (error) {
+                console.error('Error saving donor:', error);
+                errorDiv.textContent = 'Terjadi kesalahan saat menyimpan donatur';
+            }
+        }
+
+        // Delete Donor
+        async function deleteDonor(donorId) {
+            if (!confirm('Yakin ingin menghapus donatur ini?')) {
+                return;
+            }
+
+            try {
+                const result = await window.storage.get('raps-donors', true);
+                if (result && result.value) {
+                    let donorsList = JSON.parse(result.value);
+                    donorsList = donorsList.filter(d => d.id != donorId);
+                    await window.storage.set('raps-donors', JSON.stringify(donorsList), true);
+                    loadDonors();
+                }
+            } catch (error) {
+                console.error('Error deleting donor:', error);
+                alert('Terjadi kesalahan saat menghapus donatur');
+            }
+        }
+
+        function closeAddNewsModal() {
+            document.getElementById('addNewsModal').classList.remove('active');
+        }
+
+        // Submit Content (Update or Game)
+        async function submitContent() {
+            const contentType = document.getElementById('contentType').value;
+            
+            if (contentType === 'update') {
+                await addNews();
+            } else {
+                await addGame();
+            }
+        }
+
+        // Add News Function
+        async function addNews() {
+            if (!currentStaff) {
+                alert('Anda harus login sebagai staff');
+                return;
+            }
+
+            const title = document.getElementById('newsTitle').value.trim();
+            const emoji = document.getElementById('newsEmoji').value.trim() || '📢';
+            const content = document.getElementById('newsContent').value.trim();
+            const addToGallery = document.getElementById('addToGallery').checked;
+            const errorDiv = document.getElementById('newsError');
+            const successDiv = document.getElementById('newsSuccess');
+
+            errorDiv.textContent = '';
+            successDiv.textContent = '';
+
+            if (!title || !content) {
+                errorDiv.textContent = 'Mohon isi judul dan konten update';
+                return;
+            }
+
+            try {
+                // Get existing news
+                let newsList = [];
+                try {
+                    const result = await window.storage.get('raps-news', true);
+                    if (result && result.value) {
+                        newsList = JSON.parse(result.value);
+                    }
+                } catch (e) {
+                    // No existing news
+                }
+
+                // Add new news
+                const newsItem = {
+                    id: Date.now(),
+                    title,
+                    emoji,
+                    content,
+                    image: uploadedImageBase64, // Include base64 image
+                    date: new Date().toLocaleDateString('id-ID', { 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric' 
+                    }),
+                    author: currentStaff.name
+                };
+
+                newsList.unshift(newsItem); // Add to beginning
+
+                // Save to storage
+                await window.storage.set('raps-news', JSON.stringify(newsList), true);
+
+                // If checkbox is checked and there's an image, add to gallery
+                if (addToGallery && uploadedImageBase64) {
+                    await addToGalleryStorage(uploadedImageBase64, title);
+                }
+
+                successDiv.textContent = 'Update berhasil dipublikasikan!';
+                
+                // Reload news and gallery
+                setTimeout(() => {
+                    closeAddNewsModal();
+                    loadNews();
+                    loadGallery();
+                }, 1500);
+
+            } catch (error) {
+                console.error('Error adding news:', error);
+                errorDiv.textContent = 'Terjadi kesalahan saat mempublikasikan update';
+            }
+        }
+
+        // Add image to gallery storage
+        async function addToGalleryStorage(imageBase64, caption) {
+            try {
+                let galleryList = [];
+                try {
+                    const result = await window.storage.get('raps-gallery', true);
+                    if (result && result.value) {
+                        galleryList = JSON.parse(result.value);
+                    }
+                } catch (e) {
+                    // No existing gallery
+                }
+
+                const galleryItem = {
+                    id: Date.now(),
+                    image: imageBase64,
+                    caption: caption,
+                    date: new Date().toLocaleDateString('id-ID', { 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric' 
+                    })
+                };
+
+                galleryList.unshift(galleryItem);
+
+                await window.storage.set('raps-gallery', JSON.stringify(galleryList), true);
+            } catch (error) {
+                console.error('Error adding to gallery:', error);
+            }
+        }
+
+        // Add Game Function
+        async function addGame() {
+            if (!currentStaff) {
+                alert('Anda harus login sebagai staff');
+                return;
+            }
+
+            const title = document.getElementById('gameTitle').value.trim();
+            const description = document.getElementById('gameDescription').value.trim();
+            const link = document.getElementById('gameLink').value.trim();
+            const players = document.getElementById('gamePlayers').value.trim();
+            const status = document.getElementById('gameStatus').value;
+            const errorDiv = document.getElementById('newsError');
+            const successDiv = document.getElementById('newsSuccess');
+
+            errorDiv.textContent = '';
+            successDiv.textContent = '';
+
+            if (!title || !description || !link) {
+                errorDiv.textContent = 'Mohon isi nama game, deskripsi, dan link game';
+                return;
+            }
+
+            try {
+                // Get existing games
+                let gamesList = [];
+                try {
+                    const result = await window.storage.get('raps-games', true);
+                    if (result && result.value) {
+                        gamesList = JSON.parse(result.value);
+                    }
+                } catch (e) {
+                    // No existing games
+                }
+
+                // Add new game
+                const gameItem = {
+                    id: Date.now(),
+                    title,
+                    description,
+                    thumbnail: uploadedGameThumbnail,
+                    link,
+                    players: players || 'N/A',
+                    status,
+                    date: new Date().toLocaleDateString('id-ID', { 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric' 
+                    }),
+                    author: currentStaff.name
+                };
+
+                gamesList.unshift(gameItem);
+
+                // Save to storage
+                await window.storage.set('raps-games', JSON.stringify(gamesList), true);
+
+                successDiv.textContent = 'Game berhasil ditambahkan!';
+                
+                // Reload games
+                setTimeout(() => {
+                    closeAddNewsModal();
+                    loadGames();
+                }, 1500);
+
+            } catch (error) {
+                console.error('Error adding game:', error);
+                errorDiv.textContent = 'Terjadi kesalahan saat menambahkan game';
+            }
+        }
+
+        // Load Donors
+        async function loadDonors() {
+            const donorsLeaderboard = document.getElementById('donorsLeaderboard');
+            
+            try {
+                const result = await window.storage.get('raps-donors', true);
+                
+                if (!result || !result.value) {
+                    donorsLeaderboard.innerHTML = `
+                        <div style="text-align: center; padding: 3rem; color: var(--gray);">
+                            <h3 style="font-family: 'Fredoka', sans-serif; font-size: 1.3rem; margin-bottom: 0.5rem; color: var(--light);">💰 Belum Ada Donatur</h3>
+                            <p>Staff dapat menambahkan daftar donatur melalui tombol "Kelola Donasi"</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const donorsList = JSON.parse(result.value);
+                
+                if (donorsList.length === 0) {
+                    donorsLeaderboard.innerHTML = `
+                        <div style="text-align: center; padding: 3rem; color: var(--gray);">
+                            <h3 style="font-family: 'Fredoka', sans-serif; font-size: 1.3rem; margin-bottom: 0.5rem; color: var(--light);">💰 Belum Ada Donatur</h3>
+                            <p>Staff dapat menambahkan daftar donatur melalui tombol "Kelola Donasi"</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                donorsLeaderboard.innerHTML = donorsList.map((donor, index) => {
+                    const rank = index + 1;
+                    
+                    const editButtons = currentStaff ? `
+                        <div class="donor-actions">
+                            <button class="donor-edit-btn" onclick="openManageDonorsModal(${donor.id})">✏️ Edit</button>
+                            <button class="donor-delete-btn" onclick="deleteDonor(${donor.id})">🗑️ Hapus</button>
+                        </div>
+                    ` : '';
+                    
+                    return `
+                        <div class="donor-item ${currentStaff ? 'editable' : ''}">
+                            <div class="rank">#${rank}</div>
+                            <div class="donor-info">
+                                <div class="donor-name">${donor.name}</div>
+                                <div class="donor-message">${donor.message || 'Terima kasih atas dukungannya! 💖'}</div>
+                                ${editButtons}
+                            </div>
+                            <div class="donation-amount">${donor.amount}</div>
+                        </div>
+                    `;
+                }).join('');
+
+            } catch (error) {
+                console.error('Error loading donors:', error);
+                donorsLeaderboard.innerHTML = `
+                    <div style="text-align: center; padding: 3rem; color: var(--gray);">
+                        <h3 style="font-family: 'Fredoka', sans-serif; font-size: 1.3rem; margin-bottom: 0.5rem; color: var(--light);">💰 Belum Ada Donatur</h3>
+                        <p>Staff dapat menambahkan daftar donatur melalui tombol "Kelola Donasi"</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Load Staff
+        async function loadStaff() {
+            const staffGrid = document.getElementById('staffGrid');
+            
+            try {
+                const result = await window.storage.get('raps-staff', true);
+                
+                if (!result || !result.value) {
+                    staffGrid.innerHTML = `
+                        <div class="empty-games fade-in" style="grid-column: 1 / -1;">
+                            <h3>👥 Tim Staff Belum Ditambahkan</h3>
+                            <p>Staff yang login dapat menambahkan anggota tim melalui tombol "Kelola Staff"</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const staffList = JSON.parse(result.value);
+                
+                if (staffList.length === 0) {
+                    staffGrid.innerHTML = `
+                        <div class="empty-games fade-in" style="grid-column: 1 / -1;">
+                            <h3>👥 Tim Staff Belum Ditambahkan</h3>
+                            <p>Staff yang login dapat menambahkan anggota tim melalui tombol "Kelola Staff"</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                staffGrid.innerHTML = staffList.map((staff, index) => {
+                    const avatarContent = staff.photo 
+                        ? `<img src="${staff.photo}" alt="${staff.name}">`
+                        : ROLE_ICONS[staff.role];
+                    
+                    const editButtons = currentStaff ? `
+                        <div class="staff-actions">
+                            <button class="staff-edit-btn" onclick="openManageStaffModal(${staff.id})">✏️ Edit</button>
+                            <button class="staff-delete-btn" onclick="deleteStaff(${staff.id})">🗑️ Hapus</button>
+                        </div>
+                    ` : '';
+                    
+                    return `
+                        <div class="staff-card ${staff.role} fade-in ${currentStaff ? 'editable' : ''}">
+                            <div class="staff-avatar">${avatarContent}</div>
+                            <h3 class="staff-name">${staff.name}</h3>
+                            <span class="staff-role">${ROLE_LABELS[staff.role]}</span>
+                            <p class="staff-desc">${staff.description}</p>
+                            ${editButtons}
+                        </div>
+                    `;
+                }).join('');
+
+                // Re-observe for animations
+                document.querySelectorAll('.fade-in').forEach(el => {
+                    observer.observe(el);
+                });
+
+            } catch (error) {
+                console.error('Error loading staff:', error);
+                staffGrid.innerHTML = `
+                    <div class="empty-games fade-in" style="grid-column: 1 / -1;">
+                        <h3>👥 Tim Staff Belum Ditambahkan</h3>
+                        <p>Staff yang login dapat menambahkan anggota tim melalui tombol "Kelola Staff"</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Load Games
+        async function loadGames() {
+            const gamesGrid = document.getElementById('gamesGrid');
+            
+            try {
+                const result = await window.storage.get('raps-games', true);
+                
+                if (!result || !result.value) {
+                    gamesGrid.innerHTML = `
+                        <div class="empty-games fade-in">
+                            <h3>🎮 Daftar Game Segera Hadir</h3>
+                            <p>Staff kami sedang mempersiapkan game-game menarik untuk Anda</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const gamesList = JSON.parse(result.value);
+                
+                if (gamesList.length === 0) {
+                    gamesGrid.innerHTML = `
+                        <div class="empty-games fade-in">
+                            <h3>🎮 Daftar Game Segera Hadir</h3>
+                            <p>Staff kami sedang mempersiapkan game-game menarik untuk Anda</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                gamesGrid.innerHTML = gamesList.map((game, index) => {
+                    const thumbnailContent = game.thumbnail 
+                        ? `<img src="${game.thumbnail}" alt="${game.title}">`
+                        : '';
+                    
+                    return `
+                        <div class="game-card fade-in">
+                            <div class="game-thumbnail ${game.thumbnail ? 'has-image' : ''}">${thumbnailContent}</div>
+                            <div class="game-badge">${game.status}</div>
+                            <div class="game-info">
+                                <h3 class="game-title">${game.title}</h3>
+                                <p class="game-description">${game.description}</p>
+                                <div class="game-meta">
+                                    <div class="game-meta-item">
+                                        <span>👥</span>
+                                        <span>${game.players} pemain</span>
+                                    </div>
+                                    <div class="game-meta-item">
+                                        <span>📅</span>
+                                        <span>${game.date}</span>
+                                    </div>
+                                </div>
+                                <a href="${game.link}" target="_blank" class="game-link">🎮 Main Sekarang</a>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                // Re-observe for animations
+                document.querySelectorAll('.fade-in').forEach(el => {
+                    observer.observe(el);
+                });
+
+            } catch (error) {
+                console.error('Error loading games:', error);
+                gamesGrid.innerHTML = `
+                    <div class="empty-games fade-in">
+                        <h3>🎮 Daftar Game Segera Hadir</h3>
+                        <p>Staff kami sedang mempersiapkan game-game menarik untuk Anda</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Load News
+        async function loadNews() {
+            const newsGrid = document.getElementById('newsGrid');
+            
+            try {
+                const result = await window.storage.get('raps-news', true);
+                
+                if (!result || !result.value) {
+                    newsGrid.innerHTML = `
+                        <div class="empty-news fade-in">
+                            <h3>📢 Update Terbaru Segera Hadir</h3>
+                            <p>Nantikan pengumuman dan berita terkini dari tim kami</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const newsList = JSON.parse(result.value);
+                
+                if (newsList.length === 0) {
+                    newsGrid.innerHTML = `
+                        <div class="empty-news fade-in">
+                            <h3>📢 Update Terbaru Segera Hadir</h3>
+                            <p>Nantikan pengumuman dan berita terkini dari tim kami</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                newsGrid.innerHTML = newsList.map((news, index) => {
+                    // If news has image, display it; otherwise show emoji on gradient
+                    const imageContent = news.image 
+                        ? `<img src="${news.image}" alt="${news.title}">`
+                        : news.emoji;
+                    
+                    return `
+                        <div class="news-card fade-in">
+                            <div class="news-image">${imageContent}</div>
+                            <div class="news-content">
+                                <div class="news-date">${news.date}</div>
+                                <h3 class="news-title">${news.title}</h3>
+                                <p class="news-desc">${news.content}</p>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                // Re-observe for animations
+                document.querySelectorAll('.fade-in').forEach(el => {
+                    observer.observe(el);
+                });
+
+            } catch (error) {
+                console.error('Error loading news:', error);
+                newsGrid.innerHTML = `
+                    <div class="empty-news fade-in">
+                        <h3>📢 Update Terbaru Segera Hadir</h3>
+                        <p>Nantikan pengumuman dan berita terkini dari tim kami</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Load Gallery
+        async function loadGallery() {
+            const galleryGrid = document.getElementById('galleryGrid');
+            
+            try {
+                const result = await window.storage.get('raps-gallery', true);
+                
+                if (!result || !result.value) {
+                    galleryGrid.innerHTML = `
+                        <div class="empty-gallery fade-in">
+                            <h3>📸 Galeri Foto Segera Hadir</h3>
+                            <p>Momen-momen terbaik dari komunitas kami akan ditampilkan di sini</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const galleryList = JSON.parse(result.value);
+                
+                if (galleryList.length === 0) {
+                    galleryGrid.innerHTML = `
+                        <div class="empty-gallery fade-in">
+                            <h3>📸 Galeri Foto Segera Hadir</h3>
+                            <p>Momen-momen terbaik dari komunitas kami akan ditampilkan di sini</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                galleryGrid.innerHTML = galleryList.map((item, index) => `
+                    <div class="gallery-item has-image fade-in">
+                        <img src="${item.image}" alt="${item.caption}">
+                        <div class="gallery-caption">
+                            <strong>${item.caption}</strong><br>
+                            <small>${item.date}</small>
+                        </div>
+                    </div>
+                `).join('');
+
+                // Re-observe for animations
+                document.querySelectorAll('.fade-in').forEach(el => {
+                    observer.observe(el);
+                });
+
+            } catch (error) {
+                console.error('Error loading gallery:', error);
+                galleryGrid.innerHTML = `
+                    <div class="empty-gallery fade-in">
+                        <h3>📸 Galeri Foto Segera Hadir</h3>
+                        <p>Momen-momen terbaik dari komunitas kami akan ditampilkan di sini</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Mobile Menu Toggle
+        function toggleMenu() {
+            const menu = document.getElementById('navMenu');
+            menu.classList.toggle('active');
+        }
+
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    // Close mobile menu if open
+                    document.getElementById('navMenu').classList.remove('active');
+                }
+            });
+        });
+
+        // Scroll Animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Active Nav Link on Scroll
+        window.addEventListener('scroll', () => {
+            let current = '';
+            const sections = document.querySelectorAll('section');
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= (sectionTop - 100)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            document.querySelectorAll('nav a').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Initialize on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            checkLoginStatus();
+            loadStaff();
+            loadGames();
+            loadNews();
+            loadDonors();
+            loadGallery();
+        });
+
+        // Close modals when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal')) {
+                e.target.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
