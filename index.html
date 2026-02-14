@@ -626,6 +626,16 @@
             gap: 1rem;
         }
 
+        .staff-header > div {
+            flex: 1;
+            text-align: center;
+        }
+
+        .staff-header > div .section-title,
+        .staff-header > div .section-subtitle {
+            text-align: center;
+        }
+
         .manage-staff-btn {
             display: none;
             background: linear-gradient(135deg, var(--secondary), #00a8cc);
@@ -1463,6 +1473,15 @@
             .staff-header {
                 flex-direction: column;
                 gap: 1rem;
+                text-align: center;
+            }
+
+            .staff-header > div {
+                width: 100%;
+            }
+
+            .staff-header > button {
+                width: 100%;
             }
         }
 
@@ -1791,8 +1810,14 @@
     <!-- Games Section -->
     <section id="games">
         <div class="container">
-            <h2 class="section-title fade-in">Daftar Game</h2>
-            <p class="section-subtitle fade-in">Jelajahi game-game kami yang seru!</p>
+            <div class="staff-header">
+                <div>
+                    <h2 class="section-title fade-in">Daftar Game</h2>
+                    <p class="section-subtitle fade-in">Jelajahi game-game kami yang seru!</p>
+                </div>
+                <!-- Placeholder untuk konsistensi layout, bisa ditambah tombol manage games nanti -->
+                <div style="width: 200px;"></div>
+            </div>
             <div id="gamesGrid" class="games-grid">
                 <div class="loading-container">
                     <div class="loading"></div>
