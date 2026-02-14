@@ -2952,8 +2952,10 @@
 
         async function toggleLike(galleryId) {
             try {
-                const likesRef = await getFromFirebase(`likes/${galleryId}`);
-                const currentLikes = likesRef.length > 0 ? likesRef[0].count || 0 : 0;
+                // Get current likes count directly
+                const dbRef = window.firebaseRef(window.firebaseDatabase, `likes/${galleryId}`);
+                const snapshot = await window.firebaseGet(dbRef);
+                const currentLikes = snapshot.exists() ? (snapshot.val().count || 0) : 0;
                 
                 // Check if user already liked
                 const hasLiked = userLikes[galleryId] || false;
@@ -2982,18 +2984,26 @@
 
         async function getLikesCount(galleryId) {
             try {
-                const likesData = await getFromFirebase(`likes/${galleryId}`);
-                return likesData.length > 0 ? likesData[0].count || 0 : 0;
+                const dbRef = window.firebaseRef(window.firebaseDatabase, `likes/${galleryId}`);
+                const snapshot = await window.firebaseGet(dbRef);
+                return snapshot.exists() ? (snapshot.val().count || 0) : 0;
             } catch (error) {
+                console.error('Error getting likes count:', error);
                 return 0;
             }
         }
 
         async function getCommentsCount(galleryId) {
             try {
-                const comments = await getFromFirebase(`comments/${galleryId}`);
-                return comments.length;
+                const dbRef = window.firebaseRef(window.firebaseDatabase, `comments/${galleryId}`);
+                const snapshot = await window.firebaseGet(dbRef);
+                
+                if (!snapshot.exists()) return 0;
+                
+                const comments = snapshot.val();
+                return Object.keys(comments).length;
             } catch (error) {
+                console.error('Error getting comments count:', error);
                 return 0;
             }
         }
@@ -3051,9 +3061,10 @@
             const listElement = document.getElementById('commentsModalList');
             
             try {
-                const comments = await getFromFirebase(`comments/${galleryId}`);
+                const dbRef = window.firebaseRef(window.firebaseDatabase, `comments/${galleryId}`);
+                const snapshot = await window.firebaseGet(dbRef);
                 
-                if (comments.length === 0) {
+                if (!snapshot.exists()) {
                     listElement.innerHTML = `
                         <div class="empty-comments">
                             <div style="font-size: 3rem;">💬</div>
@@ -3062,6 +3073,12 @@
                     `;
                     return;
                 }
+                
+                const commentsData = snapshot.val();
+                const comments = Object.keys(commentsData).map(key => ({
+                    id: key,
+                    ...commentsData[key]
+                }));
                 
                 // Sort by timestamp descending
                 comments.sort((a, b) => b.timestamp - a.timestamp);
