@@ -3,30 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="RAPS Developer - Komunitas Roblox Indonesia terkemuka dengan game berkualitas tinggi dan komunitas yang solid. Bergabunglah dengan ribuan pemain aktif!">
-    <meta name="keywords" content="RAPS Developer, Roblox Indonesia, Roblox Community, Mount Dontol, Roblox Games, Gaming Indonesia">
+    <meta name="description" content="RAPS Developer - Komunitas Roblox Indonesia terkemuka dengan game berkualitas tinggi dan komunitas yang solid.">
+    <meta name="keywords" content="RAPS Developer, Roblox Indonesia, Roblox Community, Mount Dontol, Gaming Indonesia">
     <meta name="author" content="RAPS Developer Team">
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="RAPS Developer - Roblox Community Indonesia">
-    <meta property="og:description" content="Komunitas Roblox terkemuka di Indonesia dengan game berkualitas tinggi dan tim profesional">
-    
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:title" content="RAPS Developer - Roblox Community Indonesia">
-    <meta property="twitter:description" content="Komunitas Roblox terkemuka di Indonesia dengan game berkualitas tinggi dan tim profesional">
     
     <title>RAPS Developer - Roblox Community Indonesia</title>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     
     <!-- Firebase SDK v9 (Modular) -->
     <script type="module">
-        // Import the functions you need from the SDKs
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getDatabase, ref, set, get, remove, child, onValue } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+        import { getDatabase, ref, set, get, remove, onValue } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
 
-        // Your web app's Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBrT9nXf9ncgnssTUIryv28i2GI9dUa0Cs",
             authDomain: "raps-developer.firebaseapp.com",
@@ -37,25 +25,19 @@
             appId: "1:346351911071:web:e840e783a32ae1825d62aa"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
 
-        // Export untuk digunakan di window object
         window.firebaseApp = app;
         window.firebaseDatabase = database;
         window.firebaseRef = ref;
         window.firebaseSet = set;
         window.firebaseGet = get;
         window.firebaseRemove = remove;
-        window.firebaseChild = child;
         window.firebaseOnValue = onValue;
         window.firebaseInitialized = true;
 
-        console.log('🔥 Firebase initialized successfully!');
-        document.getElementById('firebaseNotice')?.classList.add('hidden');
-
-        // Trigger initialization event
+        console.log('🔥 Firebase initialized successfully');
         window.dispatchEvent(new Event('firebaseReady'));
     </script>
     
@@ -88,7 +70,6 @@
             line-height: 1.6;
         }
 
-        /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 12px;
         }
@@ -102,11 +83,6 @@
             border-radius: 10px;
         }
 
-        ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(135deg, #ff5588, #00f2fe);
-        }
-
-        /* Animated Background */
         .bg-animation {
             position: fixed;
             top: 0;
@@ -145,12 +121,6 @@
             z-index: 1000;
             padding: 1.2rem 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            animation: slideDown 0.5s ease-out;
-        }
-
-        @keyframes slideDown {
-            from { transform: translateY(-100%); }
-            to { transform: translateY(0); }
         }
 
         nav .container {
@@ -169,14 +139,7 @@
             background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
             text-decoration: none;
-            letter-spacing: -0.5px;
-            transition: transform 0.3s;
-        }
-
-        .logo:hover {
-            transform: scale(1.05);
         }
 
         nav ul {
@@ -211,7 +174,7 @@
             width: 100%;
         }
 
-        .staff-login-btn {
+        .staff-btn {
             background: linear-gradient(135deg, var(--primary), #ff5588);
             color: var(--light);
             padding: 0.6rem 1.5rem;
@@ -221,30 +184,17 @@
             font-weight: 600;
             font-size: 0.9rem;
             transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .staff-login-btn:hover {
+        .staff-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 25px rgba(255, 51, 102, 0.4);
         }
 
-        .staff-logout-btn {
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--light);
-            padding: 0.6rem 1.5rem;
-            border-radius: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: all 0.3s;
-        }
-
-        .staff-logout-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        /* Mobile Menu Toggle */
         .menu-toggle {
             display: none;
             flex-direction: column;
@@ -257,10 +207,9 @@
             height: 3px;
             background: var(--light);
             border-radius: 3px;
-            transition: all 0.3s;
         }
 
-        /* Modal */
+        /* Login Modal */
         .modal {
             display: none;
             position: fixed;
@@ -273,35 +222,21 @@
             z-index: 2000;
             align-items: center;
             justify-content: center;
-            animation: fadeIn 0.3s;
         }
 
         .modal.active {
             display: flex;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
         .modal-content {
             background: var(--dark);
             border-radius: 30px;
             padding: 3rem;
-            max-width: 600px;
+            max-width: 450px;
             width: 90%;
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: var(--shadow);
-            animation: slideUp 0.3s;
             position: relative;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        @keyframes slideUp {
-            from { transform: translateY(50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
         }
 
         .modal-close {
@@ -331,7 +266,6 @@
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
 
         .modal p {
@@ -347,100 +281,22 @@
             display: block;
             margin-bottom: 0.5rem;
             font-weight: 600;
-            color: var(--light);
         }
 
-        .form-group input,
-        .form-group textarea,
-        .form-group select {
+        .form-group input {
             width: 100%;
             padding: 1rem;
             border: 1px solid rgba(255, 255, 255, 0.1);
             background: rgba(255, 255, 255, 0.05);
             border-radius: 15px;
             color: var(--light);
-            font-family: 'Plus Jakarta Sans', sans-serif;
             font-size: 1rem;
-            transition: all 0.3s;
         }
 
-        .form-group input:focus,
-        .form-group textarea:focus,
-        .form-group select:focus {
+        .form-group input:focus {
             outline: none;
             border-color: var(--primary);
             background: rgba(255, 255, 255, 0.08);
-        }
-
-        .form-group textarea {
-            min-height: 120px;
-            resize: vertical;
-        }
-
-        .form-group input[type="file"] {
-            padding: 0.8rem;
-        }
-
-        .form-group select {
-            cursor: pointer;
-        }
-
-        .image-preview {
-            margin-top: 1rem;
-            border-radius: 15px;
-            overflow: hidden;
-            max-height: 200px;
-            display: none;
-        }
-
-        .image-preview img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        .image-preview.active {
-            display: block;
-        }
-
-        .remove-image-btn {
-            background: rgba(255, 68, 68, 0.9);
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 10px;
-            cursor: pointer;
-            margin-top: 0.5rem;
-            font-size: 0.9rem;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-
-        .remove-image-btn:hover {
-            background: rgba(255, 68, 68, 1);
-        }
-
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            margin-top: 1rem;
-            padding: 1rem;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 10px;
-        }
-
-        .checkbox-group input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-            accent-color: var(--primary);
-        }
-
-        .checkbox-group label {
-            margin: 0;
-            cursor: pointer;
-            user-select: none;
         }
 
         .form-error {
@@ -450,82 +306,11 @@
             padding: 0.8rem;
             background: rgba(255, 68, 68, 0.1);
             border-radius: 10px;
-            border-left: 3px solid #ff4444;
             display: none;
         }
 
         .form-error.show {
             display: block;
-        }
-
-        .form-success {
-            color: #44ff44;
-            font-size: 0.9rem;
-            margin-top: 1rem;
-            padding: 0.8rem;
-            background: rgba(68, 255, 68, 0.1);
-            border-radius: 10px;
-            border-left: 3px solid #44ff44;
-            display: none;
-        }
-
-        .form-success.show {
-            display: block;
-        }
-
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 8rem 2rem 4rem;
-            position: relative;
-        }
-
-        .hero-content {
-            max-width: 900px;
-            animation: fadeInUp 1s ease-out;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .hero h1 {
-            font-family: 'Fredoka', sans-serif;
-            font-size: 4.5rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            line-height: 1.2;
-            animation: fadeInUp 1s ease-out 0.2s backwards;
-        }
-
-        .hero p {
-            font-size: 1.3rem;
-            color: var(--gray);
-            margin-bottom: 2.5rem;
-            animation: fadeInUp 1s ease-out 0.4s backwards;
-        }
-
-        .btn-group {
-            display: flex;
-            gap: 1.5rem;
-            justify-content: center;
-            flex-wrap: wrap;
-            animation: fadeInUp 1s ease-out 0.6s backwards;
         }
 
         .btn {
@@ -538,7 +323,6 @@
             transition: all 0.3s;
             text-decoration: none;
             display: inline-block;
-            font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
         .btn-primary {
@@ -552,16 +336,9 @@
             box-shadow: 0 15px 40px rgba(255, 51, 102, 0.6);
         }
 
-        .btn-primary:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-
         .btn-secondary {
             background: rgba(255, 255, 255, 0.1);
             color: var(--light);
-            backdrop-filter: blur(10px);
             border: 2px solid rgba(255, 255, 255, 0.2);
         }
 
@@ -570,10 +347,43 @@
             transform: translateY(-3px);
         }
 
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 8rem 2rem 4rem;
+        }
+
+        .hero h1 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 4.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: var(--gray);
+            margin-bottom: 2.5rem;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
         /* Section Styles */
         section {
             padding: 6rem 2rem;
-            position: relative;
         }
 
         .container {
@@ -589,7 +399,6 @@
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
 
         .section-subtitle {
@@ -599,14 +408,12 @@
             margin-bottom: 4rem;
         }
 
-        /* About Section */
         .about-content {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(20px);
             border-radius: 30px;
             padding: 3rem;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: var(--shadow);
         }
 
         .about-content p {
@@ -616,131 +423,11 @@
             margin-bottom: 1.5rem;
         }
 
-        /* Staff Section */
-        .staff-header {
-            display: grid;
-            grid-template-columns: 200px 1fr 200px;
-            align-items: center;
-            margin-bottom: 3rem;
-            gap: 1rem;
-        }
-
-        .staff-header > div:first-child {
-            /* Placeholder kiri untuk spacing */
-        }
-
-        .staff-header > div:nth-child(2) {
-            text-align: center;
-        }
-
-        .staff-header > div:nth-child(2) .section-title,
-        .staff-header > div:nth-child(2) .section-subtitle {
-            text-align: center;
-            margin-bottom: 0.5rem;
-        }
-
-        .staff-header > button,
-        .staff-header > div:last-child {
-            justify-self: end;
-        }
-
-        .manage-staff-btn {
-            display: none;
-            background: linear-gradient(135deg, var(--secondary), #00a8cc);
-            color: var(--light);
-            padding: 0.8rem 1.5rem;
-            border-radius: 25px;
-            border: none;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            white-space: nowrap;
-        }
-
-        .manage-staff-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0, 212, 255, 0.4);
-        }
-
-        .manage-donors-btn {
-            display: none;
-            background: linear-gradient(135deg, var(--accent), #ffa500);
-            color: var(--darker);
-            padding: 0.8rem 1.5rem;
-            border-radius: 25px;
-            border: none;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            white-space: nowrap;
-        }
-
-        .manage-donors-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(255, 215, 0, 0.4);
-        }
-
-        .manage-gallery-btn {
-            display: none;
-            background: linear-gradient(135deg, #ff9a56, #ff6a88);
-            color: var(--light);
-            padding: 0.8rem 1.5rem;
-            border-radius: 25px;
-            border: none;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            white-space: nowrap;
-        }
-
-        .manage-gallery-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(255, 154, 86, 0.4);
-        }
-
-        .add-news-btn {
-            display: none;
-            background: linear-gradient(135deg, var(--primary), #ff5588);
-            color: var(--light);
-            padding: 0.8rem 1.5rem;
-            border-radius: 25px;
-            border: none;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            white-space: nowrap;
-        }
-
-        .add-news-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(255, 51, 102, 0.4);
-        }
-
+        /* Staff Grid */
         .staff-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 2rem;
-            margin-top: 3rem;
         }
 
         .staff-card {
@@ -750,7 +437,7 @@
             padding: 2.5rem 2rem;
             text-align: center;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.4s;
             position: relative;
             overflow: hidden;
         }
@@ -766,13 +453,6 @@
             transform: scaleX(0);
             transition: transform 0.4s;
         }
-
-        .staff-card.owner::before { background: var(--gradient-1); }
-        .staff-card.developer::before { background: var(--gradient-3); }
-        .staff-card.headadmin::before { background: var(--gradient-2); }
-        .staff-card.admin::before { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
-        .staff-card.moderator::before { background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); }
-        .staff-card.creator::before { background: linear-gradient(135deg, #ff9a56 0%, #ff6a88 100%); }
 
         .staff-card:hover {
             transform: translateY(-10px);
@@ -793,10 +473,7 @@
             align-items: center;
             justify-content: center;
             font-size: 3rem;
-            font-weight: 700;
-            color: var(--light);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            position: relative;
             overflow: hidden;
         }
 
@@ -806,17 +483,10 @@
             object-fit: cover;
         }
 
-        .staff-card.developer .staff-avatar { background: var(--gradient-3); }
-        .staff-card.headadmin .staff-avatar { background: var(--gradient-2); }
-        .staff-card.admin .staff-avatar { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
-        .staff-card.moderator .staff-avatar { background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); }
-        .staff-card.creator .staff-avatar { background: linear-gradient(135deg, #ff9a56 0%, #ff6a88 100%); }
-
         .staff-name {
             font-family: 'Fredoka', sans-serif;
             font-size: 1.5rem;
             margin-bottom: 0.5rem;
-            color: var(--light);
         }
 
         .staff-role {
@@ -829,497 +499,13 @@
             background: rgba(255, 255, 255, 0.1);
         }
 
-        .staff-card.owner .staff-role { color: #a78bfa; }
-        .staff-card.developer .staff-role { color: #00D4FF; }
-        .staff-card.headadmin .staff-role { color: #f5576c; }
-        .staff-card.admin .staff-role { color: #fee140; }
-        .staff-card.moderator .staff-role { color: #30cfd0; }
-        .staff-card.creator .staff-role { color: #ff9a56; }
-
         .staff-desc {
             color: var(--gray);
             font-size: 0.95rem;
             line-height: 1.6;
         }
 
-        .staff-actions {
-            display: none;
-            margin-top: 1rem;
-            gap: 0.5rem;
-        }
-
-        .staff-card.editable .staff-actions {
-            display: flex;
-        }
-
-        .staff-edit-btn,
-        .staff-delete-btn {
-            flex: 1;
-            padding: 0.6rem 1rem;
-            border: none;
-            border-radius: 10px;
-            font-weight: 600;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .staff-edit-btn {
-            background: rgba(0, 212, 255, 0.2);
-            color: var(--secondary);
-            border: 1px solid var(--secondary);
-        }
-
-        .staff-edit-btn:hover {
-            background: rgba(0, 212, 255, 0.3);
-        }
-
-        .staff-delete-btn {
-            background: rgba(255, 68, 68, 0.2);
-            color: #ff4444;
-            border: 1px solid #ff4444;
-        }
-
-        .staff-delete-btn:hover {
-            background: rgba(255, 68, 68, 0.3);
-        }
-
-        /* Updates/News Section */
-        .news-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-        }
-
-        .news-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            border-radius: 25px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s;
-        }
-
-        .news-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow);
-        }
-
-        .news-image {
-            width: 100%;
-            height: 200px;
-            background: var(--gradient-1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 4rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .news-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .news-card:nth-child(2) .news-image { background: var(--gradient-2); }
-        .news-card:nth-child(3) .news-image { background: var(--gradient-3); }
-        .news-card:nth-child(4) .news-image { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
-        .news-card:nth-child(5) .news-image { background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); }
-
-        .news-content {
-            padding: 2rem;
-        }
-
-        .news-date {
-            color: var(--primary);
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .news-title {
-            font-family: 'Fredoka', sans-serif;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--light);
-        }
-
-        .news-desc {
-            color: var(--gray);
-            line-height: 1.6;
-        }
-
-        .empty-news {
-            text-align: center;
-            padding: 4rem 2rem;
-            color: var(--gray);
-        }
-
-        .empty-news h3 {
-            font-family: 'Fredoka', sans-serif;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--light);
-        }
-
-        .empty-news p {
-            color: var(--gray);
-        }
-
-        /* Gallery Section */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .gallery-item {
-            border-radius: 20px;
-            overflow: hidden;
-            position: relative;
-            background: rgba(255, 255, 255, 0.05);
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .gallery-item:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow);
-        }
-
-        .gallery-item-image {
-            width: 100%;
-            aspect-ratio: 16/9;
-            position: relative;
-            overflow: hidden;
-            background: var(--gradient-1);
-        }
-
-        .gallery-item-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .gallery-item::after {
-            display: none;
-        }
-
-        .gallery-item.has-image::after {
-            display: none;
-        }
-
-        .gallery-caption {
-            padding: 1rem;
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--light);
-        }
-
-        .gallery-caption-text {
-            font-size: 0.95rem;
-            line-height: 1.5;
-            margin-bottom: 0.5rem;
-            color: var(--light);
-        }
-
-        .gallery-caption-meta {
-            font-size: 0.85rem;
-            color: var(--gray);
-        }
-
-        /* Gallery Interaction */
-        .gallery-interactions {
-            padding: 0.8rem 1rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            gap: 1.5rem;
-            align-items: center;
-        }
-
-        .gallery-like-btn {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: none;
-            border: none;
-            color: var(--gray);
-            cursor: pointer;
-            font-size: 1rem;
-            padding: 0.5rem;
-            border-radius: 10px;
-            transition: all 0.3s;
-        }
-
-        .gallery-like-btn:hover {
-            background: rgba(255, 51, 102, 0.1);
-            color: var(--primary);
-        }
-
-        .gallery-like-btn.liked {
-            color: var(--primary);
-        }
-
-        .gallery-like-btn.liked .like-icon {
-            animation: likeAnimation 0.5s ease;
-        }
-
-        @keyframes likeAnimation {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.3); }
-        }
-
-        .like-icon {
-            font-size: 1.3rem;
-            display: inline-block;
-        }
-
-        .like-count {
-            font-weight: 600;
-            font-size: 0.95rem;
-        }
-
-        .gallery-comment-btn {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: none;
-            border: none;
-            color: var(--gray);
-            cursor: pointer;
-            font-size: 1rem;
-            padding: 0.5rem;
-            border-radius: 10px;
-            transition: all 0.3s;
-        }
-
-        .gallery-comment-btn:hover {
-            background: rgba(0, 212, 255, 0.1);
-            color: var(--secondary);
-        }
-
-        .comment-icon {
-            font-size: 1.3rem;
-        }
-
-        .comment-count {
-            font-weight: 600;
-            font-size: 0.95rem;
-        }
-
-        /* Comment Section */
-        .gallery-comments {
-            padding: 1rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            max-height: 200px;
-            overflow-y: auto;
-        }
-
-        .comment-item {
-            margin-bottom: 0.8rem;
-            padding: 0.8rem;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 10px;
-        }
-
-        .comment-author {
-            font-weight: 600;
-            color: var(--light);
-            font-size: 0.9rem;
-            margin-bottom: 0.3rem;
-        }
-
-        .comment-text {
-            color: var(--gray);
-            font-size: 0.9rem;
-            line-height: 1.4;
-        }
-
-        .comment-time {
-            font-size: 0.75rem;
-            color: var(--gray);
-            margin-top: 0.3rem;
-        }
-
-        .comment-form {
-            padding: 1rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .comment-input-group {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .comment-name-input {
-            flex: 0 0 150px;
-            padding: 0.6rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            color: var(--light);
-            font-size: 0.9rem;
-        }
-
-        .comment-text-input {
-            flex: 1;
-            padding: 0.6rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            color: var(--light);
-            font-size: 0.9rem;
-            resize: none;
-        }
-
-        .comment-name-input:focus,
-        .comment-text-input:focus {
-            outline: none;
-            border-color: var(--secondary);
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        .comment-submit-btn {
-            background: linear-gradient(135deg, var(--secondary), #00a8cc);
-            color: var(--light);
-            border: none;
-            padding: 0.6rem 1.2rem;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: all 0.3s;
-        }
-
-        .comment-submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 212, 255, 0.3);
-        }
-
-        .comment-submit-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .show-all-comments {
-            text-align: center;
-            padding: 0.5rem;
-            color: var(--secondary);
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .show-all-comments:hover {
-            color: var(--light);
-        }
-
-        /* Comments Modal */
-        .comments-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(10px);
-            z-index: 3000;
-            align-items: center;
-            justify-content: center;
-            animation: fadeIn 0.3s;
-        }
-
-        .comments-modal.active {
-            display: flex;
-        }
-
-        .comments-modal-content {
-            background: var(--dark);
-            border-radius: 30px;
-            padding: 2rem;
-            max-width: 600px;
-            width: 90%;
-            max-height: 80vh;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: var(--shadow);
-            animation: slideUp 0.3s;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .comments-modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .comments-modal-header h3 {
-            font-family: 'Fredoka', sans-serif;
-            font-size: 1.5rem;
-            color: var(--light);
-        }
-
-        .comments-modal-close {
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            color: var(--light);
-            font-size: 1.5rem;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .comments-modal-close:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: rotate(90deg);
-        }
-
-        .comments-modal-list {
-            flex: 1;
-            overflow-y: auto;
-            margin-bottom: 1rem;
-        }
-
-        .empty-comments {
-            text-align: center;
-            padding: 2rem;
-            color: var(--gray);
-        }
-
-        .empty-comments p {
-            margin-top: 0.5rem;
-        }
-
-        .empty-gallery {
-            text-align: center;
-            padding: 4rem 2rem;
-            color: var(--gray);
-            grid-column: 1 / -1;
-        }
-
-        .empty-gallery h3 {
-            font-family: 'Fredoka', sans-serif;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--light);
-        }
-
-        .empty-gallery p {
-            color: var(--gray);
-        }
-
-        /* Game List Section */
+        /* Games Grid */
         .games-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -1333,13 +519,11 @@
             overflow: hidden;
             border: 1px solid rgba(255, 255, 255, 0.1);
             transition: all 0.4s;
-            position: relative;
         }
 
         .game-card:hover {
             transform: translateY(-10px);
             box-shadow: var(--shadow);
-            border-color: var(--primary);
         }
 
         .game-thumbnail {
@@ -1370,10 +554,6 @@
             display: none;
         }
 
-        .game-card:nth-child(2) .game-thumbnail { background: var(--gradient-2); }
-        .game-card:nth-child(3) .game-thumbnail { background: var(--gradient-3); }
-        .game-card:nth-child(4) .game-thumbnail { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
-
         .game-badge {
             position: absolute;
             top: 1rem;
@@ -1384,7 +564,6 @@
             border-radius: 20px;
             font-size: 0.85rem;
             font-weight: 700;
-            box-shadow: 0 5px 15px rgba(255, 51, 102, 0.4);
         }
 
         .game-info {
@@ -1395,14 +574,12 @@
             font-family: 'Fredoka', sans-serif;
             font-size: 1.6rem;
             margin-bottom: 0.8rem;
-            color: var(--light);
         }
 
         .game-description {
             color: var(--gray);
             line-height: 1.6;
             margin-bottom: 1.5rem;
-            font-size: 0.95rem;
         }
 
         .game-meta {
@@ -1418,10 +595,6 @@
             gap: 0.5rem;
             font-size: 0.9rem;
             color: var(--gray);
-        }
-
-        .game-meta-item span:first-child {
-            font-size: 1.2rem;
         }
 
         .game-link {
@@ -1441,85 +614,67 @@
             box-shadow: 0 10px 25px rgba(255, 51, 102, 0.4);
         }
 
-        .empty-games {
-            text-align: center;
-            padding: 4rem 2rem;
-            color: var(--gray);
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+        /* News Grid */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
         }
 
-        .empty-games h3 {
-            font-family: 'Fredoka', sans-serif;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--light);
-        }
-
-        .empty-games p {
-            color: var(--gray);
-        }
-
-        .gallery-item:nth-child(2) .gallery-item-image { background: var(--gradient-2); }
-        .gallery-item:nth-child(3) .gallery-item-image { background: var(--gradient-3); }
-        .gallery-item:nth-child(4) .gallery-item-image { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
-        .gallery-item:nth-child(5) .gallery-item-image { background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); }
-        .gallery-item:nth-child(6) .gallery-item-image { background: linear-gradient(135deg, #ff9a56 0%, #ff6a88 100%); }
-
-        .gallery-item-actions {
-            position: absolute;
-            top: 0.8rem;
-            right: 0.8rem;
-            display: none;
-            gap: 0.5rem;
-            z-index: 10;
-        }
-
-        .gallery-item.editable .gallery-item-actions {
-            display: flex;
-        }
-
-        .gallery-item-image {
-            position: relative;
-        }
-
-        .gallery-edit-btn,
-        .gallery-delete-btn {
-            width: 36px;
-            height: 36px;
-            border: none;
-            border-radius: 50%;
-            font-size: 1rem;
-            cursor: pointer;
+        .news-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             transition: all 0.3s;
+        }
+
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .news-image {
+            width: 100%;
+            height: 200px;
+            background: var(--gradient-1);
             display: flex;
             align-items: center;
             justify-content: center;
-            backdrop-filter: blur(10px);
+            font-size: 4rem;
+            overflow: hidden;
         }
 
-        .gallery-edit-btn {
-            background: rgba(0, 212, 255, 0.9);
-            color: white;
+        .news-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
-        .gallery-edit-btn:hover {
-            background: rgba(0, 212, 255, 1);
-            transform: scale(1.1);
+        .news-content {
+            padding: 2rem;
         }
 
-        .gallery-delete-btn {
-            background: rgba(255, 68, 68, 0.9);
-            color: white;
+        .news-date {
+            color: var(--primary);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
         }
 
-        .gallery-delete-btn:hover {
-            background: rgba(255, 68, 68, 1);
-            transform: scale(1.1);
+        .news-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
         }
 
-        /* Top Donors Section */
+        .news-desc {
+            color: var(--gray);
+            line-height: 1.6;
+        }
+
+        /* Donors */
         .donors-leaderboard {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(20px);
@@ -1536,7 +691,6 @@
             border-radius: 15px;
             margin-bottom: 1rem;
             transition: all 0.3s;
-            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .donor-item:hover {
@@ -1551,27 +705,6 @@
             margin-right: 2rem;
             min-width: 50px;
             text-align: center;
-        }
-
-        .donor-item:nth-child(1) .rank { 
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .donor-item:nth-child(2) .rank { 
-            background: linear-gradient(135deg, #C0C0C0, #808080);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .donor-item:nth-child(3) .rank { 
-            background: linear-gradient(135deg, #CD7F32, #8B4513);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
 
         .donor-info {
@@ -1596,48 +729,85 @@
             color: var(--accent);
         }
 
-        .donor-actions {
-            display: none;
-            margin-top: 0.8rem;
-            gap: 0.5rem;
+        /* Gallery */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
         }
 
-        .donor-item.editable .donor-actions {
-            display: flex;
-        }
-
-        .donor-edit-btn,
-        .donor-delete-btn {
-            padding: 0.5rem 1rem;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 0.8rem;
-            cursor: pointer;
+        .gallery-item {
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            background: rgba(255, 255, 255, 0.05);
             transition: all 0.3s;
         }
 
-        .donor-edit-btn {
-            background: rgba(255, 215, 0, 0.2);
-            color: var(--accent);
-            border: 1px solid var(--accent);
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
         }
 
-        .donor-edit-btn:hover {
-            background: rgba(255, 215, 0, 0.3);
+        .gallery-item-image {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: var(--gradient-1);
+            overflow: hidden;
         }
 
-        .donor-delete-btn {
-            background: rgba(255, 68, 68, 0.2);
-            color: #ff4444;
-            border: 1px solid #ff4444;
+        .gallery-item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
-        .donor-delete-btn:hover {
-            background: rgba(255, 68, 68, 0.3);
+        .gallery-caption {
+            padding: 1rem;
         }
 
-        /* Contact Section */
+        .gallery-caption-text {
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .gallery-caption-meta {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        .gallery-interactions {
+            padding: 0.8rem 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .gallery-like-btn,
+        .gallery-comment-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: none;
+            border: none;
+            color: var(--gray);
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0.5rem;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .gallery-like-btn:hover {
+            background: rgba(255, 51, 102, 0.1);
+            color: var(--primary);
+        }
+
+        .gallery-like-btn.liked {
+            color: var(--primary);
+        }
+
+        /* Contact */
         .social-links {
             display: flex;
             justify-content: center;
@@ -1676,11 +846,6 @@
             margin-bottom: 0.5rem;
         }
 
-        .social-handle {
-            color: var(--gray);
-            font-size: 0.9rem;
-        }
-
         /* Footer */
         footer {
             background: rgba(0, 0, 0, 0.3);
@@ -1694,29 +859,40 @@
             margin-bottom: 1rem;
         }
 
-        /* Firebase Setup Notice */
-        .firebase-notice {
-            position: fixed;
-            top: 80px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(255, 215, 0, 0.95);
-            color: #000;
-            padding: 1rem 2rem;
-            border-radius: 15px;
-            font-weight: 600;
-            z-index: 9999;
-            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
-            animation: slideDown 0.5s ease-out;
-            max-width: 90%;
+        /* Loading */
+        .loading {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-container {
             text-align: center;
+            padding: 4rem 2rem;
         }
 
-        .firebase-notice.hidden {
-            display: none;
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--gray);
         }
 
-        /* Responsive Design */
+        .empty-state h3 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--light);
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
             .menu-toggle {
                 display: flex;
@@ -1743,21 +919,14 @@
                 font-size: 2.5rem;
             }
 
-            .hero p {
-                font-size: 1.1rem;
-            }
-
-            .btn-group {
-                flex-direction: column;
-            }
-
             .section-title {
                 font-size: 2rem;
             }
 
             .staff-grid,
             .news-grid,
-            .gallery-grid {
+            .gallery-grid,
+            .games-grid {
                 grid-template-columns: 1fr;
             }
 
@@ -1769,94 +938,12 @@
 
             .rank {
                 margin-right: 0;
-                margin-bottom: 0.5rem;
             }
-
-            .modal-content {
-                padding: 2rem;
-            }
-
-            .staff-header {
-                grid-template-columns: 1fr;
-                text-align: center;
-                gap: 1.5rem;
-            }
-
-            .staff-header > div:first-child {
-                display: none;
-            }
-
-            .staff-header > button,
-            .staff-header > div:last-child {
-                justify-self: center;
-                width: 100%;
-                max-width: 300px;
-            }
-
-            .gallery-interactions {
-                justify-content: center;
-            }
-
-            .comment-input-group {
-                flex-direction: column;
-            }
-
-            .comment-name-input {
-                flex: 1;
-            }
-
-            .comments-modal-content {
-                width: 95%;
-                padding: 1.5rem;
-            }
-        }
-
-        /* Scroll Animation */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.6s ease-out;
-        }
-
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Loading spinner */
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: var(--light);
-            animation: spin 1s ease-in-out infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .loading-container {
-            text-align: center;
-            padding: 4rem 2rem;
-        }
-
-        .loading-container .loading {
-            width: 40px;
-            height: 40px;
-            margin-bottom: 1rem;
         }
     </style>
 </head>
 <body>
     <div class="bg-animation"></div>
-
-    <!-- Firebase Setup Notice -->
-    <div id="firebaseNotice" class="firebase-notice">
-        ⚠️ Menginisialisasi Firebase...
-    </div>
 
     <!-- Navigation -->
     <nav>
@@ -1877,7 +964,7 @@
                 <li><a href="#gallery">Galeri</a></li>
                 <li><a href="#contact">Kontak</a></li>
                 <li id="staffAuthSection">
-                    <button class="staff-login-btn" onclick="openLoginModal()">🔐 Staff Login</button>
+                    <button class="staff-btn" onclick="openLoginModal()">🔐 Staff Login</button>
                 </li>
             </ul>
         </div>
@@ -1898,219 +985,11 @@
         </div>
     </div>
 
-    <!-- Add News Modal -->
-    <div id="addNewsModal" class="modal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeAddNewsModal()">×</button>
-            <h2>Tambah Konten Baru</h2>
-            <p>Buat update atau tambah game baru untuk komunitas</p>
-            
-            <div class="form-group">
-                <label for="contentType">Tipe Konten</label>
-                <select id="contentType" onchange="toggleContentType()">
-                    <option value="update">📢 Update/Pengumuman</option>
-                    <option value="game">🎮 Game Baru</option>
-                </select>
-            </div>
-
-            <!-- Update Fields -->
-            <div id="updateFields">
-                <div class="form-group">
-                    <label for="newsTitle">Judul Update</label>
-                    <input type="text" id="newsTitle" placeholder="Contoh: Event Valentine Dimulai!">
-                </div>
-                <div class="form-group">
-                    <label for="newsEmoji">Emoji (opsional)</label>
-                    <input type="text" id="newsEmoji" placeholder="Contoh: 🎊" maxlength="2">
-                </div>
-                <div class="form-group">
-                    <label for="newsImage">Upload Foto (JPG/PNG, opsional)</label>
-                    <input type="file" id="newsImage" accept="image/jpeg,image/png" onchange="previewImage(event, 'news')">
-                    <div id="newsImagePreview" class="image-preview">
-                        <img id="newsPreviewImg" src="" alt="Preview">
-                    </div>
-                    <button id="removeNewsImageBtn" class="remove-image-btn" style="display: none;" onclick="removeImage('news')">🗑️ Hapus Foto</button>
-                    <div class="checkbox-group" id="galleryCheckboxGroup" style="display: none;">
-                        <input type="checkbox" id="addToGallery" checked>
-                        <label for="addToGallery">📸 Tampilkan foto ini di galeri juga</label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="newsContent">Konten Update</label>
-                    <textarea id="newsContent" placeholder="Tulis detail update di sini..."></textarea>
-                </div>
-            </div>
-
-            <!-- Game Fields -->
-            <div id="gameFields" style="display: none;">
-                <div class="form-group">
-                    <label for="gameTitle">Nama Game</label>
-                    <input type="text" id="gameTitle" placeholder="Contoh: Mount Dontol Adventure">
-                </div>
-                <div class="form-group">
-                    <label for="gameDescription">Deskripsi Game</label>
-                    <textarea id="gameDescription" placeholder="Jelaskan tentang game ini..."></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="gameThumbnail">Thumbnail Game (JPG/PNG)</label>
-                    <input type="file" id="gameThumbnail" accept="image/jpeg,image/png" onchange="previewImage(event, 'game')">
-                    <div id="gameImagePreview" class="image-preview">
-                        <img id="gamePreviewImg" src="" alt="Preview">
-                    </div>
-                    <button id="removeGameImageBtn" class="remove-image-btn" style="display: none;" onclick="removeImage('game')">🗑️ Hapus Thumbnail</button>
-                </div>
-                <div class="form-group">
-                    <label for="gameLink">Link Game (Roblox URL)</label>
-                    <input type="url" id="gameLink" placeholder="https://www.roblox.com/games/...">
-                </div>
-                <div class="form-group">
-                    <label for="gamePlayers">Jumlah Pemain</label>
-                    <input type="text" id="gamePlayers" placeholder="Contoh: 1.2K">
-                </div>
-                <div class="form-group">
-                    <label for="gameStatus">Status Game</label>
-                    <select id="gameStatus">
-                        <option value="🟢 LIVE">🟢 LIVE</option>
-                        <option value="🟡 BETA">🟡 BETA</option>
-                        <option value="🔴 MAINTENANCE">🔴 MAINTENANCE</option>
-                        <option value="⭐ NEW">⭐ NEW</option>
-                    </select>
-                </div>
-            </div>
-
-            <div id="newsError" class="form-error"></div>
-            <div id="newsSuccess" class="form-success"></div>
-            <button id="submitContentBtn" class="btn btn-primary" style="width: 100%;" onclick="submitContent()">Publikasikan</button>
-        </div>
-    </div>
-
-    <!-- Manage Staff Modal -->
-    <div id="manageStaffModal" class="modal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeManageStaffModal()">×</button>
-            <h2 id="staffModalTitle">Tambah Staff Baru</h2>
-            <p>Kelola anggota tim staff</p>
-            
-            <div class="form-group">
-                <label for="staffName">Nama Staff</label>
-                <input type="text" id="staffName" placeholder="Contoh: John Doe">
-            </div>
-
-            <div class="form-group">
-                <label for="staffRole">Role</label>
-                <select id="staffRole">
-                    <option value="owner">👑 Owner</option>
-                    <option value="developer">💻 Developer</option>
-                    <option value="headadmin">⭐ Head Admin</option>
-                    <option value="admin">🛡️ Admin</option>
-                    <option value="moderator">🔰 Moderator</option>
-                    <option value="creator">🎥 Content Creator</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="staffDescription">Deskripsi</label>
-                <textarea id="staffDescription" placeholder="Jelaskan tugas dan tanggung jawab staff ini..."></textarea>
-            </div>
-
-            <div class="form-group">
-                <label for="staffPhoto">Foto Profil (JPG/PNG, opsional)</label>
-                <input type="file" id="staffPhoto" accept="image/jpeg,image/png" onchange="previewImage(event, 'staff')">
-                <div id="staffImagePreview" class="image-preview">
-                    <img id="staffPreviewImg" src="" alt="Preview">
-                </div>
-                <button id="removeStaffImageBtn" class="remove-image-btn" style="display: none;" onclick="removeImage('staff')">🗑️ Hapus Foto</button>
-            </div>
-
-            <div id="staffError" class="form-error"></div>
-            <div id="staffSuccess" class="form-success"></div>
-            <button id="saveStaffBtn" class="btn btn-primary" style="width: 100%;" onclick="saveStaff()">Simpan Staff</button>
-        </div>
-    </div>
-
-    <!-- Manage Donors Modal -->
-    <div id="manageDonorsModal" class="modal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeManageDonorsModal()">×</button>
-            <h2 id="donorModalTitle">Tambah Donatur Baru</h2>
-            <p>Kelola daftar top donatur</p>
-            
-            <div class="form-group">
-                <label for="donorName">Nama Donatur</label>
-                <input type="text" id="donorName" placeholder="Contoh: GenerousDonor123">
-            </div>
-
-            <div class="form-group">
-                <label for="donorAmount">Jumlah Donasi</label>
-                <input type="text" id="donorAmount" placeholder="Contoh: 500K Robux">
-            </div>
-
-            <div class="form-group">
-                <label for="donorMessage">Pesan Donatur (opsional)</label>
-                <input type="text" id="donorMessage" placeholder="Contoh: Semangat terus develop game-nya!">
-            </div>
-
-            <div id="donorError" class="form-error"></div>
-            <div id="donorSuccess" class="form-success"></div>
-            <button id="saveDonorBtn" class="btn btn-primary" style="width: 100%;" onclick="saveDonor()">Simpan Donatur</button>
-        </div>
-    </div>
-
-    <!-- Manage Gallery Modal -->
-    <div id="manageGalleryModal" class="modal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeManageGalleryModal()">×</button>
-            <h2 id="galleryModalTitle">📸 Upload Foto ke Galeri</h2>
-            <p>Bagikan momen seru dari game atau komunitas kamu!</p>
-            
-            <div class="form-group">
-                <label for="galleryPhoto">Upload Foto (JPG/PNG) *</label>
-                <input type="file" id="galleryPhoto" accept="image/jpeg,image/png" onchange="previewImage(event, 'gallery')">
-                <div id="galleryImagePreview" class="image-preview">
-                    <img id="galleryPreviewImg" src="" alt="Preview">
-                </div>
-                <button id="removeGalleryImageBtn" class="remove-image-btn" style="display: none;" onclick="removeImage('gallery')">🗑️ Hapus Foto</button>
-            </div>
-
-            <div class="form-group">
-                <label for="galleryCaption">💬 Caption/Status (akan tampil di bawah foto)</label>
-                <textarea id="galleryCaption" placeholder="Tulis caption atau status untuk foto ini... ✨"></textarea>
-            </div>
-
-            <div id="galleryError" class="form-error"></div>
-            <div id="gallerySuccess" class="form-success"></div>
-            <button id="saveGalleryBtn" class="btn btn-primary" style="width: 100%;" onclick="saveGallery()">📤 Upload ke Galeri</button>
-        </div>
-    </div>
-
-    <!-- Comments Modal -->
-    <div id="commentsModal" class="comments-modal">
-        <div class="comments-modal-content">
-            <div class="comments-modal-header">
-                <h3>💬 Komentar</h3>
-                <button class="comments-modal-close" onclick="closeCommentsModal()">×</button>
-            </div>
-            <div id="commentsModalList" class="comments-modal-list">
-                <div class="loading-container">
-                    <div class="loading"></div>
-                    <p>Memuat komentar...</p>
-                </div>
-            </div>
-            <div class="comment-form">
-                <div class="comment-input-group">
-                    <input type="text" id="modalCommentName" class="comment-name-input" placeholder="Nama kamu">
-                    <textarea id="modalCommentText" class="comment-text-input" placeholder="Tulis komentar..." rows="2"></textarea>
-                </div>
-                <button class="comment-submit-btn" onclick="submitModalComment()">Kirim</button>
-            </div>
-        </div>
-    </div>
-
     <!-- Hero Section -->
     <section id="home" class="hero">
         <div class="hero-content">
             <h1>Selamat Datang di RAPS Developer!</h1>
-            <p>Komunitas Roblox Indonesia yang menyediakan pengalaman gaming terbaik. Bergabunglah dengan ribuan pemain lainnya dan nikmati game-game berkualitas!</p>
+            <p>Komunitas Roblox Indonesia yang menyediakan pengalaman gaming terbaik. Bergabunglah dengan ribuan pemain lainnya!</p>
             <div class="btn-group">
                 <a href="https://www.roblox.com/id/games/106744323733395/Mount-Dontol" target="_blank" class="btn btn-primary">🎮 Join Game Sekarang</a>
                 <a href="#about" class="btn btn-secondary">📖 Pelajari Lebih Lanjut</a>
@@ -2121,14 +1000,14 @@
     <!-- About Section -->
     <section id="about">
         <div class="container">
-            <h2 class="section-title fade-in">Tentang Kami</h2>
-            <p class="section-subtitle fade-in">Komunitas gaming profesional dan ramah</p>
-            <div class="about-content fade-in">
+            <h2 class="section-title">Tentang Kami</h2>
+            <p class="section-subtitle">Komunitas gaming profesional dan ramah</p>
+            <div class="about-content">
                 <p>
-                    <strong>RAPS Developer</strong> adalah komunitas Roblox terkemuka di Indonesia yang berfokus pada pengembangan game berkualitas tinggi dan pembangunan komunitas yang solid. Kami berkomitmen untuk menciptakan lingkungan bermain yang aman, menyenangkan, dan penuh tantangan.
+                    <strong>RAPS Developer</strong> adalah komunitas Roblox terkemuka di Indonesia yang berfokus pada pengembangan game berkualitas tinggi dan pembangunan komunitas yang solid.
                 </p>
                 <p>
-                    Dengan tim developer berpengalaman dan staff yang dedikasi, kami terus berinovasi menghadirkan game mode menarik, event rutin, dan sistem yang fair untuk semua pemain. Bergabunglah dengan ribuan member aktif kami dan rasakan pengalaman gaming yang berbeda.
+                    Dengan tim developer berpengalaman dan staff yang dedikasi, kami terus berinovasi menghadirkan game mode menarik, event rutin, dan sistem yang fair untuk semua pemain.
                 </p>
                 <p>
                     🎯 <strong>Visi Kami:</strong> Menjadi komunitas Roblox terbaik di Indonesia yang mengutamakan kualitas, kreativitas, dan sportivitas.
@@ -2140,14 +1019,8 @@
     <!-- Staff Team Section -->
     <section id="staff">
         <div class="container">
-            <div class="staff-header">
-                <div></div>
-                <div>
-                    <h2 class="section-title fade-in">Staff Team</h2>
-                    <p class="section-subtitle fade-in">Tim kami yang luar biasa!</p>
-                </div>
-                <button id="manageStaffBtn" class="manage-staff-btn" onclick="openManageStaffModal()">👥 Kelola Staff</button>
-            </div>
+            <h2 class="section-title">Staff Team</h2>
+            <p class="section-subtitle">Tim kami yang luar biasa!</p>
             <div id="staffGrid" class="staff-grid">
                 <div class="loading-container">
                     <div class="loading"></div>
@@ -2160,14 +1033,8 @@
     <!-- Games Section -->
     <section id="games">
         <div class="container">
-            <div class="staff-header">
-                <div></div>
-                <div>
-                    <h2 class="section-title fade-in">Daftar Game</h2>
-                    <p class="section-subtitle fade-in">Jelajahi game-game kami yang seru!</p>
-                </div>
-                <div></div>
-            </div>
+            <h2 class="section-title">Daftar Game</h2>
+            <p class="section-subtitle">Jelajahi game-game kami yang seru!</p>
             <div id="gamesGrid" class="games-grid">
                 <div class="loading-container">
                     <div class="loading"></div>
@@ -2180,14 +1047,8 @@
     <!-- Updates Section -->
     <section id="updates">
         <div class="container">
-            <div class="staff-header">
-                <div></div>
-                <div>
-                    <h2 class="section-title fade-in">Update Terbaru</h2>
-                    <p class="section-subtitle fade-in">Jangan lewatkan update terkini dari game kami!</p>
-                </div>
-                <button id="addNewsBtn" class="add-news-btn" onclick="openAddNewsModal()">➕ Tambah Update</button>
-            </div>
+            <h2 class="section-title">Update Terbaru</h2>
+            <p class="section-subtitle">Jangan lewatkan update terkini dari game kami!</p>
             <div id="newsGrid" class="news-grid">
                 <div class="loading-container">
                     <div class="loading"></div>
@@ -2200,15 +1061,9 @@
     <!-- Top Donors Section -->
     <section id="donors">
         <div class="container">
-            <div class="staff-header">
-                <div></div>
-                <div>
-                    <h2 class="section-title fade-in">Top Donasi</h2>
-                    <p class="section-subtitle fade-in">Terima kasih kepada para donatur yang mendukung kami!</p>
-                </div>
-                <button id="manageDonorsBtn" class="manage-donors-btn" onclick="openManageDonorsModal()">💰 Kelola Donasi</button>
-            </div>
-            <div id="donorsLeaderboard" class="donors-leaderboard fade-in">
+            <h2 class="section-title">Top Donasi</h2>
+            <p class="section-subtitle">Terima kasih kepada para donatur yang mendukung kami!</p>
+            <div id="donorsLeaderboard" class="donors-leaderboard">
                 <div class="loading-container">
                     <div class="loading"></div>
                     <p>Memuat daftar donatur...</p>
@@ -2220,14 +1075,8 @@
     <!-- Gallery Section -->
     <section id="gallery">
         <div class="container">
-            <div class="staff-header">
-                <div></div>
-                <div>
-                    <h2 class="section-title fade-in">Galeri</h2>
-                    <p class="section-subtitle fade-in">Momen-momen terbaik dari game kami!</p>
-                </div>
-                <button id="manageGalleryBtn" class="manage-gallery-btn" onclick="openManageGalleryModal()">📸 Kelola Galeri</button>
-            </div>
+            <h2 class="section-title">Galeri</h2>
+            <p class="section-subtitle">Momen-momen terbaik dari game kami!</p>
             <div id="galleryGrid" class="gallery-grid">
                 <div class="loading-container">
                     <div class="loading"></div>
@@ -2240,23 +1089,23 @@
     <!-- Contact Section -->
     <section id="contact">
         <div class="container">
-            <h2 class="section-title fade-in">Hubungi Kami</h2>
-            <p class="section-subtitle fade-in">Join komunitas kami di berbagai platform!</p>
+            <h2 class="section-title">Hubungi Kami</h2>
+            <p class="section-subtitle">Join komunitas kami di berbagai platform!</p>
             <div class="social-links">
-                <a href="https://www.roblox.com/id/communities/858405520/Raps-Developers#!/about" target="_blank" class="social-card fade-in">
+                <a href="https://www.roblox.com/id/communities/858405520/Raps-Developers#!/about" target="_blank" class="social-card">
                     <span class="social-icon">🎮</span>
                     <div class="social-name">Roblox Community</div>
-                    <div class="social-handle">RAPS Developers</div>
+                    <div style="color: var(--gray); font-size: 0.9rem;">RAPS Developers</div>
                 </a>
-                <a href="https://discord.gg/6ESQs43DvN" target="_blank" class="social-card fade-in">
+                <a href="https://discord.gg/6ESQs43DvN" target="_blank" class="social-card">
                     <span class="social-icon">💬</span>
                     <div class="social-name">Discord</div>
-                    <div class="social-handle">discord.gg/6ESQs43DvN</div>
+                    <div style="color: var(--gray); font-size: 0.9rem;">discord.gg/6ESQs43DvN</div>
                 </a>
-                <a href="https://www.tiktok.com/@raps_dev" target="_blank" class="social-card fade-in">
+                <a href="https://www.tiktok.com/@raps_dev" target="_blank" class="social-card">
                     <span class="social-icon">📱</span>
                     <div class="social-name">TikTok</div>
-                    <div class="social-handle">@raps_dev</div>
+                    <div style="color: var(--gray); font-size: 0.9rem;">@raps_dev</div>
                 </a>
             </div>
         </div>
@@ -2272,7 +1121,7 @@
 
     <script>
         // ============================================
-        // CONFIGURATION & CONSTANTS
+        // CONFIGURATION
         // ============================================
         
         const STAFF_DATABASE = {
@@ -2304,30 +1153,15 @@
             creator: 'CONTENT CREATOR'
         };
 
-        // ============================================
-        // STATE MANAGEMENT
-        // ============================================
-        
         let currentStaff = null;
-        let uploadedImages = {
-            news: null,
-            game: null,
-            staff: null,
-            gallery: null
-        };
-        let editingStaffId = null;
-        let editingDonorId = null;
-        let editingGalleryId = null;
-        let currentGalleryIdForComments = null;
         let userLikes = JSON.parse(localStorage.getItem('rapsDev_likes') || '{}');
 
         // ============================================
-        // FIREBASE HELPER FUNCTIONS
+        // FIREBASE HELPERS
         // ============================================
         
         function getFromFirebase(path) {
             if (!window.firebaseInitialized) {
-                console.warn('Firebase not initialized, using fallback empty data');
                 return Promise.resolve([]);
             }
             
@@ -2336,8 +1170,6 @@
                 .then(snapshot => {
                     const data = snapshot.val();
                     if (!data) return [];
-                    
-                    // Convert object to array
                     return Object.keys(data).map(key => ({
                         id: key,
                         ...data[key]
@@ -2356,99 +1188,6 @@
             
             const dbRef = window.firebaseRef(window.firebaseDatabase, `${path}/${id}`);
             return window.firebaseSet(dbRef, data);
-        }
-
-        function deleteFromFirebase(path, id) {
-            if (!window.firebaseInitialized) {
-                throw new Error('Firebase not initialized');
-            }
-            
-            const dbRef = window.firebaseRef(window.firebaseDatabase, `${path}/${id}`);
-            return window.firebaseRemove(dbRef);
-        }
-
-        // ============================================
-        // UTILITY FUNCTIONS
-        // ============================================
-        
-        function showError(elementId, message) {
-            const element = document.getElementById(elementId);
-            if (element) {
-                element.textContent = message;
-                element.classList.toggle('show', !!message);
-            }
-        }
-
-        function showSuccess(elementId, message) {
-            const element = document.getElementById(elementId);
-            if (element) {
-                element.textContent = message;
-                element.classList.toggle('show', !!message);
-            }
-        }
-
-        function setButtonLoading(buttonId, loading) {
-            const button = document.getElementById(buttonId);
-            if (button) {
-                button.disabled = loading;
-                if (loading) {
-                    button.dataset.originalText = button.textContent;
-                    button.innerHTML = '<span class="loading"></span> Memproses...';
-                } else {
-                    button.textContent = button.dataset.originalText || button.textContent;
-                }
-            }
-        }
-
-        // ============================================
-        // IMAGE HANDLING
-        // ============================================
-        
-        function previewImage(event, type) {
-            const file = event.target.files[0];
-            const errorId = type === 'news' || type === 'game' ? 'newsError' : 'staffError';
-            
-            if (!file) return;
-
-            if (!file.type.match('image/jpeg') && !file.type.match('image/png')) {
-                showError(errorId, 'Format file harus JPG atau PNG');
-                event.target.value = '';
-                return;
-            }
-
-            if (file.size > 2 * 1024 * 1024) {
-                showError(errorId, 'Ukuran file maksimal 2MB');
-                event.target.value = '';
-                return;
-            }
-
-            showError(errorId, '');
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                uploadedImages[type] = e.target.result;
-                document.getElementById(`${type}PreviewImg`).src = e.target.result;
-                document.getElementById(`${type}ImagePreview`).classList.add('active');
-                document.getElementById(`remove${type.charAt(0).toUpperCase() + type.slice(1)}ImageBtn`).style.display = 'inline-block';
-                
-                if (type === 'news') {
-                    document.getElementById('galleryCheckboxGroup').style.display = 'flex';
-                }
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function removeImage(type) {
-            uploadedImages[type] = null;
-            
-            const inputId = type === 'news' ? 'newsImage' : type === 'game' ? 'gameThumbnail' : 'staffPhoto';
-            document.getElementById(inputId).value = '';
-            document.getElementById(`${type}ImagePreview`).classList.remove('active');
-            document.getElementById(`remove${type.charAt(0).toUpperCase() + type.slice(1)}ImageBtn`).style.display = 'none';
-            
-            if (type === 'news') {
-                document.getElementById('galleryCheckboxGroup').style.display = 'none';
-            }
         }
 
         // ============================================
@@ -2471,58 +1210,51 @@
             const robloxId = document.getElementById('robloxId').value.trim();
             
             if (!robloxId) {
-                showError('loginError', 'Mohon masukkan ID Roblox Anda');
+                showError('ID Roblox tidak boleh kosong');
                 return;
             }
 
             const staff = STAFF_DATABASE[robloxId];
             
             if (!staff) {
-                showError('loginError', 'ID Roblox tidak terdaftar sebagai staff');
+                showError('ID Roblox tidak terdaftar sebagai staff');
                 return;
             }
 
             currentStaff = { id: robloxId, ...staff };
             localStorage.setItem('rapsStaffLogin', JSON.stringify(currentStaff));
             
-            updateUIForLoggedInStaff();
-            closeLoginModal();
+            // Check if redirected from admin dashboard
+            const urlParams = new URLSearchParams(window.location.search);
+            const redirectTo = urlParams.get('redirect');
             
-            alert(`✅ Selamat datang, ${staff.name}!`);
+            if (redirectTo === 'dashboard') {
+                window.location.href = 'admin-dashboard.html';
+            } else {
+                updateUIForLoggedInStaff();
+                closeLoginModal();
+                alert(`✅ Selamat datang, ${staff.name}!`);
+            }
         }
 
         function updateUIForLoggedInStaff() {
             const authSection = document.getElementById('staffAuthSection');
             authSection.innerHTML = `
-                <span style="margin-right: 1rem; color: var(--gray);">👋 ${currentStaff.name}</span>
-                <button class="staff-logout-btn" onclick="staffLogout()">Logout</button>
+                <a href="admin-dashboard.html" class="staff-btn" style="text-decoration: none;">
+                    🛠️ Admin Dashboard
+                </a>
             `;
-            
-            document.getElementById('addNewsBtn').style.display = 'block';
-            document.getElementById('manageStaffBtn').style.display = 'block';
-            document.getElementById('manageDonorsBtn').style.display = 'block';
-            document.getElementById('manageGalleryBtn').style.display = 'block';
-            
-            loadStaff();
-            loadDonors();
-            loadGallery();
         }
 
-        function staffLogout() {
-            if (confirm('Yakin ingin logout?')) {
-                localStorage.removeItem('rapsStaffLogin');
-                currentStaff = null;
-                location.reload();
-            }
+        function showError(message) {
+            const errorDiv = document.getElementById('loginError');
+            errorDiv.textContent = message;
+            errorDiv.classList.add('show');
         }
 
-        // ============================================
-        // MODAL MANAGEMENT
-        // ============================================
-        
         function openLoginModal() {
             document.getElementById('loginModal').classList.add('active');
-            showError('loginError', '');
+            document.getElementById('loginError').classList.remove('show');
             document.getElementById('robloxId').value = '';
         }
 
@@ -2530,855 +1262,98 @@
             document.getElementById('loginModal').classList.remove('active');
         }
 
-        function openAddNewsModal() {
-            if (!currentStaff) {
-                alert('Anda harus login sebagai staff terlebih dahulu');
-                return;
-            }
-            
-            document.getElementById('addNewsModal').classList.add('active');
-            showError('newsError', '');
-            showSuccess('newsSuccess', '');
-            
-            // Reset fields
-            document.getElementById('contentType').value = 'update';
-            document.getElementById('newsTitle').value = '';
-            document.getElementById('newsEmoji').value = '';
-            document.getElementById('newsContent').value = '';
-            document.getElementById('gameTitle').value = '';
-            document.getElementById('gameDescription').value = '';
-            document.getElementById('gameLink').value = '';
-            document.getElementById('gamePlayers').value = '';
-            document.getElementById('gameStatus').value = '🟢 LIVE';
-            
-            removeImage('news');
-            removeImage('game');
-            toggleContentType();
-        }
-
-        function closeAddNewsModal() {
-            document.getElementById('addNewsModal').classList.remove('active');
-        }
-
-        function toggleContentType() {
-            const contentType = document.getElementById('contentType').value;
-            const updateFields = document.getElementById('updateFields');
-            const gameFields = document.getElementById('gameFields');
-            
-            if (contentType === 'update') {
-                updateFields.style.display = 'block';
-                gameFields.style.display = 'none';
-            } else {
-                updateFields.style.display = 'none';
-                gameFields.style.display = 'block';
-            }
-        }
-
-        function openManageStaffModal(staffId = null) {
-            if (!currentStaff) {
-                alert('Anda harus login sebagai staff terlebih dahulu');
-                return;
-            }
-            
-            editingStaffId = staffId;
-            document.getElementById('manageStaffModal').classList.add('active');
-            showError('staffError', '');
-            showSuccess('staffSuccess', '');
-            
-            if (staffId) {
-                document.getElementById('staffModalTitle').textContent = 'Edit Staff';
-                loadStaffDataForEdit(staffId);
-            } else {
-                document.getElementById('staffModalTitle').textContent = 'Tambah Staff Baru';
-                document.getElementById('staffName').value = '';
-                document.getElementById('staffRole').value = 'admin';
-                document.getElementById('staffDescription').value = '';
-                removeImage('staff');
-            }
-        }
-
-        function closeManageStaffModal() {
-            document.getElementById('manageStaffModal').classList.remove('active');
-            editingStaffId = null;
-        }
-
-        function openManageDonorsModal(donorId = null) {
-            if (!currentStaff) {
-                alert('Anda harus login sebagai staff terlebih dahulu');
-                return;
-            }
-            
-            editingDonorId = donorId;
-            document.getElementById('manageDonorsModal').classList.add('active');
-            showError('donorError', '');
-            showSuccess('donorSuccess', '');
-            
-            if (donorId) {
-                document.getElementById('donorModalTitle').textContent = 'Edit Donatur';
-                loadDonorDataForEdit(donorId);
-            } else {
-                document.getElementById('donorModalTitle').textContent = 'Tambah Donatur Baru';
-                document.getElementById('donorName').value = '';
-                document.getElementById('donorAmount').value = '';
-                document.getElementById('donorMessage').value = '';
-            }
-        }
-
-        function closeManageDonorsModal() {
-            document.getElementById('manageDonorsModal').classList.remove('active');
-            editingDonorId = null;
-        }
-
-        function openManageGalleryModal(galleryId = null) {
-            if (!currentStaff) {
-                alert('Anda harus login sebagai staff terlebih dahulu');
-                return;
-            }
-            
-            editingGalleryId = galleryId;
-            document.getElementById('manageGalleryModal').classList.add('active');
-            showError('galleryError', '');
-            showSuccess('gallerySuccess', '');
-            
-            if (galleryId) {
-                document.getElementById('galleryModalTitle').textContent = '✏️ Edit Foto Galeri';
-                loadGalleryDataForEdit(galleryId);
-            } else {
-                document.getElementById('galleryModalTitle').textContent = '📸 Upload Foto ke Galeri';
-                document.getElementById('galleryCaption').value = '';
-                removeImage('gallery');
-            }
-        }
-
-        function closeManageGalleryModal() {
-            document.getElementById('manageGalleryModal').classList.remove('active');
-            editingGalleryId = null;
-        }
-
         // ============================================
-        // STAFF MANAGEMENT
+        // UI INTERACTIONS
         // ============================================
         
-        async function loadStaffDataForEdit(staffId) {
-            try {
-                const staffList = await getFromFirebase('staff');
-                const staff = staffList.find(s => s.id == staffId);
-                
-                if (staff) {
-                    document.getElementById('staffName').value = staff.name;
-                    document.getElementById('staffRole').value = staff.role;
-                    document.getElementById('staffDescription').value = staff.description;
-                    
-                    if (staff.photo) {
-                        uploadedImages.staff = staff.photo;
-                        document.getElementById('staffPreviewImg').src = staff.photo;
-                        document.getElementById('staffImagePreview').classList.add('active');
-                        document.getElementById('removeStaffImageBtn').style.display = 'inline-block';
-                    }
+        function toggleMenu() {
+            document.getElementById('navMenu').classList.toggle('active');
+        }
+
+        // Close modal on outside click
+        window.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal')) {
+                e.target.classList.remove('active');
+            }
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    document.getElementById('navMenu').classList.remove('active');
                 }
-            } catch (error) {
-                console.error('Error loading staff data:', error);
-                showError('staffError', 'Gagal memuat data staff');
-            }
-        }
+            });
+        });
 
-        async function saveStaff() {
-            if (!currentStaff) {
-                showError('staffError', 'Anda harus login sebagai staff');
-                return;
-            }
-
-            if (!window.firebaseInitialized) {
-                showError('staffError', '⚠️ Firebase belum siap, tunggu sebentar...');
-                return;
-            }
-
-            const name = document.getElementById('staffName').value.trim();
-            const role = document.getElementById('staffRole').value;
-            const description = document.getElementById('staffDescription').value.trim();
-
-            showError('staffError', '');
-            showSuccess('staffSuccess', '');
-
-            if (!name) {
-                showError('staffError', 'Nama staff tidak boleh kosong');
-                return;
-            }
-
-            if (!description) {
-                showError('staffError', 'Deskripsi tidak boleh kosong');
-                return;
-            }
-
-            setButtonLoading('saveStaffBtn', true);
-
-            try {
-                const staffData = {
-                    name,
-                    role,
-                    description,
-                    photo: uploadedImages.staff,
-                    updatedAt: Date.now()
-                };
-
-                const id = editingStaffId || Date.now().toString();
-                
-                await saveToFirebase('staff', id, staffData);
-                
-                showSuccess('staffSuccess', editingStaffId ? '✅ Staff berhasil diupdate!' : '✅ Staff berhasil ditambahkan!');
-                
-                setTimeout(() => {
-                    closeManageStaffModal();
-                    loadStaff();
-                }, 1500);
-
-            } catch (error) {
-                console.error('Error saving staff:', error);
-                showError('staffError', `❌ Terjadi kesalahan: ${error.message}`);
-            } finally {
-                setButtonLoading('saveStaffBtn', false);
-            }
-        }
-
-        async function deleteStaff(staffId) {
-            if (!confirm('Yakin ingin menghapus staff ini?')) {
-                return;
-            }
-
-            try {
-                await deleteFromFirebase('staff', staffId);
-                loadStaff();
-            } catch (error) {
-                console.error('Error deleting staff:', error);
-                alert('❌ Terjadi kesalahan saat menghapus staff');
-            }
-        }
-
+        // ============================================
+        // LOAD DATA FUNCTIONS
+        // ============================================
+        
         async function loadStaff() {
-            const staffGrid = document.getElementById('staffGrid');
+            const grid = document.getElementById('staffGrid');
             
             try {
                 const staffList = await getFromFirebase('staff');
                 
                 if (staffList.length === 0) {
-                    staffGrid.innerHTML = `
-                        <div class="empty-games fade-in" style="grid-column: 1 / -1;">
+                    grid.innerHTML = `
+                        <div class="empty-state">
                             <h3>👥 Tim Staff Belum Ditambahkan</h3>
-                            <p>Staff yang login dapat menambahkan anggota tim melalui tombol "Kelola Staff"</p>
+                            <p>Staff kami akan segera ditampilkan di sini</p>
                         </div>
                     `;
                     return;
                 }
 
-                staffGrid.innerHTML = staffList.map((staff) => {
+                grid.innerHTML = staffList.map(staff => {
                     const avatarContent = staff.photo 
                         ? `<img src="${staff.photo}" alt="${staff.name}">`
                         : ROLE_ICONS[staff.role];
                     
-                    const editButtons = currentStaff ? `
-                        <div class="staff-actions">
-                            <button class="staff-edit-btn" onclick="openManageStaffModal('${staff.id}')">✏️ Edit</button>
-                            <button class="staff-delete-btn" onclick="deleteStaff('${staff.id}')">🗑️ Hapus</button>
-                        </div>
-                    ` : '';
-                    
                     return `
-                        <div class="staff-card ${staff.role} fade-in ${currentStaff ? 'editable' : ''}">
+                        <div class="staff-card ${staff.role}">
                             <div class="staff-avatar">${avatarContent}</div>
                             <h3 class="staff-name">${staff.name}</h3>
                             <span class="staff-role">${ROLE_LABELS[staff.role]}</span>
                             <p class="staff-desc">${staff.description}</p>
-                            ${editButtons}
                         </div>
                     `;
                 }).join('');
-
-                observeElements();
 
             } catch (error) {
                 console.error('Error loading staff:', error);
-                staffGrid.innerHTML = `
-                    <div class="empty-games fade-in" style="grid-column: 1 / -1;">
-                        <h3>⚠️ Terjadi Kesalahan</h3>
-                        <p>Gagal memuat daftar staff. Silakan refresh halaman.</p>
-                    </div>
-                `;
-            }
-        }
-
-        // ============================================
-        // DONOR MANAGEMENT
-        // ============================================
-        
-        async function loadDonorDataForEdit(donorId) {
-            try {
-                const donorsList = await getFromFirebase('donors');
-                const donor = donorsList.find(d => d.id == donorId);
-                
-                if (donor) {
-                    document.getElementById('donorName').value = donor.name;
-                    document.getElementById('donorAmount').value = donor.amount;
-                    document.getElementById('donorMessage').value = donor.message || '';
-                }
-            } catch (error) {
-                console.error('Error loading donor data:', error);
-            }
-        }
-
-        async function saveDonor() {
-            if (!currentStaff) {
-                showError('donorError', 'Anda harus login sebagai staff');
-                return;
-            }
-
-            if (!window.firebaseInitialized) {
-                showError('donorError', '⚠️ Firebase belum siap, tunggu sebentar...');
-                return;
-            }
-
-            const name = document.getElementById('donorName').value.trim();
-            const amount = document.getElementById('donorAmount').value.trim();
-            const message = document.getElementById('donorMessage').value.trim();
-
-            showError('donorError', '');
-            showSuccess('donorSuccess', '');
-
-            if (!name || !amount) {
-                showError('donorError', 'Mohon isi nama donatur dan jumlah donasi');
-                return;
-            }
-
-            setButtonLoading('saveDonorBtn', true);
-
-            try {
-                const donorData = {
-                    name,
-                    amount,
-                    message,
-                    date: new Date().toLocaleDateString('id-ID', { 
-                        year: 'numeric', 
-                        month: 'long', 
-                        day: 'numeric' 
-                    }),
-                    updatedAt: Date.now()
-                };
-
-                const id = editingDonorId || Date.now().toString();
-                
-                await saveToFirebase('donors', id, donorData);
-                
-                showSuccess('donorSuccess', editingDonorId ? '✅ Donatur berhasil diupdate!' : '✅ Donatur berhasil ditambahkan!');
-                
-                setTimeout(() => {
-                    closeManageDonorsModal();
-                    loadDonors();
-                }, 1500);
-
-            } catch (error) {
-                console.error('Error saving donor:', error);
-                showError('donorError', '❌ Terjadi kesalahan saat menyimpan donatur');
-            } finally {
-                setButtonLoading('saveDonorBtn', false);
-            }
-        }
-
-        async function deleteDonor(donorId) {
-            if (!confirm('Yakin ingin menghapus donatur ini?')) {
-                return;
-            }
-
-            try {
-                await deleteFromFirebase('donors', donorId);
-                loadDonors();
-            } catch (error) {
-                console.error('Error deleting donor:', error);
-                alert('❌ Terjadi kesalahan saat menghapus donatur');
-            }
-        }
-
-        async function loadDonors() {
-            const donorsLeaderboard = document.getElementById('donorsLeaderboard');
-            
-            try {
-                const donorsList = await getFromFirebase('donors');
-                
-                if (donorsList.length === 0) {
-                    donorsLeaderboard.innerHTML = `
-                        <div style="text-align: center; padding: 3rem; color: var(--gray);">
-                            <h3 style="font-family: 'Fredoka', sans-serif; font-size: 1.3rem; margin-bottom: 0.5rem; color: var(--light);">💰 Belum Ada Donatur</h3>
-                            <p>Staff dapat menambahkan daftar donatur melalui tombol "Kelola Donasi"</p>
-                        </div>
-                    `;
-                    return;
-                }
-
-                donorsLeaderboard.innerHTML = donorsList.map((donor, index) => {
-                    const rank = index + 1;
-                    
-                    const editButtons = currentStaff ? `
-                        <div class="donor-actions">
-                            <button class="donor-edit-btn" onclick="openManageDonorsModal('${donor.id}')">✏️ Edit</button>
-                            <button class="donor-delete-btn" onclick="deleteDonor('${donor.id}')">🗑️ Hapus</button>
-                        </div>
-                    ` : '';
-                    
-                    return `
-                        <div class="donor-item ${currentStaff ? 'editable' : ''}">
-                            <div class="rank">#${rank}</div>
-                            <div class="donor-info">
-                                <div class="donor-name">${donor.name}</div>
-                                <div class="donor-message">${donor.message || 'Terima kasih atas dukungannya! 💖'}</div>
-                                ${editButtons}
-                            </div>
-                            <div class="donation-amount">${donor.amount}</div>
-                        </div>
-                    `;
-                }).join('');
-
-            } catch (error) {
-                console.error('Error loading donors:', error);
-                donorsLeaderboard.innerHTML = `
-                    <div style="text-align: center; padding: 3rem; color: var(--gray);">
-                        <h3 style="font-family: 'Fredoka', sans-serif; font-size: 1.3rem; margin-bottom: 0.5rem; color: var(--light);">💰 Belum Ada Donatur</h3>
-                        <p>Staff dapat menambahkan daftar donatur melalui tombol "Kelola Donasi"</p>
-                    </div>
-                `;
-            }
-        }
-
-        // ============================================
-        // LIKE & COMMENT SYSTEM
-        // ============================================
-
-        async function toggleLike(galleryId) {
-            try {
-                // Get current likes count directly
-                const dbRef = window.firebaseRef(window.firebaseDatabase, `likes/${galleryId}`);
-                const snapshot = await window.firebaseGet(dbRef);
-                const currentLikes = snapshot.exists() ? (snapshot.val().count || 0) : 0;
-                
-                // Check if user already liked
-                const hasLiked = userLikes[galleryId] || false;
-                
-                if (hasLiked) {
-                    // Unlike
-                    const newCount = Math.max(0, currentLikes - 1);
-                    await saveToFirebase('likes', galleryId, { count: newCount, updatedAt: Date.now() });
-                    userLikes[galleryId] = false;
-                } else {
-                    // Like
-                    const newCount = currentLikes + 1;
-                    await saveToFirebase('likes', galleryId, { count: newCount, updatedAt: Date.now() });
-                    userLikes[galleryId] = true;
-                }
-                
-                // Save to localStorage
-                localStorage.setItem('rapsDev_likes', JSON.stringify(userLikes));
-                
-                // Reload gallery to update UI
-                loadGallery();
-            } catch (error) {
-                console.error('Error toggling like:', error);
-            }
-        }
-
-        async function getLikesCount(galleryId) {
-            try {
-                const dbRef = window.firebaseRef(window.firebaseDatabase, `likes/${galleryId}`);
-                const snapshot = await window.firebaseGet(dbRef);
-                return snapshot.exists() ? (snapshot.val().count || 0) : 0;
-            } catch (error) {
-                console.error('Error getting likes count:', error);
-                return 0;
-            }
-        }
-
-        async function getCommentsCount(galleryId) {
-            try {
-                const dbRef = window.firebaseRef(window.firebaseDatabase, `comments/${galleryId}`);
-                const snapshot = await window.firebaseGet(dbRef);
-                
-                if (!snapshot.exists()) return 0;
-                
-                const comments = snapshot.val();
-                return Object.keys(comments).length;
-            } catch (error) {
-                console.error('Error getting comments count:', error);
-                return 0;
-            }
-        }
-
-        async function submitComment(galleryId, nameInputId, textInputId) {
-            const name = document.getElementById(nameInputId).value.trim();
-            const text = document.getElementById(textInputId).value.trim();
-            
-            if (!name || !text) {
-                alert('Mohon isi nama dan komentar');
-                return;
-            }
-            
-            try {
-                const commentData = {
-                    name,
-                    text,
-                    date: new Date().toLocaleDateString('id-ID', { 
-                        year: 'numeric', 
-                        month: 'long', 
-                        day: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit'
-                    }),
-                    timestamp: Date.now()
-                };
-                
-                const commentId = Date.now().toString();
-                await saveToFirebase(`comments/${galleryId}`, commentId, commentData);
-                
-                // Clear inputs
-                document.getElementById(nameInputId).value = '';
-                document.getElementById(textInputId).value = '';
-                
-                // Reload gallery
-                loadGallery();
-            } catch (error) {
-                console.error('Error submitting comment:', error);
-                alert('Gagal mengirim komentar. Silakan coba lagi.');
-            }
-        }
-
-        function openCommentsModal(galleryId) {
-            currentGalleryIdForComments = galleryId;
-            document.getElementById('commentsModal').classList.add('active');
-            loadCommentsForModal(galleryId);
-        }
-
-        function closeCommentsModal() {
-            document.getElementById('commentsModal').classList.remove('active');
-            currentGalleryIdForComments = null;
-        }
-
-        async function loadCommentsForModal(galleryId) {
-            const listElement = document.getElementById('commentsModalList');
-            
-            try {
-                const dbRef = window.firebaseRef(window.firebaseDatabase, `comments/${galleryId}`);
-                const snapshot = await window.firebaseGet(dbRef);
-                
-                if (!snapshot.exists()) {
-                    listElement.innerHTML = `
-                        <div class="empty-comments">
-                            <div style="font-size: 3rem;">💬</div>
-                            <p>Belum ada komentar. Jadilah yang pertama!</p>
-                        </div>
-                    `;
-                    return;
-                }
-                
-                const commentsData = snapshot.val();
-                const comments = Object.keys(commentsData).map(key => ({
-                    id: key,
-                    ...commentsData[key]
-                }));
-                
-                // Sort by timestamp descending
-                comments.sort((a, b) => b.timestamp - a.timestamp);
-                
-                listElement.innerHTML = comments.map(comment => `
-                    <div class="comment-item">
-                        <div class="comment-author">${comment.name}</div>
-                        <div class="comment-text">${comment.text}</div>
-                        <div class="comment-time">${comment.date}</div>
-                    </div>
-                `).join('');
-            } catch (error) {
-                console.error('Error loading comments:', error);
-                listElement.innerHTML = `
-                    <div class="empty-comments">
-                        <p>Gagal memuat komentar</p>
-                    </div>
-                `;
-            }
-        }
-
-        function submitModalComment() {
-            if (currentGalleryIdForComments) {
-                submitComment(currentGalleryIdForComments, 'modalCommentName', 'modalCommentText')
-                    .then(() => {
-                        loadCommentsForModal(currentGalleryIdForComments);
-                    });
-            }
-        }
-
-        // ============================================
-        // GALLERY MANAGEMENT
-        // ============================================
-        
-        async function loadGalleryDataForEdit(galleryId) {
-            try {
-                const galleryList = await getFromFirebase('gallery');
-                const gallery = galleryList.find(g => g.id == galleryId);
-                
-                if (gallery) {
-                    document.getElementById('galleryCaption').value = gallery.caption || '';
-                    
-                    if (gallery.image) {
-                        uploadedImages.gallery = gallery.image;
-                        document.getElementById('galleryPreviewImg').src = gallery.image;
-                        document.getElementById('galleryImagePreview').classList.add('active');
-                        document.getElementById('removeGalleryImageBtn').style.display = 'inline-block';
-                    }
-                }
-            } catch (error) {
-                console.error('Error loading gallery data:', error);
-                showError('galleryError', 'Gagal memuat data galeri');
-            }
-        }
-
-        async function saveGallery() {
-            if (!currentStaff) {
-                showError('galleryError', 'Anda harus login sebagai staff');
-                return;
-            }
-
-            if (!window.firebaseInitialized) {
-                showError('galleryError', '⚠️ Firebase belum siap, tunggu sebentar...');
-                return;
-            }
-
-            const caption = document.getElementById('galleryCaption').value.trim();
-
-            showError('galleryError', '');
-            showSuccess('gallerySuccess', '');
-
-            // Validasi: foto wajib untuk upload baru
-            if (!editingGalleryId && !uploadedImages.gallery) {
-                showError('galleryError', 'Mohon upload foto terlebih dahulu');
-                return;
-            }
-
-            setButtonLoading('saveGalleryBtn', true);
-
-            try {
-                const galleryData = {
-                    image: uploadedImages.gallery,
-                    caption: caption || '', // Caption optional
-                    date: new Date().toLocaleDateString('id-ID', { 
-                        year: 'numeric', 
-                        month: 'long', 
-                        day: 'numeric' 
-                    }),
-                    author: currentStaff.name,
-                    createdAt: editingGalleryId ? (await getFromFirebase('gallery')).find(g => g.id == editingGalleryId).createdAt : Date.now(),
-                    updatedAt: Date.now()
-                };
-
-                const id = editingGalleryId || Date.now().toString();
-                
-                await saveToFirebase('gallery', id, galleryData);
-                
-                showSuccess('gallerySuccess', editingGalleryId ? '✅ Foto berhasil diupdate!' : '✅ Foto berhasil diupload ke galeri!');
-                
-                setTimeout(() => {
-                    closeManageGalleryModal();
-                    loadGallery();
-                }, 1500);
-
-            } catch (error) {
-                console.error('Error saving gallery:', error);
-                showError('galleryError', '❌ Terjadi kesalahan saat menyimpan foto');
-            } finally {
-                setButtonLoading('saveGalleryBtn', false);
-            }
-        }
-
-        async function deleteGallery(galleryId) {
-            if (!confirm('Yakin ingin menghapus foto ini dari galeri?')) {
-                return;
-            }
-
-            try {
-                await deleteFromFirebase('gallery', galleryId);
-                loadGallery();
-            } catch (error) {
-                console.error('Error deleting gallery:', error);
-                alert('❌ Terjadi kesalahan saat menghapus foto');
-            }
-        }
-
-        // ============================================
-        // CONTENT MANAGEMENT (NEWS & GAMES)
-        // ============================================
-        
-        function submitContent() {
-            const contentType = document.getElementById('contentType').value;
-            
-            if (contentType === 'update') {
-                addNews();
-            } else {
-                addGame();
-            }
-        }
-
-        async function addNews() {
-            if (!currentStaff) {
-                showError('newsError', 'Anda harus login sebagai staff');
-                return;
-            }
-
-            if (!window.firebaseInitialized) {
-                showError('newsError', '⚠️ Firebase belum siap, tunggu sebentar...');
-                return;
-            }
-
-            const title = document.getElementById('newsTitle').value.trim();
-            const emoji = document.getElementById('newsEmoji').value.trim() || '📢';
-            const content = document.getElementById('newsContent').value.trim();
-            const addToGallery = document.getElementById('addToGallery').checked;
-
-            showError('newsError', '');
-            showSuccess('newsSuccess', '');
-
-            if (!title || !content) {
-                showError('newsError', 'Mohon isi judul dan konten update');
-                return;
-            }
-
-            setButtonLoading('submitContentBtn', true);
-
-            try {
-                const newsData = {
-                    title,
-                    emoji,
-                    content,
-                    image: uploadedImages.news,
-                    date: new Date().toLocaleDateString('id-ID', { 
-                        year: 'numeric', 
-                        month: 'long', 
-                        day: 'numeric' 
-                    }),
-                    author: currentStaff.name,
-                    createdAt: Date.now()
-                };
-
-                const id = Date.now().toString();
-                
-                await saveToFirebase('news', id, newsData);
-
-                if (addToGallery && uploadedImages.news) {
-                    const galleryData = {
-                        image: uploadedImages.news,
-                        caption: title,
-                        date: newsData.date,
-                        createdAt: Date.now()
-                    };
-                    await saveToFirebase('gallery', Date.now().toString(), galleryData);
-                }
-
-                showSuccess('newsSuccess', '✅ Update berhasil dipublikasikan!');
-                
-                setTimeout(() => {
-                    closeAddNewsModal();
-                    loadNews();
-                    loadGallery();
-                }, 1500);
-
-            } catch (error) {
-                console.error('Error adding news:', error);
-                showError('newsError', '❌ Terjadi kesalahan saat mempublikasikan update');
-            } finally {
-                setButtonLoading('submitContentBtn', false);
-            }
-        }
-
-        async function addGame() {
-            if (!currentStaff) {
-                showError('newsError', 'Anda harus login sebagai staff');
-                return;
-            }
-
-            if (!window.firebaseInitialized) {
-                showError('newsError', '⚠️ Firebase belum siap, tunggu sebentar...');
-                return;
-            }
-
-            const title = document.getElementById('gameTitle').value.trim();
-            const description = document.getElementById('gameDescription').value.trim();
-            const link = document.getElementById('gameLink').value.trim();
-            const players = document.getElementById('gamePlayers').value.trim();
-            const status = document.getElementById('gameStatus').value;
-
-            showError('newsError', '');
-            showSuccess('newsSuccess', '');
-
-            if (!title || !description || !link) {
-                showError('newsError', 'Mohon isi nama game, deskripsi, dan link game');
-                return;
-            }
-
-            setButtonLoading('submitContentBtn', true);
-
-            try {
-                const gameData = {
-                    title,
-                    description,
-                    thumbnail: uploadedImages.game,
-                    link,
-                    players: players || 'N/A',
-                    status,
-                    date: new Date().toLocaleDateString('id-ID', { 
-                        year: 'numeric', 
-                        month: 'long', 
-                        day: 'numeric' 
-                    }),
-                    author: currentStaff.name,
-                    createdAt: Date.now()
-                };
-
-                const id = Date.now().toString();
-                
-                await saveToFirebase('games', id, gameData);
-
-                showSuccess('newsSuccess', '✅ Game berhasil ditambahkan!');
-                
-                setTimeout(() => {
-                    closeAddNewsModal();
-                    loadGames();
-                }, 1500);
-
-            } catch (error) {
-                console.error('Error adding game:', error);
-                showError('newsError', '❌ Terjadi kesalahan saat menambahkan game');
-            } finally {
-                setButtonLoading('submitContentBtn', false);
             }
         }
 
         async function loadGames() {
-            const gamesGrid = document.getElementById('gamesGrid');
+            const grid = document.getElementById('gamesGrid');
             
             try {
                 const gamesList = await getFromFirebase('games');
                 
                 if (gamesList.length === 0) {
-                    gamesGrid.innerHTML = `
-                        <div class="empty-games fade-in">
+                    grid.innerHTML = `
+                        <div class="empty-state">
                             <h3>🎮 Daftar Game Segera Hadir</h3>
-                            <p>Staff kami sedang mempersiapkan game-game menarik untuk Anda</p>
+                            <p>Game kami akan segera diluncurkan</p>
                         </div>
                     `;
                     return;
                 }
 
-                // Sort by createdAt descending
                 gamesList.sort((a, b) => b.createdAt - a.createdAt);
 
-                gamesGrid.innerHTML = gamesList.map((game) => {
+                grid.innerHTML = gamesList.map(game => {
                     const thumbnailContent = game.thumbnail 
                         ? `<img src="${game.thumbnail}" alt="${game.title}">`
                         : '';
                     
                     return `
-                        <div class="game-card fade-in">
+                        <div class="game-card">
                             <div class="game-thumbnail ${game.thumbnail ? 'has-image' : ''}">${thumbnailContent}</div>
                             <div class="game-badge">${game.status}</div>
                             <div class="game-info">
@@ -3400,45 +1375,36 @@
                     `;
                 }).join('');
 
-                observeElements();
-
             } catch (error) {
                 console.error('Error loading games:', error);
-                gamesGrid.innerHTML = `
-                    <div class="empty-games fade-in">
-                        <h3>🎮 Daftar Game Segera Hadir</h3>
-                        <p>Staff kami sedang mempersiapkan game-game menarik untuk Anda</p>
-                    </div>
-                `;
             }
         }
 
         async function loadNews() {
-            const newsGrid = document.getElementById('newsGrid');
+            const grid = document.getElementById('newsGrid');
             
             try {
                 const newsList = await getFromFirebase('news');
                 
                 if (newsList.length === 0) {
-                    newsGrid.innerHTML = `
-                        <div class="empty-news fade-in">
+                    grid.innerHTML = `
+                        <div class="empty-state">
                             <h3>📢 Update Terbaru Segera Hadir</h3>
-                            <p>Nantikan pengumuman dan berita terkini dari tim kami</p>
+                            <p>Nantikan berita terkini dari tim kami</p>
                         </div>
                     `;
                     return;
                 }
 
-                // Sort by createdAt descending
                 newsList.sort((a, b) => b.createdAt - a.createdAt);
 
-                newsGrid.innerHTML = newsList.map((news) => {
+                grid.innerHTML = newsList.map(news => {
                     const imageContent = news.image 
                         ? `<img src="${news.image}" alt="${news.title}">`
                         : news.emoji;
                     
                     return `
-                        <div class="news-card fade-in">
+                        <div class="news-card">
                             <div class="news-image">${imageContent}</div>
                             <div class="news-content">
                                 <div class="news-date">${news.date}</div>
@@ -3449,188 +1415,142 @@
                     `;
                 }).join('');
 
-                observeElements();
-
             } catch (error) {
                 console.error('Error loading news:', error);
-                newsGrid.innerHTML = `
-                    <div class="empty-news fade-in">
-                        <h3>📢 Update Terbaru Segera Hadir</h3>
-                        <p>Nantikan pengumuman dan berita terkini dari tim kami</p>
-                    </div>
-                `;
             }
         }
 
-        async function loadGallery() {
-            const galleryGrid = document.getElementById('galleryGrid');
+        async function loadDonors() {
+            const leaderboard = document.getElementById('donorsLeaderboard');
             
             try {
-                const galleryList = await getFromFirebase('gallery');
+                const donorsList = await getFromFirebase('donors');
                 
-                if (galleryList.length === 0) {
-                    galleryGrid.innerHTML = `
-                        <div class="empty-gallery fade-in">
-                            <h3>📸 Galeri Foto Segera Hadir</h3>
-                            <p>Momen-momen terbaik dari komunitas kami akan ditampilkan di sini</p>
+                if (donorsList.length === 0) {
+                    leaderboard.innerHTML = `
+                        <div class="empty-state">
+                            <h3>💰 Belum Ada Donatur</h3>
+                            <p>Daftar donatur akan ditampilkan di sini</p>
                         </div>
                     `;
                     return;
                 }
 
-                // Sort by createdAt descending
+                leaderboard.innerHTML = donorsList.map((donor, index) => {
+                    const rank = index + 1;
+                    const rankClass = rank === 1 ? 'first' : rank === 2 ? 'second' : rank === 3 ? 'third' : '';
+                    
+                    return `
+                        <div class="donor-item">
+                            <div class="rank ${rankClass}">#${rank}</div>
+                            <div class="donor-info">
+                                <div class="donor-name">${donor.name}</div>
+                                <div class="donor-message">${donor.message || 'Terima kasih atas dukungannya! 💖'}</div>
+                            </div>
+                            <div class="donation-amount">${donor.amount}</div>
+                        </div>
+                    `;
+                }).join('');
+
+            } catch (error) {
+                console.error('Error loading donors:', error);
+            }
+        }
+
+        async function loadGallery() {
+            const grid = document.getElementById('galleryGrid');
+            
+            try {
+                const galleryList = await getFromFirebase('gallery');
+                const likes = await getFromFirebase('likes');
+                
+                if (galleryList.length === 0) {
+                    grid.innerHTML = `
+                        <div class="empty-state">
+                            <h3>📸 Galeri Foto Segera Hadir</h3>
+                            <p>Momen terbaik akan ditampilkan di sini</p>
+                        </div>
+                    `;
+                    return;
+                }
+
                 galleryList.sort((a, b) => b.createdAt - a.createdAt);
 
-                // Load likes and comments count for all items
-                const itemsWithCounts = await Promise.all(
-                    galleryList.map(async (item) => {
-                        const likesCount = await getLikesCount(item.id);
-                        const commentsCount = await getCommentsCount(item.id);
-                        return { ...item, likesCount, commentsCount };
-                    })
-                );
-
-                galleryGrid.innerHTML = itemsWithCounts.map((item) => {
-                    const editButtons = currentStaff ? `
-                        <div class="gallery-item-actions">
-                            <button class="gallery-edit-btn" onclick="openManageGalleryModal('${item.id}')" title="Edit">✏️</button>
-                            <button class="gallery-delete-btn" onclick="deleteGallery('${item.id}')" title="Hapus">🗑️</button>
-                        </div>
-                    ` : '';
-                    
+                grid.innerHTML = galleryList.map(item => {
+                    const like = likes.find(l => l.id === item.id);
+                    const likesCount = like ? like.count : 0;
                     const hasLiked = userLikes[item.id] || false;
                     const likeIcon = hasLiked ? '❤️' : '🤍';
                     
                     return `
-                        <div class="gallery-item has-image fade-in ${currentStaff ? 'editable' : ''}">
+                        <div class="gallery-item">
                             <div class="gallery-item-image">
-                                ${editButtons}
                                 <img src="${item.image}" alt="Gallery photo">
                             </div>
+                            ${item.caption ? `
                             <div class="gallery-caption">
-                                ${item.caption ? `<div class="gallery-caption-text">${item.caption}</div>` : ''}
-                                <div class="gallery-caption-meta">${item.date}${item.author ? ` • ${item.author}` : ''}</div>
+                                <div class="gallery-caption-text">${item.caption}</div>
+                                <div class="gallery-caption-meta">${item.date}</div>
                             </div>
+                            ` : ''}
                             <div class="gallery-interactions">
                                 <button class="gallery-like-btn ${hasLiked ? 'liked' : ''}" onclick="toggleLike('${item.id}')">
-                                    <span class="like-icon">${likeIcon}</span>
-                                    <span class="like-count">${item.likesCount || 0}</span>
-                                </button>
-                                <button class="gallery-comment-btn" onclick="openCommentsModal('${item.id}')">
-                                    <span class="comment-icon">💬</span>
-                                    <span class="comment-count">${item.commentsCount || 0}</span>
+                                    <span>${likeIcon}</span>
+                                    <span>${likesCount}</span>
                                 </button>
                             </div>
                         </div>
                     `;
                 }).join('');
 
-                observeElements();
-
             } catch (error) {
                 console.error('Error loading gallery:', error);
-                galleryGrid.innerHTML = `
-                    <div class="empty-gallery fade-in">
-                        <h3>📸 Galeri Foto Segera Hadir</h3>
-                        <p>Momen-momen terbaik dari komunitas kami akan ditampilkan di sini</p>
-                    </div>
-                `;
             }
         }
 
-        // ============================================
-        // UI INTERACTIONS
-        // ============================================
-        
-        function toggleMenu() {
-            const menu = document.getElementById('navMenu');
-            menu.classList.toggle('active');
-        }
-
-        // Smooth Scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                    document.getElementById('navMenu').classList.remove('active');
+        async function toggleLike(galleryId) {
+            try {
+                const dbRef = window.firebaseRef(window.firebaseDatabase, `likes/${galleryId}`);
+                const snapshot = await window.firebaseGet(dbRef);
+                const currentLikes = snapshot.exists() ? (snapshot.val().count || 0) : 0;
+                
+                const hasLiked = userLikes[galleryId] || false;
+                
+                if (hasLiked) {
+                    const newCount = Math.max(0, currentLikes - 1);
+                    await saveToFirebase('likes', galleryId, { count: newCount, updatedAt: Date.now() });
+                    userLikes[galleryId] = false;
+                } else {
+                    const newCount = currentLikes + 1;
+                    await saveToFirebase('likes', galleryId, { count: newCount, updatedAt: Date.now() });
+                    userLikes[galleryId] = true;
                 }
-            });
-        });
-
-        // Scroll Animation
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
-
-        function observeElements() {
-            document.querySelectorAll('.fade-in').forEach(el => {
-                observer.observe(el);
-            });
-        }
-
-        // Active Nav Link on Scroll
-        window.addEventListener('scroll', () => {
-            let current = '';
-            const sections = document.querySelectorAll('section');
-            
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                if (scrollY >= (sectionTop - 100)) {
-                    current = section.getAttribute('id');
-                }
-            });
-
-            document.querySelectorAll('nav a').forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === `#${current}`) {
-                    link.classList.add('active');
-                }
-            });
-        });
-
-        // Close modals when clicking outside
-        window.addEventListener('click', (e) => {
-            if (e.target.classList.contains('modal')) {
-                e.target.classList.remove('active');
+                
+                localStorage.setItem('rapsDev_likes', JSON.stringify(userLikes));
+                loadGallery();
+            } catch (error) {
+                console.error('Error toggling like:', error);
             }
-        });
+        }
 
         // ============================================
         // INITIALIZATION
         // ============================================
         
-        function initializeApp() {
-            console.log('🚀 RAPS Developer Website - Firebase Edition');
-            console.log('🔥 Firebase Status:', window.firebaseInitialized ? 'Connected' : 'Initializing...');
-            
+        function initApp() {
+            console.log('🚀 RAPS Developer Website Initialized');
             checkLoginStatus();
             loadStaff();
             loadGames();
             loadNews();
             loadDonors();
             loadGallery();
-            observeElements();
         }
 
-        // Wait for Firebase to be ready
         if (window.firebaseInitialized) {
-            initializeApp();
+            initApp();
         } else {
-            window.addEventListener('firebaseReady', initializeApp);
+            window.addEventListener('firebaseReady', initApp);
         }
     </script>
 </body>
