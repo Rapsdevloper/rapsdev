@@ -145,18 +145,20 @@
         nav ul {
             list-style: none;
             display: flex;
-            gap: 2rem;
+            gap: 1.5rem;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         nav a {
             color: var(--light);
             text-decoration: none;
             font-weight: 600;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             transition: all 0.3s;
             position: relative;
             padding: 0.5rem 0;
+            white-space: nowrap;
         }
 
         nav a::after {
@@ -177,22 +179,29 @@
         .staff-btn {
             background: linear-gradient(135deg, var(--primary), #ff5588);
             color: var(--light);
-            padding: 0.6rem 1.5rem;
-            border-radius: 25px;
+            padding: 0.5rem 1.2rem;
+            border-radius: 20px;
             border: none;
             cursor: pointer;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             transition: all 0.3s;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
+            white-space: nowrap;
         }
 
         .staff-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 25px rgba(255, 51, 102, 0.4);
+        }
+
+        #staffAuthSection {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
         }
 
         .menu-toggle {
@@ -1240,9 +1249,8 @@
         function updateUIForLoggedInStaff() {
             const authSection = document.getElementById('staffAuthSection');
             authSection.innerHTML = `
-                <a href="admin-dashboard.html" class="staff-btn" style="text-decoration: none;">
-                    🛠️ Admin Dashboard
-                </a>
+                <span style="font-size: 0.85rem; color: var(--gray);">👋 ${currentStaff.name}</span>
+                <a href="admin-dashboard.html" class="staff-btn" style="background: linear-gradient(135deg, var(--secondary), #00a8cc); text-decoration: none; padding: 0.5rem 1rem; font-size: 0.8rem;">🛠️ Admin</a>
             `;
         }
 
