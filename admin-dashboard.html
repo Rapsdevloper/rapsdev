@@ -10,7 +10,7 @@
     <!-- Firebase SDK v9 (Modular) -->
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getDatabase, ref, set, get, remove, child, onValue } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+        import { getDatabase, ref, set, get, remove, onValue } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
 
         const firebaseConfig = {
             apiKey: "AIzaSyBrT9nXf9ncgnssTUIryv28i2GI9dUa0Cs",
@@ -31,7 +31,6 @@
         window.firebaseSet = set;
         window.firebaseGet = get;
         window.firebaseRemove = remove;
-        window.firebaseChild = child;
         window.firebaseOnValue = onValue;
         window.firebaseInitialized = true;
 
@@ -39,7 +38,7 @@
         window.dispatchEvent(new Event('firebaseReady'));
     </script>
 
-    <!-- Chart.js for Analytics -->
+    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     
     <style>
@@ -54,9 +53,6 @@
             --success: #44ff44;
             --warning: #FFD700;
             --danger: #ff4444;
-            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
             --shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         }
 
@@ -70,11 +66,9 @@
             font-family: 'Plus Jakarta Sans', sans-serif;
             background: var(--darker);
             color: var(--light);
-            overflow-x: hidden;
             line-height: 1.6;
         }
 
-        /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 12px;
         }
@@ -115,7 +109,6 @@
             background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
 
         .header-actions {
@@ -158,6 +151,16 @@
             background: rgba(255, 255, 255, 0.2);
         }
 
+        .btn-success {
+            background: linear-gradient(135deg, var(--success), #33cc33);
+            color: var(--darker);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger), #cc3333);
+            color: var(--light);
+        }
+
         .user-info {
             display: flex;
             align-items: center;
@@ -171,7 +174,7 @@
             width: 36px;
             height: 36px;
             border-radius: 50%;
-            background: var(--gradient-1);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -193,7 +196,6 @@
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
 
         .page-subtitle {
@@ -228,11 +230,11 @@
             left: 0;
             width: 100%;
             height: 4px;
-            background: var(--gradient-1);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
 
-        .stat-card:nth-child(2)::before { background: var(--gradient-2); }
-        .stat-card:nth-child(3)::before { background: var(--gradient-3); }
+        .stat-card:nth-child(2)::before { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .stat-card:nth-child(3)::before { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
         .stat-card:nth-child(4)::before { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
         .stat-card:nth-child(5)::before { background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); }
 
@@ -258,98 +260,188 @@
             font-size: 0.95rem;
         }
 
-        .stat-change {
-            margin-top: 0.5rem;
-            font-size: 0.85rem;
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-        }
-
-        .stat-change.positive {
-            color: var(--success);
-        }
-
-        .stat-change.negative {
-            color: var(--danger);
-        }
-
-        /* Charts Section */
-        .charts-section {
+        /* Quick Actions */
+        .quick-actions {
             display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .chart-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
-            padding: 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .chart-title {
-            font-family: 'Fredoka', sans-serif;
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        /* Activity Log */
-        .activity-section {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
-            padding: 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            margin-bottom: 2rem;
-        }
-
-        .activity-item {
-            display: flex;
-            align-items: start;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1rem;
-            padding: 1rem;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 12px;
-            margin-bottom: 0.8rem;
-            border-left: 3px solid var(--primary);
+            margin-bottom: 2rem;
         }
 
-        .activity-icon {
+        .quick-action-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .quick-action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .quick-action-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .quick-action-label {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--dark);
+            border-radius: 30px;
+            padding: 3rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: var(--light);
+            font-size: 1.5rem;
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background: var(--gradient-1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            flex-shrink: 0;
+            cursor: pointer;
+            transition: all 0.3s;
         }
 
-        .activity-content {
-            flex: 1;
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
         }
 
-        .activity-title {
+        .modal h2 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .modal p {
+            color: var(--gray);
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
             font-weight: 600;
-            margin-bottom: 0.2rem;
         }
 
-        .activity-meta {
-            color: var(--gray);
-            font-size: 0.85rem;
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            color: var(--light);
+            font-size: 1rem;
         }
 
-        .activity-time {
-            color: var(--gray);
-            font-size: 0.85rem;
-            white-space: nowrap;
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.08);
         }
 
-        /* Content Table */
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .image-preview {
+            margin-top: 1rem;
+            border-radius: 15px;
+            overflow: hidden;
+            max-height: 200px;
+            display: none;
+        }
+
+        .image-preview img {
+            width: 100%;
+            height: auto;
+        }
+
+        .image-preview.active {
+            display: block;
+        }
+
+        .form-error {
+            color: #ff4444;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            padding: 0.8rem;
+            background: rgba(255, 68, 68, 0.1);
+            border-radius: 10px;
+            display: none;
+        }
+
+        .form-error.show {
+            display: block;
+        }
+
+        .form-success {
+            color: #44ff44;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            padding: 0.8rem;
+            background: rgba(68, 255, 68, 0.1);
+            border-radius: 10px;
+            display: none;
+        }
+
+        .form-success.show {
+            display: block;
+        }
+
+        /* Content Section */
         .content-section {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(20px);
@@ -371,6 +463,7 @@
             font-size: 1.8rem;
         }
 
+        /* Table */
         .table-container {
             overflow-x: auto;
         }
@@ -388,7 +481,6 @@
             padding: 1rem;
             text-align: left;
             font-weight: 600;
-            color: var(--light);
             border-bottom: 2px solid rgba(255, 255, 255, 0.1);
         }
 
@@ -401,64 +493,46 @@
             background: rgba(255, 255, 255, 0.03);
         }
 
-        .status-badge {
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
+        .action-btn {
+            padding: 0.4rem 0.8rem;
+            border: none;
+            border-radius: 8px;
             font-size: 0.85rem;
-            font-weight: 600;
-            display: inline-block;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-right: 0.3rem;
         }
 
-        .status-live {
-            background: rgba(68, 255, 68, 0.2);
-            color: var(--success);
+        .action-btn-edit {
+            background: rgba(0, 212, 255, 0.2);
+            color: var(--secondary);
         }
 
-        .status-beta {
-            background: rgba(255, 215, 0, 0.2);
-            color: var(--warning);
-        }
-
-        .status-maintenance {
+        .action-btn-delete {
             background: rgba(255, 68, 68, 0.2);
             color: var(--danger);
         }
 
-        /* Quick Actions */
-        .quick-actions {
+        /* Charts */
+        .charts-section {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
             margin-bottom: 2rem;
         }
 
-        .quick-action-card {
+        .chart-card {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(20px);
-            border-radius: 15px;
-            padding: 1.5rem;
+            border-radius: 20px;
+            padding: 2rem;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
-            color: var(--light);
         }
 
-        .quick-action-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        .quick-action-icon {
-            font-size: 2.5rem;
-            margin-bottom: 0.8rem;
-        }
-
-        .quick-action-label {
-            font-weight: 600;
-            font-size: 0.95rem;
+        .chart-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
         }
 
         /* Loading */
@@ -481,74 +555,17 @@
             padding: 3rem;
         }
 
-        /* Top Items */
-        .top-items {
-            display: grid;
-            gap: 0.8rem;
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--gray);
         }
 
-        .top-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 12px;
-            transition: all 0.3s;
-        }
-
-        .top-item:hover {
-            background: rgba(255, 255, 255, 0.06);
-        }
-
-        .top-rank {
+        .empty-state h3 {
             font-family: 'Fredoka', sans-serif;
             font-size: 1.5rem;
-            font-weight: 700;
-            min-width: 40px;
-            text-align: center;
-        }
-
-        .top-rank.first {
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .top-rank.second {
-            background: linear-gradient(135deg, #C0C0C0, #808080);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .top-rank.third {
-            background: linear-gradient(135deg, #CD7F32, #8B4513);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .top-item-content {
-            flex: 1;
-        }
-
-        .top-item-title {
-            font-weight: 600;
-            margin-bottom: 0.2rem;
-        }
-
-        .top-item-meta {
-            color: var(--gray);
-            font-size: 0.85rem;
-        }
-
-        .top-item-value {
-            font-family: 'Fredoka', sans-serif;
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--primary);
+            margin-bottom: 0.5rem;
+            color: var(--light);
         }
 
         /* Responsive */
@@ -569,64 +586,6 @@
             .page-title {
                 font-size: 2rem;
             }
-
-            table {
-                font-size: 0.85rem;
-            }
-
-            th, td {
-                padding: 0.7rem;
-            }
-        }
-
-        /* Empty State */
-        .empty-state {
-            text-align: center;
-            padding: 3rem;
-            color: var(--gray);
-        }
-
-        .empty-state h3 {
-            font-family: 'Fredoka', sans-serif;
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-            color: var(--light);
-        }
-
-        /* Action Buttons */
-        .action-btn {
-            padding: 0.4rem 0.8rem;
-            border: none;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-right: 0.3rem;
-        }
-
-        .action-btn-edit {
-            background: rgba(0, 212, 255, 0.2);
-            color: var(--secondary);
-        }
-
-        .action-btn-edit:hover {
-            background: rgba(0, 212, 255, 0.3);
-        }
-
-        .action-btn-delete {
-            background: rgba(255, 68, 68, 0.2);
-            color: var(--danger);
-        }
-
-        .action-btn-delete:hover {
-            background: rgba(255, 68, 68, 0.3);
-        }
-
-        .thumbnail-preview {
-            width: 60px;
-            height: 60px;
-            border-radius: 8px;
-            object-fit: cover;
         }
     </style>
 </head>
@@ -634,9 +593,7 @@
     <!-- Header -->
     <header class="admin-header">
         <div class="header-content">
-            <div class="logo">
-                🛠️ RAPS Admin Dashboard
-            </div>
+            <div class="logo">🛠️ RAPS Admin Dashboard</div>
             <div class="header-actions">
                 <div class="user-info">
                     <div class="user-avatar">👤</div>
@@ -645,19 +602,14 @@
                         <div id="staffRole" style="font-size: 0.85rem; color: var(--gray);">...</div>
                     </div>
                 </div>
-                <a href="index.html" class="btn btn-secondary">
-                    🏠 Ke Website
-                </a>
-                <button class="btn btn-primary" onclick="logout()">
-                    🚪 Logout
-                </button>
+                <a href="index.html" class="btn btn-secondary">🏠 Ke Website</a>
+                <button class="btn btn-primary" onclick="logout()">🚪 Logout</button>
             </div>
         </div>
     </header>
 
     <!-- Main Container -->
     <div class="container">
-        <!-- Page Header -->
         <div style="margin-bottom: 2rem;">
             <h1 class="page-title">Dashboard Overview</h1>
             <p class="page-subtitle">Selamat datang di admin dashboard RAPS Developer</p>
@@ -669,45 +621,26 @@
                 <div class="stat-icon">👥</div>
                 <div class="stat-value" id="totalStaff">0</div>
                 <div class="stat-label">Total Staff</div>
-                <div class="stat-change positive">
-                    <span>📈</span> Active members
-                </div>
             </div>
-
             <div class="stat-card">
                 <div class="stat-icon">🎮</div>
                 <div class="stat-value" id="totalGames">0</div>
                 <div class="stat-label">Total Games</div>
-                <div class="stat-change positive">
-                    <span>🚀</span> Published
-                </div>
             </div>
-
             <div class="stat-card">
                 <div class="stat-icon">📢</div>
                 <div class="stat-value" id="totalNews">0</div>
                 <div class="stat-label">Total Updates</div>
-                <div class="stat-change positive">
-                    <span>✨</span> This month
-                </div>
             </div>
-
             <div class="stat-card">
                 <div class="stat-icon">📸</div>
                 <div class="stat-value" id="totalGallery">0</div>
                 <div class="stat-label">Gallery Photos</div>
-                <div class="stat-change positive">
-                    <span>❤️</span> <span id="totalLikes">0</span> likes
-                </div>
             </div>
-
             <div class="stat-card">
                 <div class="stat-icon">💰</div>
                 <div class="stat-value" id="totalDonors">0</div>
                 <div class="stat-label">Total Donors</div>
-                <div class="stat-change positive">
-                    <span>🙏</span> Supporters
-                </div>
             </div>
         </div>
 
@@ -715,23 +648,23 @@
         <div class="content-section">
             <h2 class="section-title" style="margin-bottom: 1.5rem;">⚡ Quick Actions</h2>
             <div class="quick-actions">
-                <div class="quick-action-card" onclick="window.location.href='index.html#staff'">
+                <div class="quick-action-card" onclick="openManageStaffModal()">
                     <div class="quick-action-icon">👥</div>
                     <div class="quick-action-label">Kelola Staff</div>
                 </div>
-                <div class="quick-action-card" onclick="window.location.href='index.html#games'">
+                <div class="quick-action-card" onclick="openManageGameModal()">
                     <div class="quick-action-icon">🎮</div>
                     <div class="quick-action-label">Tambah Game</div>
                 </div>
-                <div class="quick-action-card" onclick="window.location.href='index.html#updates'">
+                <div class="quick-action-card" onclick="openManageNewsModal()">
                     <div class="quick-action-icon">📢</div>
                     <div class="quick-action-label">Posting Update</div>
                 </div>
-                <div class="quick-action-card" onclick="window.location.href='index.html#gallery'">
+                <div class="quick-action-card" onclick="openManageGalleryModal()">
                     <div class="quick-action-icon">📸</div>
                     <div class="quick-action-label">Upload Galeri</div>
                 </div>
-                <div class="quick-action-card" onclick="window.location.href='index.html#donors'">
+                <div class="quick-action-card" onclick="openManageDonorsModal()">
                     <div class="quick-action-icon">💰</div>
                     <div class="quick-action-label">Kelola Donasi</div>
                 </div>
@@ -745,54 +678,55 @@
                 <canvas id="contentGrowthChart"></canvas>
             </div>
             <div class="chart-card">
-                <h3 class="chart-title">🔥 Top 5 Most Liked</h3>
-                <div id="topLikedContent" class="top-items">
+                <h3 class="chart-title">🔥 Activity Summary</h3>
+                <div id="activitySummary">
                     <div class="loading-container">
                         <div class="loading"></div>
-                        <p>Loading...</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Activity Log -->
-        <div class="activity-section">
-            <h2 class="section-title" style="margin-bottom: 1.5rem;">📋 Recent Activity</h2>
-            <div id="activityLog">
-                <div class="loading-container">
-                    <div class="loading"></div>
-                    <p>Loading activity...</p>
-                </div>
+        <!-- Content Management Tables -->
+        <div class="content-section">
+            <div class="section-header">
+                <h2 class="section-title">👥 Manage Staff</h2>
+                <button class="btn btn-success" onclick="openManageStaffModal()">➕ Add Staff</button>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Role</th>
+                            <th>Description</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="staffTableBody">
+                        <tr><td colspan="4"><div class="loading-container"><div class="loading"></div></div></td></tr>
+                    </tbody>
+                </table>
             </div>
         </div>
 
-        <!-- Content Tables -->
         <div class="content-section">
             <div class="section-header">
-                <h2 class="section-title">🎮 All Games</h2>
-                <button class="btn btn-primary" onclick="window.location.href='index.html#games'">
-                    ➕ Add Game
-                </button>
+                <h2 class="section-title">🎮 Manage Games</h2>
+                <button class="btn btn-success" onclick="openManageGameModal()">➕ Add Game</button>
             </div>
             <div class="table-container">
-                <table id="gamesTable">
+                <table>
                     <thead>
                         <tr>
                             <th>Game</th>
                             <th>Status</th>
                             <th>Players</th>
-                            <th>Date Added</th>
-                            <th>Author</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody id="gamesTableBody">
-                        <tr>
-                            <td colspan="5">
-                                <div class="loading-container">
-                                    <div class="loading"></div>
-                                </div>
-                            </td>
-                        </tr>
+                        <tr><td colspan="4"><div class="loading-container"><div class="loading"></div></div></td></tr>
                     </tbody>
                 </table>
             </div>
@@ -800,29 +734,21 @@
 
         <div class="content-section">
             <div class="section-header">
-                <h2 class="section-title">📢 All Updates</h2>
-                <button class="btn btn-primary" onclick="window.location.href='index.html#updates'">
-                    ➕ Add Update
-                </button>
+                <h2 class="section-title">📢 Manage Updates</h2>
+                <button class="btn btn-success" onclick="openManageNewsModal()">➕ Add Update</button>
             </div>
             <div class="table-container">
-                <table id="newsTable">
+                <table>
                     <thead>
                         <tr>
                             <th>Title</th>
                             <th>Date</th>
-                            <th>Author</th>
                             <th>Has Image</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody id="newsTableBody">
-                        <tr>
-                            <td colspan="4">
-                                <div class="loading-container">
-                                    <div class="loading"></div>
-                                </div>
-                            </td>
-                        </tr>
+                        <tr><td colspan="4"><div class="loading-container"><div class="loading"></div></div></td></tr>
                     </tbody>
                 </table>
             </div>
@@ -830,38 +756,225 @@
 
         <div class="content-section">
             <div class="section-header">
-                <h2 class="section-title">💰 All Donors</h2>
-                <button class="btn btn-primary" onclick="window.location.href='index.html#donors'">
-                    ➕ Add Donor
-                </button>
+                <h2 class="section-title">📸 Manage Gallery</h2>
+                <button class="btn btn-success" onclick="openManageGalleryModal()">➕ Upload Photo</button>
             </div>
             <div class="table-container">
-                <table id="donorsTable">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Photo</th>
+                            <th>Caption</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="galleryTableBody">
+                        <tr><td colspan="4"><div class="loading-container"><div class="loading"></div></div></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <div class="section-header">
+                <h2 class="section-title">💰 Manage Donors</h2>
+                <button class="btn btn-success" onclick="openManageDonorsModal()">➕ Add Donor</button>
+            </div>
+            <div class="table-container">
+                <table>
                     <thead>
                         <tr>
                             <th>Rank</th>
                             <th>Name</th>
                             <th>Amount</th>
                             <th>Message</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody id="donorsTableBody">
-                        <tr>
-                            <td colspan="4">
-                                <div class="loading-container">
-                                    <div class="loading"></div>
-                                </div>
-                            </td>
-                        </tr>
+                        <tr><td colspan="5"><div class="loading-container"><div class="loading"></div></div></td></tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 
+    <!-- MODALS -->
+    
+    <!-- Staff Modal -->
+    <div id="staffModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('staffModal')">×</button>
+            <h2 id="staffModalTitle">Tambah Staff Baru</h2>
+            <p>Kelola anggota tim staff</p>
+            
+            <div class="form-group">
+                <label>Nama Staff</label>
+                <input type="text" id="staffName" placeholder="John Doe">
+            </div>
+            <div class="form-group">
+                <label>Role</label>
+                <select id="staffRole">
+                    <option value="owner">👑 Owner</option>
+                    <option value="developer">💻 Developer</option>
+                    <option value="headadmin">⭐ Head Admin</option>
+                    <option value="admin">🛡️ Admin</option>
+                    <option value="moderator">🔰 Moderator</option>
+                    <option value="creator">🎥 Content Creator</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Deskripsi</label>
+                <textarea id="staffDescription" placeholder="Jelaskan tugas dan tanggung jawab..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>Foto Profil (opsional)</label>
+                <input type="file" id="staffPhoto" accept="image/*" onchange="previewImage(event, 'staff')">
+                <div id="staffImagePreview" class="image-preview">
+                    <img id="staffPreviewImg" src="" alt="Preview">
+                </div>
+            </div>
+            
+            <div id="staffError" class="form-error"></div>
+            <div id="staffSuccess" class="form-success"></div>
+            <button class="btn btn-primary" style="width: 100%;" onclick="saveStaff()">Simpan</button>
+        </div>
+    </div>
+
+    <!-- Game Modal -->
+    <div id="gameModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('gameModal')">×</button>
+            <h2 id="gameModalTitle">Tambah Game Baru</h2>
+            <p>Tambahkan game ke daftar</p>
+            
+            <div class="form-group">
+                <label>Nama Game</label>
+                <input type="text" id="gameTitle" placeholder="Mount Dontol Adventure">
+            </div>
+            <div class="form-group">
+                <label>Deskripsi</label>
+                <textarea id="gameDescription" placeholder="Jelaskan tentang game..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>Thumbnail</label>
+                <input type="file" id="gameThumbnail" accept="image/*" onchange="previewImage(event, 'game')">
+                <div id="gameImagePreview" class="image-preview">
+                    <img id="gamePreviewImg" src="" alt="Preview">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Link Game</label>
+                <input type="url" id="gameLink" placeholder="https://www.roblox.com/games/...">
+            </div>
+            <div class="form-group">
+                <label>Jumlah Pemain</label>
+                <input type="text" id="gamePlayers" placeholder="1.2K">
+            </div>
+            <div class="form-group">
+                <label>Status</label>
+                <select id="gameStatus">
+                    <option value="🟢 LIVE">🟢 LIVE</option>
+                    <option value="🟡 BETA">🟡 BETA</option>
+                    <option value="🔴 MAINTENANCE">🔴 MAINTENANCE</option>
+                    <option value="⭐ NEW">⭐ NEW</option>
+                </select>
+            </div>
+            
+            <div id="gameError" class="form-error"></div>
+            <div id="gameSuccess" class="form-success"></div>
+            <button class="btn btn-primary" style="width: 100%;" onclick="saveGame()">Simpan</button>
+        </div>
+    </div>
+
+    <!-- News Modal -->
+    <div id="newsModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('newsModal')">×</button>
+            <h2 id="newsModalTitle">Tambah Update Baru</h2>
+            <p>Posting update untuk komunitas</p>
+            
+            <div class="form-group">
+                <label>Judul Update</label>
+                <input type="text" id="newsTitle" placeholder="Event Valentine Dimulai!">
+            </div>
+            <div class="form-group">
+                <label>Emoji (opsional)</label>
+                <input type="text" id="newsEmoji" placeholder="🎊" maxlength="2">
+            </div>
+            <div class="form-group">
+                <label>Konten</label>
+                <textarea id="newsContent" placeholder="Tulis detail update..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>Foto (opsional)</label>
+                <input type="file" id="newsImage" accept="image/*" onchange="previewImage(event, 'news')">
+                <div id="newsImagePreview" class="image-preview">
+                    <img id="newsPreviewImg" src="" alt="Preview">
+                </div>
+            </div>
+            
+            <div id="newsError" class="form-error"></div>
+            <div id="newsSuccess" class="form-success"></div>
+            <button class="btn btn-primary" style="width: 100%;" onclick="saveNews()">Publikasikan</button>
+        </div>
+    </div>
+
+    <!-- Gallery Modal -->
+    <div id="galleryModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('galleryModal')">×</button>
+            <h2 id="galleryModalTitle">Upload Foto Galeri</h2>
+            <p>Bagikan momen seru</p>
+            
+            <div class="form-group">
+                <label>Upload Foto</label>
+                <input type="file" id="galleryPhoto" accept="image/*" onchange="previewImage(event, 'gallery')">
+                <div id="galleryImagePreview" class="image-preview">
+                    <img id="galleryPreviewImg" src="" alt="Preview">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Caption</label>
+                <textarea id="galleryCaption" placeholder="Tulis caption..."></textarea>
+            </div>
+            
+            <div id="galleryError" class="form-error"></div>
+            <div id="gallerySuccess" class="form-success"></div>
+            <button class="btn btn-primary" style="width: 100%;" onclick="saveGallery()">Upload</button>
+        </div>
+    </div>
+
+    <!-- Donors Modal -->
+    <div id="donorsModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('donorsModal')">×</button>
+            <h2 id="donorsModalTitle">Tambah Donatur Baru</h2>
+            <p>Kelola daftar top donatur</p>
+            
+            <div class="form-group">
+                <label>Nama Donatur</label>
+                <input type="text" id="donorName" placeholder="GenerousDonor123">
+            </div>
+            <div class="form-group">
+                <label>Jumlah Donasi</label>
+                <input type="text" id="donorAmount" placeholder="500K Robux">
+            </div>
+            <div class="form-group">
+                <label>Pesan (opsional)</label>
+                <input type="text" id="donorMessage" placeholder="Semangat terus!">
+            </div>
+            
+            <div id="donorsError" class="form-error"></div>
+            <div id="donorsSuccess" class="form-success"></div>
+            <button class="btn btn-primary" style="width: 100%;" onclick="saveDonor()">Simpan</button>
+        </div>
+    </div>
+
     <script>
         // ============================================
-        // STAFF AUTHENTICATION
+        // CONFIGURATION
         // ============================================
         
         const STAFF_DATABASE = {
@@ -885,24 +998,30 @@
         };
 
         let currentStaff = null;
+        let uploadedImages = { staff: null, game: null, news: null, gallery: null };
+        let editingId = null;
 
+        // ============================================
+        // AUTH CHECK
+        // ============================================
+        
         function checkAuth() {
             const savedStaff = localStorage.getItem('rapsStaffLogin');
             
             if (!savedStaff) {
-                alert('⚠️ Anda harus login sebagai staff untuk mengakses dashboard!');
-                window.location.href = 'index.html';
+                alert('⚠️ Anda harus login sebagai staff!');
+                window.location.href = 'index.html?redirect=dashboard';
                 return false;
             }
 
             try {
                 currentStaff = JSON.parse(savedStaff);
                 document.getElementById('staffName').textContent = currentStaff.name;
-                document.getElementById('staffRole').textContent = ROLE_LABELS[currentStaff.role] || currentStaff.role;
+                document.getElementById('staffRole').textContent = ROLE_LABELS[currentStaff.role];
                 return true;
             } catch (e) {
                 localStorage.removeItem('rapsStaffLogin');
-                window.location.href = 'index.html';
+                window.location.href = 'index.html?redirect=dashboard';
                 return false;
             }
         }
@@ -915,29 +1034,91 @@
         }
 
         // ============================================
-        // FIREBASE HELPER FUNCTIONS
+        // FIREBASE HELPERS
         // ============================================
         
         function getFromFirebase(path) {
-            if (!window.firebaseInitialized) {
-                return Promise.resolve([]);
-            }
+            if (!window.firebaseInitialized) return Promise.resolve([]);
             
             const dbRef = window.firebaseRef(window.firebaseDatabase, path);
             return window.firebaseGet(dbRef)
                 .then(snapshot => {
                     const data = snapshot.val();
                     if (!data) return [];
-                    
-                    return Object.keys(data).map(key => ({
-                        id: key,
-                        ...data[key]
-                    }));
+                    return Object.keys(data).map(key => ({ id: key, ...data[key] }));
                 })
                 .catch(error => {
                     console.error(`Error getting ${path}:`, error);
                     return [];
                 });
+        }
+
+        function saveToFirebase(path, id, data) {
+            if (!window.firebaseInitialized) throw new Error('Firebase not initialized');
+            const dbRef = window.firebaseRef(window.firebaseDatabase, `${path}/${id}`);
+            return window.firebaseSet(dbRef, data);
+        }
+
+        function deleteFromFirebase(path, id) {
+            if (!window.firebaseInitialized) throw new Error('Firebase not initialized');
+            const dbRef = window.firebaseRef(window.firebaseDatabase, `${path}/${id}`);
+            return window.firebaseRemove(dbRef);
+        }
+
+        // ============================================
+        // UTILITY FUNCTIONS
+        // ============================================
+        
+        function showError(modalId, message) {
+            const el = document.getElementById(`${modalId}Error`);
+            if (el) {
+                el.textContent = message;
+                el.classList.add('show');
+            }
+        }
+
+        function showSuccess(modalId, message) {
+            const el = document.getElementById(`${modalId}Success`);
+            if (el) {
+                el.textContent = message;
+                el.classList.add('show');
+            }
+        }
+
+        function clearMessages(modalId) {
+            const err = document.getElementById(`${modalId}Error`);
+            const suc = document.getElementById(`${modalId}Success`);
+            if (err) err.classList.remove('show');
+            if (suc) suc.classList.remove('show');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        function previewImage(event, type) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            if (!file.type.match('image.*')) {
+                alert('File harus berupa gambar!');
+                event.target.value = '';
+                return;
+            }
+
+            if (file.size > 2 * 1024 * 1024) {
+                alert('Ukuran file maksimal 2MB!');
+                event.target.value = '';
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                uploadedImages[type] = e.target.result;
+                document.getElementById(`${type}PreviewImg`).src = e.target.result;
+                document.getElementById(`${type}ImagePreview`).classList.add('active');
+            };
+            reader.readAsDataURL(file);
         }
 
         // ============================================
@@ -946,13 +1127,12 @@
         
         async function loadStatistics() {
             try {
-                const [staff, games, news, gallery, donors, likes] = await Promise.all([
+                const [staff, games, news, gallery, donors] = await Promise.all([
                     getFromFirebase('staff'),
                     getFromFirebase('games'),
                     getFromFirebase('news'),
                     getFromFirebase('gallery'),
-                    getFromFirebase('donors'),
-                    getFromFirebase('likes')
+                    getFromFirebase('donors')
                 ]);
 
                 document.getElementById('totalStaff').textContent = staff.length;
@@ -960,11 +1140,6 @@
                 document.getElementById('totalNews').textContent = news.length;
                 document.getElementById('totalGallery').textContent = gallery.length;
                 document.getElementById('totalDonors').textContent = donors.length;
-
-                // Calculate total likes
-                const totalLikes = likes.reduce((sum, like) => sum + (like.count || 0), 0);
-                document.getElementById('totalLikes').textContent = totalLikes;
-
             } catch (error) {
                 console.error('Error loading statistics:', error);
             }
@@ -982,7 +1157,6 @@
                     getFromFirebase('gallery')
                 ]);
 
-                // Prepare data for last 7 days
                 const last7Days = [];
                 const now = Date.now();
                 
@@ -996,21 +1170,11 @@
 
                 const chartData = last7Days.map(day => ({
                     date: day.date,
-                    games: games.filter(g => {
-                        const itemDate = new Date(g.createdAt || 0).setHours(0, 0, 0, 0);
-                        return itemDate === day.timestamp;
-                    }).length,
-                    news: news.filter(n => {
-                        const itemDate = new Date(n.createdAt || 0).setHours(0, 0, 0, 0);
-                        return itemDate === day.timestamp;
-                    }).length,
-                    gallery: gallery.filter(g => {
-                        const itemDate = new Date(g.createdAt || 0).setHours(0, 0, 0, 0);
-                        return itemDate === day.timestamp;
-                    }).length
+                    games: games.filter(g => new Date(g.createdAt || 0).setHours(0,0,0,0) === day.timestamp).length,
+                    news: news.filter(n => new Date(n.createdAt || 0).setHours(0,0,0,0) === day.timestamp).length,
+                    gallery: gallery.filter(g => new Date(g.createdAt || 0).setHours(0,0,0,0) === day.timestamp).length
                 }));
 
-                // Create chart
                 const ctx = document.getElementById('contentGrowthChart').getContext('2d');
                 new Chart(ctx, {
                     type: 'line',
@@ -1042,337 +1206,543 @@
                     },
                     options: {
                         responsive: true,
-                        maintainAspectRatio: true,
-                        plugins: {
-                            legend: {
-                                labels: {
-                                    color: '#ffffff'
-                                }
-                            }
-                        },
+                        plugins: { legend: { labels: { color: '#ffffff' } } },
                         scales: {
-                            y: {
+                            y: { 
                                 beginAtZero: true,
-                                ticks: {
-                                    color: '#a8a8b8',
-                                    stepSize: 1
-                                },
-                                grid: {
-                                    color: 'rgba(255, 255, 255, 0.1)'
-                                }
+                                ticks: { color: '#a8a8b8', stepSize: 1 },
+                                grid: { color: 'rgba(255, 255, 255, 0.1)' }
                             },
                             x: {
-                                ticks: {
-                                    color: '#a8a8b8'
-                                },
-                                grid: {
-                                    color: 'rgba(255, 255, 255, 0.1)'
-                                }
+                                ticks: { color: '#a8a8b8' },
+                                grid: { color: 'rgba(255, 255, 255, 0.1)' }
                             }
                         }
                     }
                 });
 
+                // Activity summary
+                const totalToday = chartData[6].games + chartData[6].news + chartData[6].gallery;
+                document.getElementById('activitySummary').innerHTML = `
+                    <div style="padding: 1rem;">
+                        <div style="font-size: 3rem; text-align: center; margin-bottom: 1rem;">📊</div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 2.5rem; font-family: 'Fredoka'; font-weight: 700; margin-bottom: 0.5rem;">${totalToday}</div>
+                            <div style="color: var(--gray);">Content added today</div>
+                        </div>
+                    </div>
+                `;
             } catch (error) {
                 console.error('Error loading charts:', error);
             }
         }
 
         // ============================================
-        // TOP LIKED CONTENT
+        // STAFF MANAGEMENT
         // ============================================
         
-        async function loadTopLiked() {
-            const container = document.getElementById('topLikedContent');
+        function openManageStaffModal(staffId = null) {
+            editingId = staffId;
+            document.getElementById('staffModalTitle').textContent = staffId ? 'Edit Staff' : 'Tambah Staff Baru';
+            clearMessages('staff');
             
-            try {
-                const [gallery, likes] = await Promise.all([
-                    getFromFirebase('gallery'),
-                    getFromFirebase('likes')
-                ]);
-
-                // Match gallery items with likes
-                const itemsWithLikes = gallery.map(item => {
-                    const like = likes.find(l => l.id === item.id);
-                    return {
-                        ...item,
-                        likes: like ? like.count : 0
-                    };
-                });
-
-                // Sort by likes and take top 5
-                const topItems = itemsWithLikes
-                    .sort((a, b) => b.likes - a.likes)
-                    .slice(0, 5);
-
-                if (topItems.length === 0) {
-                    container.innerHTML = `
-                        <div class="empty-state">
-                            <h3>📸 Belum Ada Data</h3>
-                            <p>Foto galeri dengan likes akan muncul di sini</p>
-                        </div>
-                    `;
-                    return;
-                }
-
-                container.innerHTML = topItems.map((item, index) => {
-                    const rankClass = index === 0 ? 'first' : index === 1 ? 'second' : index === 2 ? 'third' : '';
-                    
-                    return `
-                        <div class="top-item">
-                            <div class="top-rank ${rankClass}">#${index + 1}</div>
-                            <div class="top-item-content">
-                                <div class="top-item-title">${item.caption || 'Foto Galeri'}</div>
-                                <div class="top-item-meta">${item.date}</div>
-                            </div>
-                            <div class="top-item-value">❤️ ${item.likes}</div>
-                        </div>
-                    `;
-                }).join('');
-
-            } catch (error) {
-                console.error('Error loading top liked:', error);
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <p>Gagal memuat data</p>
-                    </div>
-                `;
-            }
-        }
-
-        // ============================================
-        // ACTIVITY LOG
-        // ============================================
-        
-        async function loadActivityLog() {
-            const container = document.getElementById('activityLog');
-            
-            try {
-                const [games, news, gallery, staff, donors] = await Promise.all([
-                    getFromFirebase('games'),
-                    getFromFirebase('news'),
-                    getFromFirebase('gallery'),
-                    getFromFirebase('staff'),
-                    getFromFirebase('donors')
-                ]);
-
-                // Combine all activities
-                const activities = [
-                    ...games.map(g => ({ type: 'game', data: g, time: g.createdAt })),
-                    ...news.map(n => ({ type: 'news', data: n, time: n.createdAt })),
-                    ...gallery.map(g => ({ type: 'gallery', data: g, time: g.createdAt })),
-                    ...staff.map(s => ({ type: 'staff', data: s, time: s.updatedAt })),
-                    ...donors.map(d => ({ type: 'donor', data: d, time: d.updatedAt }))
-                ];
-
-                // Sort by time and take last 10
-                const recentActivities = activities
-                    .sort((a, b) => b.time - a.time)
-                    .slice(0, 10);
-
-                if (recentActivities.length === 0) {
-                    container.innerHTML = `
-                        <div class="empty-state">
-                            <h3>📋 Belum Ada Aktivitas</h3>
-                            <p>Aktivitas terbaru akan muncul di sini</p>
-                        </div>
-                    `;
-                    return;
-                }
-
-                container.innerHTML = recentActivities.map(activity => {
-                    let icon, title, meta;
-                    
-                    switch (activity.type) {
-                        case 'game':
-                            icon = '🎮';
-                            title = `Game "${activity.data.title}" ditambahkan`;
-                            meta = `oleh ${activity.data.author}`;
-                            break;
-                        case 'news':
-                            icon = '📢';
-                            title = `Update "${activity.data.title}" dipublikasikan`;
-                            meta = `oleh ${activity.data.author}`;
-                            break;
-                        case 'gallery':
-                            icon = '📸';
-                            title = `Foto baru diupload ke galeri`;
-                            meta = `oleh ${activity.data.author || 'Staff'}`;
-                            break;
-                        case 'staff':
-                            icon = '👥';
-                            title = `Staff "${activity.data.name}" ditambahkan`;
-                            meta = `sebagai ${activity.data.role}`;
-                            break;
-                        case 'donor':
-                            icon = '💰';
-                            title = `Donatur "${activity.data.name}" ditambahkan`;
-                            meta = `${activity.data.amount}`;
-                            break;
+            if (staffId) {
+                getFromFirebase('staff').then(list => {
+                    const staff = list.find(s => s.id === staffId);
+                    if (staff) {
+                        document.getElementById('staffName').value = staff.name;
+                        document.getElementById('staffRole').value = staff.role;
+                        document.getElementById('staffDescription').value = staff.description;
+                        if (staff.photo) {
+                            uploadedImages.staff = staff.photo;
+                            document.getElementById('staffPreviewImg').src = staff.photo;
+                            document.getElementById('staffImagePreview').classList.add('active');
+                        }
                     }
+                });
+            } else {
+                document.getElementById('staffName').value = '';
+                document.getElementById('staffRole').value = 'admin';
+                document.getElementById('staffDescription').value = '';
+                uploadedImages.staff = null;
+                document.getElementById('staffImagePreview').classList.remove('active');
+            }
+            
+            document.getElementById('staffModal').classList.add('active');
+        }
 
-                    const timeAgo = getTimeAgo(activity.time);
+        async function saveStaff() {
+            const name = document.getElementById('staffName').value.trim();
+            const role = document.getElementById('staffRole').value;
+            const description = document.getElementById('staffDescription').value.trim();
 
-                    return `
-                        <div class="activity-item">
-                            <div class="activity-icon">${icon}</div>
-                            <div class="activity-content">
-                                <div class="activity-title">${title}</div>
-                                <div class="activity-meta">${meta}</div>
-                            </div>
-                            <div class="activity-time">${timeAgo}</div>
-                        </div>
-                    `;
-                }).join('');
+            clearMessages('staff');
 
+            if (!name || !description) {
+                showError('staff', 'Nama dan deskripsi wajib diisi!');
+                return;
+            }
+
+            try {
+                const data = {
+                    name, role, description,
+                    photo: uploadedImages.staff,
+                    updatedAt: Date.now()
+                };
+
+                const id = editingId || Date.now().toString();
+                await saveToFirebase('staff', id, data);
+                
+                showSuccess('staff', '✅ Staff berhasil disimpan!');
+                setTimeout(() => {
+                    closeModal('staffModal');
+                    loadStaffTable();
+                    loadStatistics();
+                }, 1500);
             } catch (error) {
-                console.error('Error loading activity log:', error);
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <p>Gagal memuat aktivitas</p>
-                    </div>
-                `;
+                showError('staff', '❌ ' + error.message);
             }
         }
 
-        function getTimeAgo(timestamp) {
-            const now = Date.now();
-            const diff = now - timestamp;
-            
-            const minutes = Math.floor(diff / 60000);
-            const hours = Math.floor(diff / 3600000);
-            const days = Math.floor(diff / 86400000);
-            
-            if (minutes < 1) return 'Baru saja';
-            if (minutes < 60) return `${minutes} menit lalu`;
-            if (hours < 24) return `${hours} jam lalu`;
-            if (days < 7) return `${days} hari lalu`;
-            
-            return new Date(timestamp).toLocaleDateString('id-ID', { 
-                day: 'numeric', 
-                month: 'short',
-                year: 'numeric'
-            });
+        async function deleteStaff(id) {
+            if (!confirm('Yakin hapus staff ini?')) return;
+            try {
+                await deleteFromFirebase('staff', id);
+                loadStaffTable();
+                loadStatistics();
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+
+        async function loadStaffTable() {
+            const tbody = document.getElementById('staffTableBody');
+            try {
+                const list = await getFromFirebase('staff');
+                if (list.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="4"><div class="empty-state"><h3>Belum ada staff</h3></div></td></tr>';
+                    return;
+                }
+                tbody.innerHTML = list.map(item => `
+                    <tr>
+                        <td><strong>${item.name}</strong></td>
+                        <td>${ROLE_LABELS[item.role]}</td>
+                        <td>${item.description.substring(0, 50)}...</td>
+                        <td>
+                            <button class="action-btn action-btn-edit" onclick="openManageStaffModal('${item.id}')">✏️ Edit</button>
+                            <button class="action-btn action-btn-delete" onclick="deleteStaff('${item.id}')">🗑️ Hapus</button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading staff table:', error);
+            }
         }
 
         // ============================================
-        // CONTENT TABLES
+        // GAME MANAGEMENT
         // ============================================
         
+        function openManageGameModal(gameId = null) {
+            editingId = gameId;
+            document.getElementById('gameModalTitle').textContent = gameId ? 'Edit Game' : 'Tambah Game Baru';
+            clearMessages('game');
+            
+            if (gameId) {
+                getFromFirebase('games').then(list => {
+                    const game = list.find(g => g.id === gameId);
+                    if (game) {
+                        document.getElementById('gameTitle').value = game.title;
+                        document.getElementById('gameDescription').value = game.description;
+                        document.getElementById('gameLink').value = game.link;
+                        document.getElementById('gamePlayers').value = game.players;
+                        document.getElementById('gameStatus').value = game.status;
+                        if (game.thumbnail) {
+                            uploadedImages.game = game.thumbnail;
+                            document.getElementById('gamePreviewImg').src = game.thumbnail;
+                            document.getElementById('gameImagePreview').classList.add('active');
+                        }
+                    }
+                });
+            } else {
+                document.getElementById('gameTitle').value = '';
+                document.getElementById('gameDescription').value = '';
+                document.getElementById('gameLink').value = '';
+                document.getElementById('gamePlayers').value = '';
+                document.getElementById('gameStatus').value = '🟢 LIVE';
+                uploadedImages.game = null;
+                document.getElementById('gameImagePreview').classList.remove('active');
+            }
+            
+            document.getElementById('gameModal').classList.add('active');
+        }
+
+        async function saveGame() {
+            const title = document.getElementById('gameTitle').value.trim();
+            const description = document.getElementById('gameDescription').value.trim();
+            const link = document.getElementById('gameLink').value.trim();
+            const players = document.getElementById('gamePlayers').value.trim();
+            const status = document.getElementById('gameStatus').value;
+
+            clearMessages('game');
+
+            if (!title || !description || !link) {
+                showError('game', 'Nama game, deskripsi, dan link wajib diisi!');
+                return;
+            }
+
+            try {
+                const data = {
+                    title, description, link, players, status,
+                    thumbnail: uploadedImages.game,
+                    date: new Date().toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' }),
+                    author: currentStaff.name,
+                    createdAt: editingId ? (await getFromFirebase('games')).find(g => g.id === editingId).createdAt : Date.now()
+                };
+
+                const id = editingId || Date.now().toString();
+                await saveToFirebase('games', id, data);
+                
+                showSuccess('game', '✅ Game berhasil disimpan!');
+                setTimeout(() => {
+                    closeModal('gameModal');
+                    loadGamesTable();
+                    loadStatistics();
+                }, 1500);
+            } catch (error) {
+                showError('game', '❌ ' + error.message);
+            }
+        }
+
+        async function deleteGame(id) {
+            if (!confirm('Yakin hapus game ini?')) return;
+            try {
+                await deleteFromFirebase('games', id);
+                loadGamesTable();
+                loadStatistics();
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+
         async function loadGamesTable() {
             const tbody = document.getElementById('gamesTableBody');
-            
             try {
-                const games = await getFromFirebase('games');
-                
-                if (games.length === 0) {
-                    tbody.innerHTML = `
-                        <tr>
-                            <td colspan="5">
-                                <div class="empty-state">
-                                    <h3>🎮 Belum Ada Game</h3>
-                                    <p>Game yang ditambahkan akan muncul di sini</p>
-                                </div>
-                            </td>
-                        </tr>
-                    `;
+                const list = await getFromFirebase('games');
+                if (list.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="4"><div class="empty-state"><h3>Belum ada game</h3></div></td></tr>';
                     return;
                 }
-
-                // Sort by date
-                games.sort((a, b) => b.createdAt - a.createdAt);
-
-                tbody.innerHTML = games.map(game => {
-                    const statusClass = game.status.includes('LIVE') ? 'status-live' : 
-                                      game.status.includes('BETA') ? 'status-beta' : 
-                                      'status-maintenance';
-                    
-                    return `
-                        <tr>
-                            <td>
-                                <strong>${game.title}</strong>
-                            </td>
-                            <td>
-                                <span class="status-badge ${statusClass}">${game.status}</span>
-                            </td>
-                            <td>${game.players}</td>
-                            <td>${game.date}</td>
-                            <td>${game.author}</td>
-                        </tr>
-                    `;
-                }).join('');
-
+                tbody.innerHTML = list.map(item => `
+                    <tr>
+                        <td><strong>${item.title}</strong></td>
+                        <td>${item.status}</td>
+                        <td>${item.players}</td>
+                        <td>
+                            <button class="action-btn action-btn-edit" onclick="openManageGameModal('${item.id}')">✏️ Edit</button>
+                            <button class="action-btn action-btn-delete" onclick="deleteGame('${item.id}')">🗑️ Hapus</button>
+                        </td>
+                    </tr>
+                `).join('');
             } catch (error) {
                 console.error('Error loading games table:', error);
             }
         }
 
+        // ============================================
+        // NEWS MANAGEMENT
+        // ============================================
+        
+        function openManageNewsModal(newsId = null) {
+            editingId = newsId;
+            document.getElementById('newsModalTitle').textContent = newsId ? 'Edit Update' : 'Tambah Update Baru';
+            clearMessages('news');
+            
+            if (newsId) {
+                getFromFirebase('news').then(list => {
+                    const news = list.find(n => n.id === newsId);
+                    if (news) {
+                        document.getElementById('newsTitle').value = news.title;
+                        document.getElementById('newsEmoji').value = news.emoji;
+                        document.getElementById('newsContent').value = news.content;
+                        if (news.image) {
+                            uploadedImages.news = news.image;
+                            document.getElementById('newsPreviewImg').src = news.image;
+                            document.getElementById('newsImagePreview').classList.add('active');
+                        }
+                    }
+                });
+            } else {
+                document.getElementById('newsTitle').value = '';
+                document.getElementById('newsEmoji').value = '';
+                document.getElementById('newsContent').value = '';
+                uploadedImages.news = null;
+                document.getElementById('newsImagePreview').classList.remove('active');
+            }
+            
+            document.getElementById('newsModal').classList.add('active');
+        }
+
+        async function saveNews() {
+            const title = document.getElementById('newsTitle').value.trim();
+            const emoji = document.getElementById('newsEmoji').value.trim() || '📢';
+            const content = document.getElementById('newsContent').value.trim();
+
+            clearMessages('news');
+
+            if (!title || !content) {
+                showError('news', 'Judul dan konten wajib diisi!');
+                return;
+            }
+
+            try {
+                const data = {
+                    title, emoji, content,
+                    image: uploadedImages.news,
+                    date: new Date().toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' }),
+                    author: currentStaff.name,
+                    createdAt: editingId ? (await getFromFirebase('news')).find(n => n.id === editingId).createdAt : Date.now()
+                };
+
+                const id = editingId || Date.now().toString();
+                await saveToFirebase('news', id, data);
+                
+                showSuccess('news', '✅ Update berhasil dipublikasikan!');
+                setTimeout(() => {
+                    closeModal('newsModal');
+                    loadNewsTable();
+                    loadStatistics();
+                }, 1500);
+            } catch (error) {
+                showError('news', '❌ ' + error.message);
+            }
+        }
+
+        async function deleteNews(id) {
+            if (!confirm('Yakin hapus update ini?')) return;
+            try {
+                await deleteFromFirebase('news', id);
+                loadNewsTable();
+                loadStatistics();
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+
         async function loadNewsTable() {
             const tbody = document.getElementById('newsTableBody');
-            
             try {
-                const news = await getFromFirebase('news');
-                
-                if (news.length === 0) {
-                    tbody.innerHTML = `
-                        <tr>
-                            <td colspan="4">
-                                <div class="empty-state">
-                                    <h3>📢 Belum Ada Update</h3>
-                                    <p>Update yang dipublikasikan akan muncul di sini</p>
-                                </div>
-                            </td>
-                        </tr>
-                    `;
+                const list = await getFromFirebase('news');
+                if (list.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="4"><div class="empty-state"><h3>Belum ada update</h3></div></td></tr>';
                     return;
                 }
-
-                // Sort by date
-                news.sort((a, b) => b.createdAt - a.createdAt);
-
-                tbody.innerHTML = news.map(item => `
+                tbody.innerHTML = list.map(item => `
                     <tr>
                         <td><strong>${item.title}</strong></td>
                         <td>${item.date}</td>
-                        <td>${item.author}</td>
                         <td>${item.image ? '✅ Yes' : '❌ No'}</td>
+                        <td>
+                            <button class="action-btn action-btn-edit" onclick="openManageNewsModal('${item.id}')">✏️ Edit</button>
+                            <button class="action-btn action-btn-delete" onclick="deleteNews('${item.id}')">🗑️ Hapus</button>
+                        </td>
                     </tr>
                 `).join('');
-
             } catch (error) {
                 console.error('Error loading news table:', error);
             }
         }
 
-        async function loadDonorsTable() {
-            const tbody = document.getElementById('donorsTableBody');
+        // ============================================
+        // GALLERY MANAGEMENT
+        // ============================================
+        
+        function openManageGalleryModal(galleryId = null) {
+            editingId = galleryId;
+            document.getElementById('galleryModalTitle').textContent = galleryId ? 'Edit Foto' : 'Upload Foto Galeri';
+            clearMessages('gallery');
             
+            if (galleryId) {
+                getFromFirebase('gallery').then(list => {
+                    const gallery = list.find(g => g.id === galleryId);
+                    if (gallery) {
+                        document.getElementById('galleryCaption').value = gallery.caption;
+                        if (gallery.image) {
+                            uploadedImages.gallery = gallery.image;
+                            document.getElementById('galleryPreviewImg').src = gallery.image;
+                            document.getElementById('galleryImagePreview').classList.add('active');
+                        }
+                    }
+                });
+            } else {
+                document.getElementById('galleryCaption').value = '';
+                uploadedImages.gallery = null;
+                document.getElementById('galleryImagePreview').classList.remove('active');
+            }
+            
+            document.getElementById('galleryModal').classList.add('active');
+        }
+
+        async function saveGallery() {
+            const caption = document.getElementById('galleryCaption').value.trim();
+
+            clearMessages('gallery');
+
+            if (!editingId && !uploadedImages.gallery) {
+                showError('gallery', 'Foto wajib diupload!');
+                return;
+            }
+
             try {
-                const donors = await getFromFirebase('donors');
+                const data = {
+                    image: uploadedImages.gallery,
+                    caption: caption || '',
+                    date: new Date().toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' }),
+                    author: currentStaff.name,
+                    createdAt: editingId ? (await getFromFirebase('gallery')).find(g => g.id === editingId).createdAt : Date.now()
+                };
+
+                const id = editingId || Date.now().toString();
+                await saveToFirebase('gallery', id, data);
                 
-                if (donors.length === 0) {
-                    tbody.innerHTML = `
-                        <tr>
-                            <td colspan="4">
-                                <div class="empty-state">
-                                    <h3>💰 Belum Ada Donatur</h3>
-                                    <p>Donatur yang ditambahkan akan muncul di sini</p>
-                                </div>
-                            </td>
-                        </tr>
-                    `;
+                showSuccess('gallery', '✅ Foto berhasil diupload!');
+                setTimeout(() => {
+                    closeModal('galleryModal');
+                    loadGalleryTable();
+                    loadStatistics();
+                }, 1500);
+            } catch (error) {
+                showError('gallery', '❌ ' + error.message);
+            }
+        }
+
+        async function deleteGallery(id) {
+            if (!confirm('Yakin hapus foto ini?')) return;
+            try {
+                await deleteFromFirebase('gallery', id);
+                await deleteFromFirebase('likes', id);
+                loadGalleryTable();
+                loadStatistics();
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+
+        async function loadGalleryTable() {
+            const tbody = document.getElementById('galleryTableBody');
+            try {
+                const list = await getFromFirebase('gallery');
+                if (list.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="4"><div class="empty-state"><h3>Belum ada foto</h3></div></td></tr>';
                     return;
                 }
-
-                tbody.innerHTML = donors.map((donor, index) => `
+                tbody.innerHTML = list.map(item => `
                     <tr>
-                        <td><strong>#${index + 1}</strong></td>
-                        <td>${donor.name}</td>
-                        <td><strong>${donor.amount}</strong></td>
-                        <td>${donor.message || '-'}</td>
+                        <td><img src="${item.image}" style="width: 80px; height: 60px; object-fit: cover; border-radius: 8px;"></td>
+                        <td>${item.caption || '-'}</td>
+                        <td>${item.date}</td>
+                        <td>
+                            <button class="action-btn action-btn-edit" onclick="openManageGalleryModal('${item.id}')">✏️ Edit</button>
+                            <button class="action-btn action-btn-delete" onclick="deleteGallery('${item.id}')">🗑️ Hapus</button>
+                        </td>
                     </tr>
                 `).join('');
+            } catch (error) {
+                console.error('Error loading gallery table:', error);
+            }
+        }
 
+        // ============================================
+        // DONORS MANAGEMENT
+        // ============================================
+        
+        function openManageDonorsModal(donorId = null) {
+            editingId = donorId;
+            document.getElementById('donorsModalTitle').textContent = donorId ? 'Edit Donatur' : 'Tambah Donatur Baru';
+            clearMessages('donors');
+            
+            if (donorId) {
+                getFromFirebase('donors').then(list => {
+                    const donor = list.find(d => d.id === donorId);
+                    if (donor) {
+                        document.getElementById('donorName').value = donor.name;
+                        document.getElementById('donorAmount').value = donor.amount;
+                        document.getElementById('donorMessage').value = donor.message || '';
+                    }
+                });
+            } else {
+                document.getElementById('donorName').value = '';
+                document.getElementById('donorAmount').value = '';
+                document.getElementById('donorMessage').value = '';
+            }
+            
+            document.getElementById('donorsModal').classList.add('active');
+        }
+
+        async function saveDonor() {
+            const name = document.getElementById('donorName').value.trim();
+            const amount = document.getElementById('donorAmount').value.trim();
+            const message = document.getElementById('donorMessage').value.trim();
+
+            clearMessages('donors');
+
+            if (!name || !amount) {
+                showError('donors', 'Nama dan jumlah donasi wajib diisi!');
+                return;
+            }
+
+            try {
+                const data = {
+                    name, amount, message,
+                    date: new Date().toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' }),
+                    updatedAt: Date.now()
+                };
+
+                const id = editingId || Date.now().toString();
+                await saveToFirebase('donors', id, data);
+                
+                showSuccess('donors', '✅ Donatur berhasil disimpan!');
+                setTimeout(() => {
+                    closeModal('donorsModal');
+                    loadDonorsTable();
+                    loadStatistics();
+                }, 1500);
+            } catch (error) {
+                showError('donors', '❌ ' + error.message);
+            }
+        }
+
+        async function deleteDonor(id) {
+            if (!confirm('Yakin hapus donatur ini?')) return;
+            try {
+                await deleteFromFirebase('donors', id);
+                loadDonorsTable();
+                loadStatistics();
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+
+        async function loadDonorsTable() {
+            const tbody = document.getElementById('donorsTableBody');
+            try {
+                const list = await getFromFirebase('donors');
+                if (list.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state"><h3>Belum ada donatur</h3></div></td></tr>';
+                    return;
+                }
+                tbody.innerHTML = list.map((item, index) => `
+                    <tr>
+                        <td><strong>#${index + 1}</strong></td>
+                        <td>${item.name}</td>
+                        <td><strong>${item.amount}</strong></td>
+                        <td>${item.message || '-'}</td>
+                        <td>
+                            <button class="action-btn action-btn-edit" onclick="openManageDonorsModal('${item.id}')">✏️ Edit</button>
+                            <button class="action-btn action-btn-delete" onclick="deleteDonor('${item.id}')">🗑️ Hapus</button>
+                        </td>
+                    </tr>
+                `).join('');
             } catch (error) {
                 console.error('Error loading donors table:', error);
             }
@@ -1383,22 +1753,19 @@
         // ============================================
         
         function initDashboard() {
-            console.log('🛠️ Initializing Admin Dashboard...');
+            console.log('🛠️ Admin Dashboard Initialized');
             
-            if (!checkAuth()) {
-                return;
-            }
+            if (!checkAuth()) return;
 
             loadStatistics();
             loadCharts();
-            loadTopLiked();
-            loadActivityLog();
+            loadStaffTable();
             loadGamesTable();
             loadNewsTable();
+            loadGalleryTable();
             loadDonorsTable();
         }
 
-        // Wait for Firebase
         if (window.firebaseInitialized) {
             initDashboard();
         } else {
