@@ -1380,14 +1380,14 @@
         // ============================================
         
         const STAFF_DATABASE = {
-            '7389596840': { role: 'owner', name: 'Owner 1' },
-            '9119879621': { role: 'owner', name: 'Owner 2' },
-            '9117761747': { role: 'developer', name: 'Developer' },
-            '8935152746': { role: 'headadmin', name: 'Head Admin' },
-            '8963001003': { role: 'admin', name: 'Admin 1' },
-            '2900556168': { role: 'admin', name: 'Admin 2' },
-            '9458094251': { role: 'admin', name: 'Admin 3' },
-            '9297382144': { role: 'admin', name: 'Admin 4' }
+            '7389596840': { role: 'owner' },
+            '9119879621': { role: 'owner' },
+            '9117761747': { role: 'developer' },
+            '8935152746': { role: 'headadmin' },
+            '8963001003': { role: 'admin' },
+            '2900556168': { role: 'admin' },
+            '9458094251': { role: 'admin' },
+            '9297382144': { role: 'admin' }
         };
 
         const ROLE_ICONS = {
@@ -1470,54 +1470,56 @@
                 return;
             }
 
-            const staff = STAFF_DATABASE[robloxId];
+            const staffInfo = STAFF_DATABASE[robloxId];
             
-            if (!staff) {
+            if (!staffInfo) {
                 showError('ID Roblox tidak terdaftar sebagai staff');
                 return;
             }
 
-            currentStaff = { id: robloxId, ...staff };
-            localStorage.setItem('rapsStaffLogin', JSON.stringify(currentStaff));
-            
-            // Check if redirected from admin dashboard
-            const urlParams = new URLSearchParams(window.location.search);
-            const redirectTo = urlParams.get('redirect');
-            
-            if (redirectTo === 'dashboard') {
-                window.location.href = 'admin-dashboard.html';
-            } else {
-                updateUIForLoggedInStaff();
-                closeLoginModal();
-                alert(`✅ Selamat datang, ${staff.name}!`);
-            }
+            // Get actual name from Firebase
+            getFromFirebase('staff').then(staffList => {
+                const matchedStaff = staffList.find(s => s.role === staffInfo.role);
+                
+                if (matchedStaff) {
+                    currentStaff = { 
+                        id: robloxId, 
+                        role: staffInfo.role,
+                        name: matchedStaff.name 
+                    };
+                } else {
+                    currentStaff = { 
+                        id: robloxId, 
+                        role: staffInfo.role,
+                        name: 'Staff' 
+                    };
+                }
+                
+                localStorage.setItem('rapsStaffLogin', JSON.stringify(currentStaff));
+                
+                const urlParams = new URLSearchParams(window.location.search);
+                const redirectTo = urlParams.get('redirect');
+                
+                if (redirectTo === 'dashboard') {
+                    window.location.href = 'admin-dashboard.html';
+                } else {
+                    updateUIForLoggedInStaff();
+                    closeLoginModal();
+                    alert(`✅ Selamat datang, ${currentStaff.name}!`);
+                }
+            }).catch(error => {
+                console.error('Error fetching staff data:', error);
+                showError('Terjadi kesalahan saat login');
+            });
         }
 
         function updateUIForLoggedInStaff() {
             const authSection = document.getElementById('staffAuthSection');
             
-            // Get actual name from Firebase staff data
-            getFromFirebase('staff').then(staffList => {
-                // Try to find staff by matching role and approximate name
-                const matchedStaff = staffList.find(s => 
-                    s.role === currentStaff.role || 
-                    s.name.toLowerCase().includes(currentStaff.name.toLowerCase())
-                );
-                
-                const displayName = matchedStaff ? matchedStaff.name : currentStaff.name;
-                
-                authSection.innerHTML = `
-                    <span style="font-size: 0.85rem; color: var(--gray);">👋 ${displayName}</span>
-                    <a href="admin-dashboard.html" class="staff-btn" style="background: linear-gradient(135deg, var(--secondary), #00a8cc); text-decoration: none; padding: 0.5rem 1rem; font-size: 0.8rem;">🛠️ Dashboard</a>
-                `;
-            }).catch(error => {
-                console.error('Error loading staff name:', error);
-                // Fallback to basic name
-                authSection.innerHTML = `
-                    <span style="font-size: 0.85rem; color: var(--gray);">👋 ${currentStaff.name}</span>
-                    <a href="admin-dashboard.html" class="staff-btn" style="background: linear-gradient(135deg, var(--secondary), #00a8cc); text-decoration: none; padding: 0.5rem 1rem; font-size: 0.8rem;">🛠️ Dashboard</a>
-                `;
-            });
+            authSection.innerHTML = `
+                <span style="font-size: 0.85rem; color: var(--gray);">👋 ${currentStaff.name}</span>
+                <a href="admin-dashboard.html" class="staff-btn" style="background: linear-gradient(135deg, var(--secondary), #00a8cc); text-decoration: none; padding: 0.5rem 1rem; font-size: 0.8rem;">🛠️ Dashboard</a>
+            `;
         }
 
         function showError(message) {
