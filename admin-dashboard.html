@@ -811,11 +811,11 @@
             
             <div class="form-group">
                 <label>Nama Staff</label>
-                <input type="text" id="staffName" placeholder="John Doe">
+                <input type="text" id="staffNameInput" placeholder="John Doe">
             </div>
             <div class="form-group">
                 <label>Role</label>
-                <select id="staffRole">
+                <select id="staffRoleInput">
                     <option value="owner">👑 Owner</option>
                     <option value="developer">💻 Developer</option>
                     <option value="headadmin">⭐ Head Admin</option>
@@ -1250,8 +1250,8 @@
                 getFromFirebase('staff').then(list => {
                     const staff = list.find(s => s.id === staffId);
                     if (staff) {
-                        document.getElementById('staffName').value = staff.name;
-                        document.getElementById('staffRole').value = staff.role;
+                        document.getElementById('staffNameInput').value = staff.name;
+                        document.getElementById('staffRoleInput').value = staff.role;
                         document.getElementById('staffDescription').value = staff.description;
                         if (staff.photo) {
                             uploadedImages.staff = staff.photo;
@@ -1261,8 +1261,8 @@
                     }
                 });
             } else {
-                document.getElementById('staffName').value = '';
-                document.getElementById('staffRole').value = 'admin';
+                document.getElementById('staffNameInput').value = '';
+                document.getElementById('staffRoleInput').value = 'admin';
                 document.getElementById('staffDescription').value = '';
                 uploadedImages.staff = null;
                 document.getElementById('staffImagePreview').classList.remove('active');
@@ -1272,8 +1272,8 @@
         }
 
         async function saveStaff() {
-            const name = document.getElementById('staffName').value.trim();
-            const role = document.getElementById('staffRole').value;
+            const name = document.getElementById('staffNameInput').value.trim();
+            const role = document.getElementById('staffRoleInput').value;
             const description = document.getElementById('staffDescription').value.trim();
 
             clearMessages('staff');
