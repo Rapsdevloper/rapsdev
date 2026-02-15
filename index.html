@@ -1808,7 +1808,11 @@
                 if (!snapshot.exists()) return 0;
                 
                 const comments = snapshot.val();
-                return Object.keys(comments).length;
+                const commentsList = Object.keys(comments).map(key => comments[key]);
+                
+                // Hitung hanya yang approved
+                const approvedCount = commentsList.filter(c => c.status === 'approved').length;
+                return approvedCount;
             } catch (error) {
                 console.error('Error getting comments count:', error);
                 return 0;
@@ -1851,10 +1855,23 @@
                     ...commentsData[key]
                 }));
                 
-                // Sort by timestamp descending
-                comments.sort((a, b) => b.timestamp - a.timestamp);
+                // Filter hanya yang approved
+                const approvedComments = comments.filter(c => c.status === 'approved');
                 
-                listElement.innerHTML = comments.map(comment => `
+                if (approvedComments.length === 0) {
+                    listElement.innerHTML = `
+                        <div class="empty-comments">
+                            <div>💬</div>
+                            <p>Belum ada komentar. Jadilah yang pertama!</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Sort by timestamp descending
+                approvedComments.sort((a, b) => b.timestamp - a.timestamp);
+                
+                listElement.innerHTML = approvedComments.map(comment => `
                     <div class="comment-item">
                         <div class="comment-author">${comment.name}</div>
                         <div class="comment-text">${comment.text}</div>
@@ -1901,7 +1918,9 @@
                         hour: '2-digit',
                         minute: '2-digit'
                     }),
-                    timestamp: Date.now()
+                    timestamp: Date.now(),
+                    status: 'pending', // Status pending untuk moderasi
+                    galleryId: currentGalleryIdForComments
                 };
                 
                 const commentId = Date.now().toString();
@@ -1911,8 +1930,13 @@
                 document.getElementById('modalCommentName').value = '';
                 document.getElementById('modalCommentText').value = '';
                 
-                // Reload comments and gallery
-                loadCommentsForModal(currentGalleryIdForComments);
+                // Show success message
+                alert('✅ Komentar Anda telah dikirim dan sedang menunggu persetujuan moderator. Terima kasih!');
+                
+                // Close modal
+                closeCommentsModal();
+                
+                // Reload gallery (untuk update pending count jika staff login)
                 loadGallery();
             } catch (error) {
                 console.error('Error submitting comment:', error);
