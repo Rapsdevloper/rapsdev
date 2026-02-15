@@ -638,6 +638,11 @@
                 <div class="stat-label">Gallery Photos</div>
             </div>
             <div class="stat-card">
+                <div class="stat-icon">💬</div>
+                <div class="stat-value" id="totalPendingComments">0</div>
+                <div class="stat-label">Pending Comments</div>
+            </div>
+            <div class="stat-card">
                 <div class="stat-icon">💰</div>
                 <div class="stat-value" id="totalDonors">0</div>
                 <div class="stat-label">Total Donors</div>
@@ -771,6 +776,29 @@
                     </thead>
                     <tbody id="galleryTableBody">
                         <tr><td colspan="4"><div class="loading-container"><div class="loading"></div></div></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <div class="section-header">
+                <h2 class="section-title">💬 Pending Comments (Moderasi)</h2>
+                <button class="btn btn-secondary" onclick="loadPendingCommentsTable()">🔄 Refresh</button>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Photo</th>
+                            <th>Name</th>
+                            <th>Comment</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pendingCommentsTableBody">
+                        <tr><td colspan="5"><div class="loading-container"><div class="loading"></div></div></td></tr>
                     </tbody>
                 </table>
             </div>
@@ -1135,10 +1163,23 @@
                     getFromFirebase('donors')
                 ]);
 
+                // Count pending comments
+                let pendingCount = 0;
+                for (const galleryItem of gallery) {
+                    const dbRef = window.firebaseRef(window.firebaseDatabase, `comments/${galleryItem.id}`);
+                    const snapshot = await window.firebaseGet(dbRef);
+                    if (snapshot.exists()) {
+                        const comments = snapshot.val();
+                        const commentsList = Object.keys(comments).map(key => comments[key]);
+                        pendingCount += commentsList.filter(c => c.status === 'pending').length;
+                    }
+                }
+
                 document.getElementById('totalStaff').textContent = staff.length;
                 document.getElementById('totalGames').textContent = games.length;
                 document.getElementById('totalNews').textContent = news.length;
                 document.getElementById('totalGallery').textContent = gallery.length;
+                document.getElementById('totalPendingComments').textContent = pendingCount;
                 document.getElementById('totalDonors').textContent = donors.length;
             } catch (error) {
                 console.error('Error loading statistics:', error);
@@ -1749,6 +1790,103 @@
         }
 
         // ============================================
+        // COMMENTS MODERATION
+        // ============================================
+
+        async function loadPendingCommentsTable() {
+            const tbody = document.getElementById('pendingCommentsTableBody');
+            try {
+                const gallery = await getFromFirebase('gallery');
+                let allPendingComments = [];
+
+                // Get all pending comments from all gallery items
+                for (const galleryItem of gallery) {
+                    const dbRef = window.firebaseRef(window.firebaseDatabase, `comments/${galleryItem.id}`);
+                    const snapshot = await window.firebaseGet(dbRef);
+                    
+                    if (snapshot.exists()) {
+                        const comments = snapshot.val();
+                        const commentsList = Object.keys(comments).map(key => ({
+                            commentId: key,
+                            galleryId: galleryItem.id,
+                            galleryImage: galleryItem.image,
+                            galleryCaption: galleryItem.caption || 'No caption',
+                            ...comments[key]
+                        }));
+                        
+                        const pending = commentsList.filter(c => c.status === 'pending');
+                        allPendingComments = allPendingComments.concat(pending);
+                    }
+                }
+
+                if (allPendingComments.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state"><h3>✅ Tidak ada komentar pending</h3><p>Semua komentar sudah direview</p></div></td></tr>';
+                    return;
+                }
+
+                // Sort by timestamp descending (newest first)
+                allPendingComments.sort((a, b) => b.timestamp - a.timestamp);
+
+                tbody.innerHTML = allPendingComments.map(item => `
+                    <tr>
+                        <td>
+                            <img src="${item.galleryImage}" style="width: 60px; height: 45px; object-fit: cover; border-radius: 8px;" title="${item.galleryCaption}">
+                        </td>
+                        <td><strong>${item.name}</strong></td>
+                        <td style="max-width: 300px;">${item.text}</td>
+                        <td style="font-size: 0.85rem;">${item.date}</td>
+                        <td>
+                            <button class="action-btn" style="background: rgba(68, 255, 68, 0.2); color: #44ff44;" onclick="approveComment('${item.galleryId}', '${item.commentId}')">✅ Approve</button>
+                            <button class="action-btn action-btn-delete" onclick="rejectComment('${item.galleryId}', '${item.commentId}')">❌ Reject</button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading pending comments:', error);
+                tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state"><h3>Error loading comments</h3></div></td></tr>';
+            }
+        }
+
+        async function approveComment(galleryId, commentId) {
+            try {
+                const dbRef = window.firebaseRef(window.firebaseDatabase, `comments/${galleryId}/${commentId}`);
+                const snapshot = await window.firebaseGet(dbRef);
+                
+                if (snapshot.exists()) {
+                    const commentData = snapshot.val();
+                    commentData.status = 'approved';
+                    commentData.approvedBy = currentStaff.name;
+                    commentData.approvedAt = Date.now();
+                    
+                    await window.firebaseSet(dbRef, commentData);
+                    
+                    alert('✅ Komentar berhasil diapprove!');
+                    loadPendingCommentsTable();
+                    loadStatistics();
+                }
+            } catch (error) {
+                console.error('Error approving comment:', error);
+                alert('❌ Gagal approve komentar: ' + error.message);
+            }
+        }
+
+        async function rejectComment(galleryId, commentId) {
+            if (!confirm('Yakin ingin reject komentar ini?')) return;
+            
+            try {
+                const dbRef = window.firebaseRef(window.firebaseDatabase, `comments/${galleryId}/${commentId}`);
+                await window.firebaseRemove(dbRef);
+                
+                alert('✅ Komentar berhasil direject dan dihapus!');
+                loadPendingCommentsTable();
+                loadStatistics();
+            } catch (error) {
+                console.error('Error rejecting comment:', error);
+                alert('❌ Gagal reject komentar: ' + error.message);
+            }
+        }
+
+        // ============================================
         // INITIALIZATION
         // ============================================
         
@@ -1763,6 +1901,7 @@
             loadGamesTable();
             loadNewsTable();
             loadGalleryTable();
+            loadPendingCommentsTable();
             loadDonorsTable();
         }
 
