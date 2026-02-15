@@ -1248,10 +1248,29 @@
 
         function updateUIForLoggedInStaff() {
             const authSection = document.getElementById('staffAuthSection');
-            authSection.innerHTML = `
-                <span style="font-size: 0.85rem; color: var(--gray);">👋 ${currentStaff.name}</span>
-                <a href="admin-dashboard.html" class="staff-btn" style="background: linear-gradient(135deg, var(--secondary), #00a8cc); text-decoration: none; padding: 0.5rem 1rem; font-size: 0.8rem;">🛠️ Admin</a>
-            `;
+            
+            // Get actual name from Firebase staff data
+            getFromFirebase('staff').then(staffList => {
+                // Try to find staff by matching role and approximate name
+                const matchedStaff = staffList.find(s => 
+                    s.role === currentStaff.role || 
+                    s.name.toLowerCase().includes(currentStaff.name.toLowerCase())
+                );
+                
+                const displayName = matchedStaff ? matchedStaff.name : currentStaff.name;
+                
+                authSection.innerHTML = `
+                    <span style="font-size: 0.85rem; color: var(--gray);">👋 ${displayName}</span>
+                    <a href="admin-dashboard.html" class="staff-btn" style="background: linear-gradient(135deg, var(--secondary), #00a8cc); text-decoration: none; padding: 0.5rem 1rem; font-size: 0.8rem;">🛠️ Dashboard</a>
+                `;
+            }).catch(error => {
+                console.error('Error loading staff name:', error);
+                // Fallback to basic name
+                authSection.innerHTML = `
+                    <span style="font-size: 0.85rem; color: var(--gray);">👋 ${currentStaff.name}</span>
+                    <a href="admin-dashboard.html" class="staff-btn" style="background: linear-gradient(135deg, var(--secondary), #00a8cc); text-decoration: none; padding: 0.5rem 1rem; font-size: 0.8rem;">🛠️ Dashboard</a>
+                `;
+            });
         }
 
         function showError(message) {
