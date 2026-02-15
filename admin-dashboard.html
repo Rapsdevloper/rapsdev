@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Admin Dashboard - RAPS Developer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Firebase SDK v9 (Modular) -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getDatabase, ref, set, get, remove, child, onValue } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBrT9nXf9ncgnssTUIryv28i2GI9dUa0Cs",
+            authDomain: "raps-developer.firebaseapp.com",
+            databaseURL: "https://raps-developer-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "raps-developer",
+            storageBucket: "raps-developer.firebasestorage.app",
+            messagingSenderId: "346351911071",
+            appId: "1:346351911071:web:e840e783a32ae1825d62aa"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        window.firebaseApp = app;
+        window.firebaseDatabase = database;
+        window.firebaseRef = ref;
+        window.firebaseSet = set;
+        window.firebaseGet = get;
+        window.firebaseRemove = remove;
+        window.firebaseChild = child;
+        window.firebaseOnValue = onValue;
+        window.firebaseInitialized = true;
+
+        console.log('🔥 Firebase initialized for Admin Dashboard');
+        window.dispatchEvent(new Event('firebaseReady'));
+    </script>
+
+    <!-- Chart.js for Analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <style>
+        :root {
+            --primary: #FF3366;
+            --secondary: #00D4FF;
+            --accent: #FFD700;
+            --dark: #1a1a2e;
+            --darker: #0f0f1e;
+            --light: #ffffff;
+            --gray: #a8a8b8;
+            --success: #44ff44;
+            --warning: #FFD700;
+            --danger: #ff4444;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--darker);
+            color: var(--light);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--darker);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 10px;
+        }
+
+        /* Header */
+        .admin-header {
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 1.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 0.7rem 1.5rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), #ff5588);
+            color: var(--light);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255, 51, 102, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--light);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--gradient-1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Page Title */
+        .page-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-subtitle {
+            color: var(--gray);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 1.8rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient-1);
+        }
+
+        .stat-card:nth-child(2)::before { background: var(--gradient-2); }
+        .stat-card:nth-child(3)::before { background: var(--gradient-3); }
+        .stat-card:nth-child(4)::before { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+        .stat-card:nth-child(5)::before { background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-value {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+
+        .stat-label {
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+
+        .stat-change {
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .stat-change.positive {
+            color: var(--success);
+        }
+
+        .stat-change.negative {
+            color: var(--danger);
+        }
+
+        /* Charts Section */
+        .charts-section {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .chart-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Activity Log */
+        .activity-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: start;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            margin-bottom: 0.8rem;
+            border-left: 3px solid var(--primary);
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gradient-1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-title {
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+        }
+
+        .activity-meta {
+            color: var(--gray);
+            font-size: 0.85rem;
+        }
+
+        .activity-time {
+            color: var(--gray);
+            font-size: 0.85rem;
+            white-space: nowrap;
+        }
+
+        /* Content Table */
+        .content-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.8rem;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--light);
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        tr:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .status-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-live {
+            background: rgba(68, 255, 68, 0.2);
+            color: var(--success);
+        }
+
+        .status-beta {
+            background: rgba(255, 215, 0, 0.2);
+            color: var(--warning);
+        }
+
+        .status-maintenance {
+            background: rgba(255, 68, 68, 0.2);
+            color: var(--danger);
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .quick-action-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: var(--light);
+        }
+
+        .quick-action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .quick-action-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .quick-action-label {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        /* Loading */
+        .loading {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-container {
+            text-align: center;
+            padding: 3rem;
+        }
+
+        /* Top Items */
+        .top-items {
+            display: grid;
+            gap: 0.8rem;
+        }
+
+        .top-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+
+        .top-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .top-rank {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .top-rank.first {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .top-rank.second {
+            background: linear-gradient(135deg, #C0C0C0, #808080);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .top-rank.third {
+            background: linear-gradient(135deg, #CD7F32, #8B4513);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .top-item-content {
+            flex: 1;
+        }
+
+        .top-item-title {
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+        }
+
+        .top-item-meta {
+            color: var(--gray);
+            font-size: 0.85rem;
+        }
+
+        .top-item-value {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .charts-section {
+                grid-template-columns: 1fr;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            table {
+                font-size: 0.85rem;
+            }
+
+            th, td {
+                padding: 0.7rem;
+            }
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--gray);
+        }
+
+        .empty-state h3 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--light);
+        }
+
+        /* Action Buttons */
+        .action-btn {
+            padding: 0.4rem 0.8rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-right: 0.3rem;
+        }
+
+        .action-btn-edit {
+            background: rgba(0, 212, 255, 0.2);
+            color: var(--secondary);
+        }
+
+        .action-btn-edit:hover {
+            background: rgba(0, 212, 255, 0.3);
+        }
+
+        .action-btn-delete {
+            background: rgba(255, 68, 68, 0.2);
+            color: var(--danger);
+        }
+
+        .action-btn-delete:hover {
+            background: rgba(255, 68, 68, 0.3);
+        }
+
+        .thumbnail-preview {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="admin-header">
+        <div class="header-content">
+            <div class="logo">
+                🛠️ RAPS Admin Dashboard
+            </div>
+            <div class="header-actions">
+                <div class="user-info">
+                    <div class="user-avatar">👤</div>
+                    <div>
+                        <div id="staffName" style="font-weight: 600;">Loading...</div>
+                        <div id="staffRole" style="font-size: 0.85rem; color: var(--gray);">...</div>
+                    </div>
+                </div>
+                <a href="index.html" class="btn btn-secondary">
+                    🏠 Ke Website
+                </a>
+                <button class="btn btn-primary" onclick="logout()">
+                    🚪 Logout
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Page Header -->
+        <div style="margin-bottom: 2rem;">
+            <h1 class="page-title">Dashboard Overview</h1>
+            <p class="page-subtitle">Selamat datang di admin dashboard RAPS Developer</p>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-value" id="totalStaff">0</div>
+                <div class="stat-label">Total Staff</div>
+                <div class="stat-change positive">
+                    <span>📈</span> Active members
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">🎮</div>
+                <div class="stat-value" id="totalGames">0</div>
+                <div class="stat-label">Total Games</div>
+                <div class="stat-change positive">
+                    <span>🚀</span> Published
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">📢</div>
+                <div class="stat-value" id="totalNews">0</div>
+                <div class="stat-label">Total Updates</div>
+                <div class="stat-change positive">
+                    <span>✨</span> This month
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">📸</div>
+                <div class="stat-value" id="totalGallery">0</div>
+                <div class="stat-label">Gallery Photos</div>
+                <div class="stat-change positive">
+                    <span>❤️</span> <span id="totalLikes">0</span> likes
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">💰</div>
+                <div class="stat-value" id="totalDonors">0</div>
+                <div class="stat-label">Total Donors</div>
+                <div class="stat-change positive">
+                    <span>🙏</span> Supporters
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="content-section">
+            <h2 class="section-title" style="margin-bottom: 1.5rem;">⚡ Quick Actions</h2>
+            <div class="quick-actions">
+                <div class="quick-action-card" onclick="window.location.href='index.html#staff'">
+                    <div class="quick-action-icon">👥</div>
+                    <div class="quick-action-label">Kelola Staff</div>
+                </div>
+                <div class="quick-action-card" onclick="window.location.href='index.html#games'">
+                    <div class="quick-action-icon">🎮</div>
+                    <div class="quick-action-label">Tambah Game</div>
+                </div>
+                <div class="quick-action-card" onclick="window.location.href='index.html#updates'">
+                    <div class="quick-action-icon">📢</div>
+                    <div class="quick-action-label">Posting Update</div>
+                </div>
+                <div class="quick-action-card" onclick="window.location.href='index.html#gallery'">
+                    <div class="quick-action-icon">📸</div>
+                    <div class="quick-action-label">Upload Galeri</div>
+                </div>
+                <div class="quick-action-card" onclick="window.location.href='index.html#donors'">
+                    <div class="quick-action-icon">💰</div>
+                    <div class="quick-action-label">Kelola Donasi</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="charts-section">
+            <div class="chart-card">
+                <h3 class="chart-title">📊 Content Growth (Last 7 Days)</h3>
+                <canvas id="contentGrowthChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <h3 class="chart-title">🔥 Top 5 Most Liked</h3>
+                <div id="topLikedContent" class="top-items">
+                    <div class="loading-container">
+                        <div class="loading"></div>
+                        <p>Loading...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Activity Log -->
+        <div class="activity-section">
+            <h2 class="section-title" style="margin-bottom: 1.5rem;">📋 Recent Activity</h2>
+            <div id="activityLog">
+                <div class="loading-container">
+                    <div class="loading"></div>
+                    <p>Loading activity...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Tables -->
+        <div class="content-section">
+            <div class="section-header">
+                <h2 class="section-title">🎮 All Games</h2>
+                <button class="btn btn-primary" onclick="window.location.href='index.html#games'">
+                    ➕ Add Game
+                </button>
+            </div>
+            <div class="table-container">
+                <table id="gamesTable">
+                    <thead>
+                        <tr>
+                            <th>Game</th>
+                            <th>Status</th>
+                            <th>Players</th>
+                            <th>Date Added</th>
+                            <th>Author</th>
+                        </tr>
+                    </thead>
+                    <tbody id="gamesTableBody">
+                        <tr>
+                            <td colspan="5">
+                                <div class="loading-container">
+                                    <div class="loading"></div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <div class="section-header">
+                <h2 class="section-title">📢 All Updates</h2>
+                <button class="btn btn-primary" onclick="window.location.href='index.html#updates'">
+                    ➕ Add Update
+                </button>
+            </div>
+            <div class="table-container">
+                <table id="newsTable">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Date</th>
+                            <th>Author</th>
+                            <th>Has Image</th>
+                        </tr>
+                    </thead>
+                    <tbody id="newsTableBody">
+                        <tr>
+                            <td colspan="4">
+                                <div class="loading-container">
+                                    <div class="loading"></div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <div class="section-header">
+                <h2 class="section-title">💰 All Donors</h2>
+                <button class="btn btn-primary" onclick="window.location.href='index.html#donors'">
+                    ➕ Add Donor
+                </button>
+            </div>
+            <div class="table-container">
+                <table id="donorsTable">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Name</th>
+                            <th>Amount</th>
+                            <th>Message</th>
+                        </tr>
+                    </thead>
+                    <tbody id="donorsTableBody">
+                        <tr>
+                            <td colspan="4">
+                                <div class="loading-container">
+                                    <div class="loading"></div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // STAFF AUTHENTICATION
+        // ============================================
+        
+        const STAFF_DATABASE = {
+            '7389596840': { role: 'owner', name: 'Owner 1' },
+            '9119879621': { role: 'owner', name: 'Owner 2' },
+            '9117761747': { role: 'developer', name: 'Developer' },
+            '8935152746': { role: 'headadmin', name: 'Head Admin' },
+            '8963001003': { role: 'admin', name: 'Admin 1' },
+            '2900556168': { role: 'admin', name: 'Admin 2' },
+            '9458094251': { role: 'admin', name: 'Admin 3' },
+            '9297382144': { role: 'admin', name: 'Admin 4' }
+        };
+
+        const ROLE_LABELS = {
+            owner: 'Owner',
+            developer: 'Developer',
+            headadmin: 'Head Admin',
+            admin: 'Admin',
+            moderator: 'Moderator',
+            creator: 'Content Creator'
+        };
+
+        let currentStaff = null;
+
+        function checkAuth() {
+            const savedStaff = localStorage.getItem('rapsStaffLogin');
+            
+            if (!savedStaff) {
+                alert('⚠️ Anda harus login sebagai staff untuk mengakses dashboard!');
+                window.location.href = 'index.html';
+                return false;
+            }
+
+            try {
+                currentStaff = JSON.parse(savedStaff);
+                document.getElementById('staffName').textContent = currentStaff.name;
+                document.getElementById('staffRole').textContent = ROLE_LABELS[currentStaff.role] || currentStaff.role;
+                return true;
+            } catch (e) {
+                localStorage.removeItem('rapsStaffLogin');
+                window.location.href = 'index.html';
+                return false;
+            }
+        }
+
+        function logout() {
+            if (confirm('Yakin ingin logout?')) {
+                localStorage.removeItem('rapsStaffLogin');
+                window.location.href = 'index.html';
+            }
+        }
+
+        // ============================================
+        // FIREBASE HELPER FUNCTIONS
+        // ============================================
+        
+        function getFromFirebase(path) {
+            if (!window.firebaseInitialized) {
+                return Promise.resolve([]);
+            }
+            
+            const dbRef = window.firebaseRef(window.firebaseDatabase, path);
+            return window.firebaseGet(dbRef)
+                .then(snapshot => {
+                    const data = snapshot.val();
+                    if (!data) return [];
+                    
+                    return Object.keys(data).map(key => ({
+                        id: key,
+                        ...data[key]
+                    }));
+                })
+                .catch(error => {
+                    console.error(`Error getting ${path}:`, error);
+                    return [];
+                });
+        }
+
+        // ============================================
+        // STATISTICS
+        // ============================================
+        
+        async function loadStatistics() {
+            try {
+                const [staff, games, news, gallery, donors, likes] = await Promise.all([
+                    getFromFirebase('staff'),
+                    getFromFirebase('games'),
+                    getFromFirebase('news'),
+                    getFromFirebase('gallery'),
+                    getFromFirebase('donors'),
+                    getFromFirebase('likes')
+                ]);
+
+                document.getElementById('totalStaff').textContent = staff.length;
+                document.getElementById('totalGames').textContent = games.length;
+                document.getElementById('totalNews').textContent = news.length;
+                document.getElementById('totalGallery').textContent = gallery.length;
+                document.getElementById('totalDonors').textContent = donors.length;
+
+                // Calculate total likes
+                const totalLikes = likes.reduce((sum, like) => sum + (like.count || 0), 0);
+                document.getElementById('totalLikes').textContent = totalLikes;
+
+            } catch (error) {
+                console.error('Error loading statistics:', error);
+            }
+        }
+
+        // ============================================
+        // CHARTS
+        // ============================================
+        
+        async function loadCharts() {
+            try {
+                const [games, news, gallery] = await Promise.all([
+                    getFromFirebase('games'),
+                    getFromFirebase('news'),
+                    getFromFirebase('gallery')
+                ]);
+
+                // Prepare data for last 7 days
+                const last7Days = [];
+                const now = Date.now();
+                
+                for (let i = 6; i >= 0; i--) {
+                    const date = new Date(now - (i * 24 * 60 * 60 * 1000));
+                    last7Days.push({
+                        date: date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }),
+                        timestamp: date.setHours(0, 0, 0, 0)
+                    });
+                }
+
+                const chartData = last7Days.map(day => ({
+                    date: day.date,
+                    games: games.filter(g => {
+                        const itemDate = new Date(g.createdAt || 0).setHours(0, 0, 0, 0);
+                        return itemDate === day.timestamp;
+                    }).length,
+                    news: news.filter(n => {
+                        const itemDate = new Date(n.createdAt || 0).setHours(0, 0, 0, 0);
+                        return itemDate === day.timestamp;
+                    }).length,
+                    gallery: gallery.filter(g => {
+                        const itemDate = new Date(g.createdAt || 0).setHours(0, 0, 0, 0);
+                        return itemDate === day.timestamp;
+                    }).length
+                }));
+
+                // Create chart
+                const ctx = document.getElementById('contentGrowthChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: chartData.map(d => d.date),
+                        datasets: [
+                            {
+                                label: 'Games',
+                                data: chartData.map(d => d.games),
+                                borderColor: '#FF3366',
+                                backgroundColor: 'rgba(255, 51, 102, 0.1)',
+                                tension: 0.4
+                            },
+                            {
+                                label: 'Updates',
+                                data: chartData.map(d => d.news),
+                                borderColor: '#00D4FF',
+                                backgroundColor: 'rgba(0, 212, 255, 0.1)',
+                                tension: 0.4
+                            },
+                            {
+                                label: 'Gallery',
+                                data: chartData.map(d => d.gallery),
+                                borderColor: '#FFD700',
+                                backgroundColor: 'rgba(255, 215, 0, 0.1)',
+                                tension: 0.4
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: '#ffffff'
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    color: '#a8a8b8',
+                                    stepSize: 1
+                                },
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.1)'
+                                }
+                            },
+                            x: {
+                                ticks: {
+                                    color: '#a8a8b8'
+                                },
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.1)'
+                                }
+                            }
+                        }
+                    }
+                });
+
+            } catch (error) {
+                console.error('Error loading charts:', error);
+            }
+        }
+
+        // ============================================
+        // TOP LIKED CONTENT
+        // ============================================
+        
+        async function loadTopLiked() {
+            const container = document.getElementById('topLikedContent');
+            
+            try {
+                const [gallery, likes] = await Promise.all([
+                    getFromFirebase('gallery'),
+                    getFromFirebase('likes')
+                ]);
+
+                // Match gallery items with likes
+                const itemsWithLikes = gallery.map(item => {
+                    const like = likes.find(l => l.id === item.id);
+                    return {
+                        ...item,
+                        likes: like ? like.count : 0
+                    };
+                });
+
+                // Sort by likes and take top 5
+                const topItems = itemsWithLikes
+                    .sort((a, b) => b.likes - a.likes)
+                    .slice(0, 5);
+
+                if (topItems.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <h3>📸 Belum Ada Data</h3>
+                            <p>Foto galeri dengan likes akan muncul di sini</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = topItems.map((item, index) => {
+                    const rankClass = index === 0 ? 'first' : index === 1 ? 'second' : index === 2 ? 'third' : '';
+                    
+                    return `
+                        <div class="top-item">
+                            <div class="top-rank ${rankClass}">#${index + 1}</div>
+                            <div class="top-item-content">
+                                <div class="top-item-title">${item.caption || 'Foto Galeri'}</div>
+                                <div class="top-item-meta">${item.date}</div>
+                            </div>
+                            <div class="top-item-value">❤️ ${item.likes}</div>
+                        </div>
+                    `;
+                }).join('');
+
+            } catch (error) {
+                console.error('Error loading top liked:', error);
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <p>Gagal memuat data</p>
+                    </div>
+                `;
+            }
+        }
+
+        // ============================================
+        // ACTIVITY LOG
+        // ============================================
+        
+        async function loadActivityLog() {
+            const container = document.getElementById('activityLog');
+            
+            try {
+                const [games, news, gallery, staff, donors] = await Promise.all([
+                    getFromFirebase('games'),
+                    getFromFirebase('news'),
+                    getFromFirebase('gallery'),
+                    getFromFirebase('staff'),
+                    getFromFirebase('donors')
+                ]);
+
+                // Combine all activities
+                const activities = [
+                    ...games.map(g => ({ type: 'game', data: g, time: g.createdAt })),
+                    ...news.map(n => ({ type: 'news', data: n, time: n.createdAt })),
+                    ...gallery.map(g => ({ type: 'gallery', data: g, time: g.createdAt })),
+                    ...staff.map(s => ({ type: 'staff', data: s, time: s.updatedAt })),
+                    ...donors.map(d => ({ type: 'donor', data: d, time: d.updatedAt }))
+                ];
+
+                // Sort by time and take last 10
+                const recentActivities = activities
+                    .sort((a, b) => b.time - a.time)
+                    .slice(0, 10);
+
+                if (recentActivities.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <h3>📋 Belum Ada Aktivitas</h3>
+                            <p>Aktivitas terbaru akan muncul di sini</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = recentActivities.map(activity => {
+                    let icon, title, meta;
+                    
+                    switch (activity.type) {
+                        case 'game':
+                            icon = '🎮';
+                            title = `Game "${activity.data.title}" ditambahkan`;
+                            meta = `oleh ${activity.data.author}`;
+                            break;
+                        case 'news':
+                            icon = '📢';
+                            title = `Update "${activity.data.title}" dipublikasikan`;
+                            meta = `oleh ${activity.data.author}`;
+                            break;
+                        case 'gallery':
+                            icon = '📸';
+                            title = `Foto baru diupload ke galeri`;
+                            meta = `oleh ${activity.data.author || 'Staff'}`;
+                            break;
+                        case 'staff':
+                            icon = '👥';
+                            title = `Staff "${activity.data.name}" ditambahkan`;
+                            meta = `sebagai ${activity.data.role}`;
+                            break;
+                        case 'donor':
+                            icon = '💰';
+                            title = `Donatur "${activity.data.name}" ditambahkan`;
+                            meta = `${activity.data.amount}`;
+                            break;
+                    }
+
+                    const timeAgo = getTimeAgo(activity.time);
+
+                    return `
+                        <div class="activity-item">
+                            <div class="activity-icon">${icon}</div>
+                            <div class="activity-content">
+                                <div class="activity-title">${title}</div>
+                                <div class="activity-meta">${meta}</div>
+                            </div>
+                            <div class="activity-time">${timeAgo}</div>
+                        </div>
+                    `;
+                }).join('');
+
+            } catch (error) {
+                console.error('Error loading activity log:', error);
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <p>Gagal memuat aktivitas</p>
+                    </div>
+                `;
+            }
+        }
+
+        function getTimeAgo(timestamp) {
+            const now = Date.now();
+            const diff = now - timestamp;
+            
+            const minutes = Math.floor(diff / 60000);
+            const hours = Math.floor(diff / 3600000);
+            const days = Math.floor(diff / 86400000);
+            
+            if (minutes < 1) return 'Baru saja';
+            if (minutes < 60) return `${minutes} menit lalu`;
+            if (hours < 24) return `${hours} jam lalu`;
+            if (days < 7) return `${days} hari lalu`;
+            
+            return new Date(timestamp).toLocaleDateString('id-ID', { 
+                day: 'numeric', 
+                month: 'short',
+                year: 'numeric'
+            });
+        }
+
+        // ============================================
+        // CONTENT TABLES
+        // ============================================
+        
+        async function loadGamesTable() {
+            const tbody = document.getElementById('gamesTableBody');
+            
+            try {
+                const games = await getFromFirebase('games');
+                
+                if (games.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="5">
+                                <div class="empty-state">
+                                    <h3>🎮 Belum Ada Game</h3>
+                                    <p>Game yang ditambahkan akan muncul di sini</p>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                // Sort by date
+                games.sort((a, b) => b.createdAt - a.createdAt);
+
+                tbody.innerHTML = games.map(game => {
+                    const statusClass = game.status.includes('LIVE') ? 'status-live' : 
+                                      game.status.includes('BETA') ? 'status-beta' : 
+                                      'status-maintenance';
+                    
+                    return `
+                        <tr>
+                            <td>
+                                <strong>${game.title}</strong>
+                            </td>
+                            <td>
+                                <span class="status-badge ${statusClass}">${game.status}</span>
+                            </td>
+                            <td>${game.players}</td>
+                            <td>${game.date}</td>
+                            <td>${game.author}</td>
+                        </tr>
+                    `;
+                }).join('');
+
+            } catch (error) {
+                console.error('Error loading games table:', error);
+            }
+        }
+
+        async function loadNewsTable() {
+            const tbody = document.getElementById('newsTableBody');
+            
+            try {
+                const news = await getFromFirebase('news');
+                
+                if (news.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="4">
+                                <div class="empty-state">
+                                    <h3>📢 Belum Ada Update</h3>
+                                    <p>Update yang dipublikasikan akan muncul di sini</p>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                // Sort by date
+                news.sort((a, b) => b.createdAt - a.createdAt);
+
+                tbody.innerHTML = news.map(item => `
+                    <tr>
+                        <td><strong>${item.title}</strong></td>
+                        <td>${item.date}</td>
+                        <td>${item.author}</td>
+                        <td>${item.image ? '✅ Yes' : '❌ No'}</td>
+                    </tr>
+                `).join('');
+
+            } catch (error) {
+                console.error('Error loading news table:', error);
+            }
+        }
+
+        async function loadDonorsTable() {
+            const tbody = document.getElementById('donorsTableBody');
+            
+            try {
+                const donors = await getFromFirebase('donors');
+                
+                if (donors.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="4">
+                                <div class="empty-state">
+                                    <h3>💰 Belum Ada Donatur</h3>
+                                    <p>Donatur yang ditambahkan akan muncul di sini</p>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                tbody.innerHTML = donors.map((donor, index) => `
+                    <tr>
+                        <td><strong>#${index + 1}</strong></td>
+                        <td>${donor.name}</td>
+                        <td><strong>${donor.amount}</strong></td>
+                        <td>${donor.message || '-'}</td>
+                    </tr>
+                `).join('');
+
+            } catch (error) {
+                console.error('Error loading donors table:', error);
+            }
+        }
+
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+        
+        function initDashboard() {
+            console.log('🛠️ Initializing Admin Dashboard...');
+            
+            if (!checkAuth()) {
+                return;
+            }
+
+            loadStatistics();
+            loadCharts();
+            loadTopLiked();
+            loadActivityLog();
+            loadGamesTable();
+            loadNewsTable();
+            loadDonorsTable();
+        }
+
+        // Wait for Firebase
+        if (window.firebaseInitialized) {
+            initDashboard();
+        } else {
+            window.addEventListener('firebaseReady', initDashboard);
+        }
+    </script>
+</body>
+</html>
