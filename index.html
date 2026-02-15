@@ -816,6 +816,229 @@
             color: var(--primary);
         }
 
+        .gallery-like-btn.liked .like-icon {
+            animation: likeAnimation 0.5s ease;
+        }
+
+        @keyframes likeAnimation {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+
+        .like-icon {
+            font-size: 1.3rem;
+            display: inline-block;
+        }
+
+        .like-count, .comment-count {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .gallery-comment-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: none;
+            border: none;
+            color: var(--gray);
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0.5rem;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .gallery-comment-btn:hover {
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--secondary);
+        }
+
+        .comment-icon {
+            font-size: 1.3rem;
+        }
+
+        /* Comments Modal */
+        .comments-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s;
+        }
+
+        .comments-modal.active {
+            display: flex;
+        }
+
+        .comments-modal-content {
+            background: var(--dark);
+            border-radius: 30px;
+            padding: 2rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: var(--shadow);
+            animation: slideUp 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .comments-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .comments-modal-header h3 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.5rem;
+            color: var(--light);
+        }
+
+        .comments-modal-close {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: var(--light);
+            font-size: 1.5rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .comments-modal-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+
+        .comments-modal-list {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+            padding-right: 0.5rem;
+        }
+
+        .comment-item {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .comment-author {
+            font-weight: 600;
+            color: var(--light);
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .comment-text {
+            color: var(--gray);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 0.3rem;
+        }
+
+        .comment-time {
+            font-size: 0.75rem;
+            color: var(--gray);
+            opacity: 0.7;
+        }
+
+        .comment-form {
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .comment-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .comment-name-input,
+        .comment-text-input {
+            padding: 0.8rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            color: var(--light);
+            font-size: 0.9rem;
+        }
+
+        .comment-text-input {
+            resize: none;
+            min-height: 80px;
+        }
+
+        .comment-name-input:focus,
+        .comment-text-input:focus {
+            outline: none;
+            border-color: var(--secondary);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .comment-submit-btn {
+            background: linear-gradient(135deg, var(--secondary), #00a8cc);
+            color: var(--light);
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .comment-submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 212, 255, 0.3);
+        }
+
+        .comment-submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .empty-comments {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--gray);
+        }
+
+        .empty-comments div:first-child {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
         /* Contact */
         .social-links {
             display: flex;
@@ -994,6 +1217,29 @@
         </div>
     </div>
 
+    <!-- Comments Modal -->
+    <div id="commentsModal" class="comments-modal">
+        <div class="comments-modal-content">
+            <div class="comments-modal-header">
+                <h3>💬 Komentar</h3>
+                <button class="comments-modal-close" onclick="closeCommentsModal()">×</button>
+            </div>
+            <div id="commentsModalList" class="comments-modal-list">
+                <div class="loading-container">
+                    <div class="loading"></div>
+                    <p>Memuat komentar...</p>
+                </div>
+            </div>
+            <div class="comment-form">
+                <div class="comment-input-group">
+                    <input type="text" id="modalCommentName" class="comment-name-input" placeholder="Nama kamu" maxlength="30">
+                    <textarea id="modalCommentText" class="comment-text-input" placeholder="Tulis komentar..." rows="3" maxlength="500"></textarea>
+                </div>
+                <button class="comment-submit-btn" onclick="submitModalComment()">💬 Kirim Komentar</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Hero Section -->
     <section id="home" class="hero">
         <div class="hero-content">
@@ -1164,6 +1410,7 @@
 
         let currentStaff = null;
         let userLikes = JSON.parse(localStorage.getItem('rapsDev_likes') || '{}');
+        let currentGalleryIdForComments = null;
 
         // ============================================
         // FIREBASE HELPERS
@@ -1434,7 +1681,7 @@
                         <div class="news-card">
                             <div class="news-image">${imageContent}</div>
                             <div class="news-content">
-                                <div class="news-date">${news.date}</div>
+                                <div class="news-date">${news.date}${news.author ? ` • Posted by ${news.author}` : ''}</div>
                                 <h3 class="news-title">${news.title}</h3>
                                 <p class="news-desc">${news.content}</p>
                             </div>
@@ -1489,7 +1736,6 @@
             
             try {
                 const galleryList = await getFromFirebase('gallery');
-                const likes = await getFromFirebase('likes');
                 
                 if (galleryList.length === 0) {
                     grid.innerHTML = `
@@ -1503,9 +1749,20 @@
 
                 galleryList.sort((a, b) => b.createdAt - a.createdAt);
 
-                grid.innerHTML = galleryList.map(item => {
-                    const like = likes.find(l => l.id === item.id);
-                    const likesCount = like ? like.count : 0;
+                // Load likes and comments count for all items
+                const itemsWithCounts = await Promise.all(
+                    galleryList.map(async (item) => {
+                        const dbRefLikes = window.firebaseRef(window.firebaseDatabase, `likes/${item.id}`);
+                        const snapshotLikes = await window.firebaseGet(dbRefLikes);
+                        const likesCount = snapshotLikes.exists() ? (snapshotLikes.val().count || 0) : 0;
+                        
+                        const commentsCount = await getCommentsCount(item.id);
+                        
+                        return { ...item, likesCount, commentsCount };
+                    })
+                );
+
+                grid.innerHTML = itemsWithCounts.map(item => {
                     const hasLiked = userLikes[item.id] || false;
                     const likeIcon = hasLiked ? '❤️' : '🤍';
                     
@@ -1517,13 +1774,21 @@
                             ${item.caption ? `
                             <div class="gallery-caption">
                                 <div class="gallery-caption-text">${item.caption}</div>
-                                <div class="gallery-caption-meta">${item.date}</div>
+                                <div class="gallery-caption-meta">${item.date}${item.author ? ` • ${item.author}` : ''}</div>
                             </div>
-                            ` : ''}
+                            ` : `
+                            <div class="gallery-caption">
+                                <div class="gallery-caption-meta">${item.date}${item.author ? ` • ${item.author}` : ''}</div>
+                            </div>
+                            `}
                             <div class="gallery-interactions">
                                 <button class="gallery-like-btn ${hasLiked ? 'liked' : ''}" onclick="toggleLike('${item.id}')">
-                                    <span>${likeIcon}</span>
-                                    <span>${likesCount}</span>
+                                    <span class="like-icon">${likeIcon}</span>
+                                    <span class="like-count">${item.likesCount || 0}</span>
+                                </button>
+                                <button class="gallery-comment-btn" onclick="openCommentsModal('${item.id}')">
+                                    <span class="comment-icon">💬</span>
+                                    <span class="comment-count">${item.commentsCount || 0}</span>
                                 </button>
                             </div>
                         </div>
@@ -1532,6 +1797,126 @@
 
             } catch (error) {
                 console.error('Error loading gallery:', error);
+            }
+        }
+
+        async function getCommentsCount(galleryId) {
+            try {
+                const dbRef = window.firebaseRef(window.firebaseDatabase, `comments/${galleryId}`);
+                const snapshot = await window.firebaseGet(dbRef);
+                
+                if (!snapshot.exists()) return 0;
+                
+                const comments = snapshot.val();
+                return Object.keys(comments).length;
+            } catch (error) {
+                console.error('Error getting comments count:', error);
+                return 0;
+            }
+        }
+
+        function openCommentsModal(galleryId) {
+            currentGalleryIdForComments = galleryId;
+            document.getElementById('commentsModal').classList.add('active');
+            loadCommentsForModal(galleryId);
+        }
+
+        function closeCommentsModal() {
+            document.getElementById('commentsModal').classList.remove('active');
+            currentGalleryIdForComments = null;
+            document.getElementById('modalCommentName').value = '';
+            document.getElementById('modalCommentText').value = '';
+        }
+
+        async function loadCommentsForModal(galleryId) {
+            const listElement = document.getElementById('commentsModalList');
+            
+            try {
+                const dbRef = window.firebaseRef(window.firebaseDatabase, `comments/${galleryId}`);
+                const snapshot = await window.firebaseGet(dbRef);
+                
+                if (!snapshot.exists()) {
+                    listElement.innerHTML = `
+                        <div class="empty-comments">
+                            <div>💬</div>
+                            <p>Belum ada komentar. Jadilah yang pertama!</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                const commentsData = snapshot.val();
+                const comments = Object.keys(commentsData).map(key => ({
+                    id: key,
+                    ...commentsData[key]
+                }));
+                
+                // Sort by timestamp descending
+                comments.sort((a, b) => b.timestamp - a.timestamp);
+                
+                listElement.innerHTML = comments.map(comment => `
+                    <div class="comment-item">
+                        <div class="comment-author">${comment.name}</div>
+                        <div class="comment-text">${comment.text}</div>
+                        <div class="comment-time">${comment.date}</div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading comments:', error);
+                listElement.innerHTML = `
+                    <div class="empty-comments">
+                        <p>Gagal memuat komentar</p>
+                    </div>
+                `;
+            }
+        }
+
+        async function submitModalComment() {
+            const name = document.getElementById('modalCommentName').value.trim();
+            const text = document.getElementById('modalCommentText').value.trim();
+            
+            if (!name || !text) {
+                alert('Mohon isi nama dan komentar');
+                return;
+            }
+            
+            if (name.length > 30) {
+                alert('Nama maksimal 30 karakter');
+                return;
+            }
+            
+            if (text.length > 500) {
+                alert('Komentar maksimal 500 karakter');
+                return;
+            }
+            
+            try {
+                const commentData = {
+                    name,
+                    text,
+                    date: new Date().toLocaleDateString('id-ID', { 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    }),
+                    timestamp: Date.now()
+                };
+                
+                const commentId = Date.now().toString();
+                await saveToFirebase(`comments/${currentGalleryIdForComments}`, commentId, commentData);
+                
+                // Clear inputs
+                document.getElementById('modalCommentName').value = '';
+                document.getElementById('modalCommentText').value = '';
+                
+                // Reload comments and gallery
+                loadCommentsForModal(currentGalleryIdForComments);
+                loadGallery();
+            } catch (error) {
+                console.error('Error submitting comment:', error);
+                alert('Gagal mengirim komentar. Silakan coba lagi.');
             }
         }
 
